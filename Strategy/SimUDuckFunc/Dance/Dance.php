@@ -2,15 +2,15 @@
 
 function danceMinuet()
 {
-    print_r('Dance minuet');
+    print_r('Dance minuet <br/>');
 }
 
 function danceWaltz()
 {
-    print_r('Dance waltz');
+    print_r('Dance waltz <br/>');
 }
 
 function noDance()
 {
-    print_r('No dance');
+    print_r('No dance <br/>');
 }

@@ -2,15 +2,15 @@
 
 function quack(): void
 {
-    print_r('Quack');
+    print_r('Quack <br/>');
 }
 
 function squeak(): void
 {
-    print_r('Squeak');
+    print_r('Squeak <br/>');
 }
 
 function muteQuack(): void
 {
-    print_r('Mute quack');
+    print_r('Mute quack <br/>');
 }

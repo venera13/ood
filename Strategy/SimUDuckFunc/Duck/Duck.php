@@ -6,21 +6,21 @@ class Duck
 {
     public function swim(): void
     {
-        // Duck swims
+        print_r('Swim <br/>');
     }
 
-    public function quack(callable $callable): callable
+    public function quack(callable $callable): void
     {
-        return $callable;
+        $callable();
     }
 
-    public function fly(callable $callable): callable
+    public function fly(callable $callable): void
     {
-        return $callable;
+        $callable();
     }
 
-    public function dance(callable $callable): callable
+    public function dance(callable $callable): void
     {
-        return $callable;
+        $callable();
     }
 }

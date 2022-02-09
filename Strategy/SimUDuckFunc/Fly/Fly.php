@@ -2,5 +2,5 @@
 
 function flyNoWay(): void
 {
-    print_r('Fly no way');
+    print_r('Fly no way <br/>');
 }

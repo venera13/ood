@@ -8,6 +8,6 @@ class FlyWithWings implements IFlyBehavior
     public function fly(): void
     {
         $this->flightsCount++;
-        print_r('Fly with wings. Flight number ' . $this->flightsCount);
+        print_r('Fly with wings. Flight number ' . $this->flightsCount . '<br/>');
     }
 }
