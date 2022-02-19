@@ -3,11 +3,11 @@
 class FlyWithWings implements IFlyBehavior
 {
     /** @var int */
-    private $flightsCount = 0;
+    private $flightCount = 0;
 
     public function fly(): void
     {
-        $this->flightsCount++;
-        print_r('Fly with wings. Flight number ' . $this->flightsCount . '<br/>');
+        $this->flightCount++;
+        print_r('Fly with wings. Flight number ' . $this->flightCount . '<br/>');
     }
 }

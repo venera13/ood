@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * @template T
+ */
 interface ObservableInterface
 {
     public function registerObserver(ObserverInterface $observer): void;
