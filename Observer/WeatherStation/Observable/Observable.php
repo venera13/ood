@@ -7,7 +7,7 @@ declare(strict_types=1);
 abstract class Observable implements ObservableInterface
 {
     /** @var array */
-    private $observers = [];
+    public $observers = [];
     
     public function registerObserver(ObserverInterface $observer): void
     {
