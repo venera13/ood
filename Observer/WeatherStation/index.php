@@ -13,10 +13,10 @@ include 'WeatherDisplay/StatsCalculator.php';
 $weatherData = new WeatherData();
 
 $display = new Display();
-$weatherData->registerObserver($display);
+$weatherData->registerObserver($display, 1);
 
 $statsDisplay = new StatsDisplay();
-$weatherData->registerObserver($statsDisplay);
+$weatherData->registerObserver($statsDisplay, 2);
 
 $weatherData->setMeasurements(5, 0.9, 750);
 $weatherData->setMeasurements(10, 0.5, 754);

@@ -5,7 +5,11 @@ class MockObservable extends Observable
 {
     public function hasObserver(ObserverInterface $observer): bool
     {
-        return in_array($observer, $this->observers);
+        foreach ($this->observers as $arrayObserver)
+        {
+            if ($arrayObserver['observer'] = $observer) return true;
+        }
+        return false;
     }
 
     protected function getChangedData(): WeatherInfo
