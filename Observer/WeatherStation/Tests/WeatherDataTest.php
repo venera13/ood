@@ -30,6 +30,7 @@ class WeatherDataTest extends TestCase
         $observable->notifyObservers();
         $this->assertEquals(true, $observable->hasObserver($selfRemoverObserver));
     }
+    
 
     public function testObserverUpdatePriority(): void
     {
