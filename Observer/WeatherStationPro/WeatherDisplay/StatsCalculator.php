@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
+namespace Observer\WeatherStationPro\WeatherDisplay;
+
 /**
  * @template T
  */
-class StatsWindDirectionCalculator implements StatsCalculatorInterface
+class StatsCalculator implements StatsCalculatorInterface
 {
     /** @var float */
     private $minValue;
     /** @var float */
     private $maxValue;
     /** @var float */
-    private $accSinValue = 0;
-    /** @var float */
-    private $accCosValue = 0;
+    private $accValue = 0;
     /** @var int */
     private $countAcc = 0;
 
@@ -36,8 +36,8 @@ class StatsWindDirectionCalculator implements StatsCalculatorInterface
         {
             $this->maxValue = $newValue;
         }
+        $this->accValue += $newValue;
         ++$this->countAcc;
-        $this->changeAccValue($newValue);
     }
 
     public function getMinValue(): float
@@ -52,14 +52,6 @@ class StatsWindDirectionCalculator implements StatsCalculatorInterface
 
     public function getAverage(): float
     {
-        $averageCosValue = $this->accCosValue/$this->countAcc;
-        $averageSinValue = $this->accSinValue/$this->countAcc;
-        return round(rad2deg(atan2($averageSinValue, $averageCosValue)), 2);
-    }
-
-    private function changeAccValue(int $newValue): void
-    {
-        $this->accSinValue += sin(deg2rad($newValue));
-        $this->accCosValue += cos(deg2rad($newValue));
+        return $this->accValue/$this->countAcc;
     }
 }

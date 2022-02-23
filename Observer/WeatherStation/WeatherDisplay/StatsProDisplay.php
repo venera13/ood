@@ -6,15 +6,15 @@ declare(strict_types=1);
  */
 class StatsProDisplay implements ObserverInterface
 {
-    /** @var StatsCalculator */
+    /** @var StatsCalculatorInterface */
     private $temperatureStats;
-    /** @var StatsCalculator */
+    /** @var StatsCalculatorInterface */
     private $humidityStats;
-    /** @var StatsCalculator */
+    /** @var StatsCalculatorInterface */
     private $pressureStats;
-    /** @var StatsCalculator */
+    /** @var StatsCalculatorInterface */
     private $windSpeedStats;
-    /** @var StatsCalculator */
+    /** @var StatsCalculatorInterface */
     private $windDirectionStats;
 
     public function __construct()

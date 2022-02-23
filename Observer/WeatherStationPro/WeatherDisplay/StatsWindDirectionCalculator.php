@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace Observer\WeatherStationPro\WeatherDisplay;
+
 /**
  * @template T
  */
@@ -57,7 +59,7 @@ class StatsWindDirectionCalculator implements StatsCalculatorInterface
         return round(rad2deg(atan2($averageSinValue, $averageCosValue)), 2);
     }
 
-    private function changeAccValue(int $newValue): void
+    private function changeAccValue(float $newValue): void
     {
         $this->accSinValue += sin(deg2rad($newValue));
         $this->accCosValue += cos(deg2rad($newValue));

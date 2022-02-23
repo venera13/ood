@@ -14,6 +14,7 @@ include 'WeatherDisplay/Display.php';
 include 'WeatherDisplay/StatsDisplay.php';
 include 'WeatherDisplay/ProDisplay.php';
 include 'WeatherDisplay/StatsProDisplay.php';
+include 'WeatherDisplay/StatsCalculatorInterface.php';
 include 'WeatherDisplay/StatsCalculator.php';
 include 'WeatherDisplay/StatsWindDirectionCalculator.php';
 

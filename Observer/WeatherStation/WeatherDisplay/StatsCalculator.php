@@ -3,7 +3,7 @@
 /**
  * @template T
  */
-class StatsCalculator
+class StatsCalculator implements StatsCalculatorInterface
 {
     /** @var float */
     private $minValue;
@@ -14,10 +14,6 @@ class StatsCalculator
     /** @var int */
     private $countAcc = 0;
 
-    /**
-     * @param T $newValue
-     * @return void
-     */
     public function update($newValue): void
     {
         if (!$this->minValue)
@@ -41,26 +37,17 @@ class StatsCalculator
         ++$this->countAcc;
     }
 
-    /**
-     * @return float
-     */
     public function getMinValue(): float
     {
         return $this->minValue;
     }
 
-    /**
-     * @return float
-     */
     public function getMaxValue(): float
     {
         return $this->maxValue;
     }
 
-    /**
-     * @return float
-     */
-    public function getAverage()
+    public function getAverage(): float
     {
         return $this->accValue/$this->countAcc;
     }
