@@ -6,9 +6,8 @@ declare(strict_types=1);
  */
 class FirstObserver implements ObserverInterface
 {
-    public function update($weatherInfo): void
+    public function update(mixed $weatherInfo, ?string $observableType = null): void
     {
         echo '1';
-        //fwrite(STDERR, print_r(1, TRUE));
     }
 }

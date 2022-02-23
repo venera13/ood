@@ -5,9 +5,9 @@ class MockObservable extends Observable
 {
     public function hasObserver(ObserverInterface $observer): bool
     {
-        foreach ($this->observers as $arrayObserver)
+        foreach ($this->observers as $observerData)
         {
-            if ($arrayObserver['observer'] = $observer) return true;
+            if ($observerData->getObserver() === $observer) return true;
         }
         return false;
     }

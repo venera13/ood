@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 include 'Data/WeatherInfo.php';
+include 'Data/ObserverData.php';
+include 'Domain/ObservableType.php';
 include 'Observable/ObservableInterface.php';
 include 'Observable/Observable.php';
 include 'Observer/ObserverInterface.php';

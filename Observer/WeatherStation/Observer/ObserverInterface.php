@@ -8,6 +8,7 @@ interface ObserverInterface
 {
     /**
      * @param T $weatherInfo
+     * @param string|null $observableType
      */
-    public function update($weatherInfo): void;
+    public function update(mixed $weatherInfo, ?string $observableType = null): void;
 }

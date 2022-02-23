@@ -8,15 +8,22 @@ include 'Exceptions/NotifyObserverException.php';
  */
 abstract class Observable implements ObservableInterface
 {
-    /** @var array */
+    /** @var ObserverData[] */
     public $observers = [];
-    
+    /** @var string|null */
+    private $type = null;
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
     public function registerObserver(ObserverInterface $observer, int $priority = 0): void
     {
-        $this->observers[] = [
-            'priority' => $priority,
-            'observer' => $observer
-        ];
+        $this->observers[] = new ObserverData(
+            $priority,
+            $observer
+        );
 
         $this->sortObservers();
     }
@@ -25,7 +32,7 @@ abstract class Observable implements ObservableInterface
     {
         foreach ($this->observers as $key => $value)
         {
-            if ($value['observer'] === $observer)
+            if ($value->getObserver() === $observer)
             {
                 unset($this->observers[$key]);
             }
@@ -40,12 +47,12 @@ abstract class Observable implements ObservableInterface
 
             foreach ($this->observers as $observer)
             {
-                $observer['observer']->update($data);
+                $observer->getObserver()->update($data, $this->type);
             }
         }
         catch (Throwable $exception)
         {
-            throw new NotifyObserverException();
+            throw new NotifyObserverException($exception->getMessage());
         }
     }
 
@@ -58,7 +65,7 @@ abstract class Observable implements ObservableInterface
     {
         usort($this->observers, static function($firstValue, $secondValue): int
         {
-            return $firstValue['priority'] <= $secondValue['priority'] ? 1 : -1;
+            return $firstValue->getPriority() <= $secondValue->getPriority() ? 1 : -1;
         });
     }
 }

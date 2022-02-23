@@ -20,8 +20,13 @@ class StatsDisplay implements ObserverInterface
         $this->pressureStats = new StatsCalculator();
     }
 
-    public function update($weatherInfo): void
+    public function update(mixed $weatherInfo, ?string $observableType = null): void
     {
+        if ($observableType)
+        {
+            print_r('Observable type ' . $observableType . '</br>');
+        }
+
         $this->updateStatistics($weatherInfo);
         $this->printStatistics();
     }

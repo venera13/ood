@@ -1,6 +1,8 @@
 <?php
 
 include '../Data/WeatherInfo.php';
+include '../Data/ObserverData.php';
+include '../Domain/ObservableType.php';
 include '../Observable/ObservableInterface.php';
 include '../Observable/Observable.php';
 include '../Observer/ObserverInterface.php';
@@ -12,6 +14,7 @@ include 'MockObservable.php';
 include 'SelfRemoverObserver.php';
 include 'FirstObserver.php';
 include 'SecondObserver.php';
+include 'ObserverWithCheckType.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +33,6 @@ class WeatherDataTest extends TestCase
         $observable->notifyObservers();
         $this->assertEquals(true, $observable->hasObserver($selfRemoverObserver));
     }
-    
 
     public function testObserverUpdatePriority(): void
     {
@@ -44,5 +46,23 @@ class WeatherDataTest extends TestCase
 
         $observable->notifyObservers();
         $this->expectOutputString('21');
+    }
+
+    public function testDuoObservable(): void
+    {
+        $observableIn = new MockObservable();
+        $observableIn->setType(ObservableType::INPUT);
+
+        $observableOut = new MockObservable();
+        $observableOut->setType(ObservableType::OUTPUT);
+
+        $observer = new ObserverWithCheckType();
+        $observableIn->registerObserver($observer);
+        $observableOut->registerObserver($observer);
+
+        $observableIn->notifyObservers();
+        $observableOut->notifyObservers();
+
+        $this->expectOutputString('inputoutput');
     }
 }
