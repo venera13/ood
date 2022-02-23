@@ -65,7 +65,7 @@ abstract class Observable implements ObservableInterface
     {
         usort($this->observers, static function($firstValue, $secondValue): int
         {
-            return $firstValue->getPriority() <= $secondValue->getPriority() ? 1 : -1;
+            return $firstValue->getPriority() < $secondValue->getPriority() ? 1 : -1;
         });
     }
 }

@@ -13,10 +13,10 @@ include 'WeatherDisplay/StatsDisplay.php';
 include 'WeatherDisplay/StatsCalculator.php';
 
 $weatherDataIn = new WeatherData();
-$weatherDataIn->setType(ObservableType::INPUT);
+$weatherDataIn->setType(ObservableType::INSIDE);
 
 $weatherDataOut = new WeatherData();
-$weatherDataOut->setType(ObservableType::OUTPUT);
+$weatherDataOut->setType(ObservableType::OUTSIDE);
 
 $display = new Display();
 $weatherDataIn->registerObserver($display, 1);

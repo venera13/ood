@@ -51,10 +51,10 @@ class WeatherDataTest extends TestCase
     public function testDuoObservable(): void
     {
         $observableIn = new MockObservable();
-        $observableIn->setType(ObservableType::INPUT);
+        $observableIn->setType(ObservableType::INSIDE);
 
         $observableOut = new MockObservable();
-        $observableOut->setType(ObservableType::OUTPUT);
+        $observableOut->setType(ObservableType::OUTSIDE);
 
         $observer = new ObserverWithCheckType();
         $observableIn->registerObserver($observer);
@@ -63,6 +63,6 @@ class WeatherDataTest extends TestCase
         $observableIn->notifyObservers();
         $observableOut->notifyObservers();
 
-        $this->expectOutputString('inputoutput');
+        $this->expectOutputString('insideoutside');
     }
 }

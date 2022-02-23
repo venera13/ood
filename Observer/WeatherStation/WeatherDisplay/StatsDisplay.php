@@ -31,6 +31,9 @@ class StatsDisplay implements ObserverInterface
         $this->printStatistics();
     }
 
+    /**
+     * @param $weatherInfo
+     */
     private function updateStatistics($weatherInfo): void
     {
         $this->temperatureStats->update($weatherInfo->getTemperature());
@@ -45,6 +48,10 @@ class StatsDisplay implements ObserverInterface
         $this->printStatistic('Pressure', $this->pressureStats);
     }
 
+    /**
+     * @param string $paramName
+     * @param StatsCalculator $stats
+     */
     private function printStatistic(string $paramName, StatsCalculator $stats): void
     {
         print_r('Min ' . $paramName . ' ' . $stats->getMinValue() . '</br>');
