@@ -10,6 +10,7 @@ include 'Observer/ObserverInterface.php';
 include 'WeatherData/WeatherData.php';
 include 'WeatherDisplay/Display.php';
 include 'WeatherDisplay/StatsDisplay.php';
+include 'WeatherDisplay/StatsCalculatorInterface.php';
 include 'WeatherDisplay/StatsCalculator.php';
 
 $weatherData = new WeatherData();
