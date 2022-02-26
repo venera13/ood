@@ -5,6 +5,5 @@ class TestObserver implements ObserverInterface
 {
     public function update(mixed $subject): void
     {
-        // TODO: Implement update() method.
     }
 }
