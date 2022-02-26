@@ -1,18 +1,12 @@
 <?php
+declare(strict_types=1);
 
-namespace Strategy\SimUDuckFunc\Fly;
-
-class FlyWithWings
+function fly(): callable
 {
-    /** @var int */
-    private $flightsCount = 0;
-
-    public function fly(): callable
+    $flightCount = 0;
+    return function() use (&$flightCount)
     {
-        return function()
-        {
-            $this->flightsCount++;
-            print_r('Fly with wings. Flight number ' . $this->flightsCount . '<br/>');
-        };
-    }
+        $flightCount += 1;
+        print_r('Fly with wings. Flight number ' . $flightCount . '<br/>');
+    };
 }

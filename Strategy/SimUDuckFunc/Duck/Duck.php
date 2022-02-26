@@ -16,6 +16,9 @@ class Duck
 
     public function fly(callable $callable): void
     {
+//        call_user_func($callable);
+//        print_r($callable());
+//        print_r('<br />');
         $callable();
     }
 

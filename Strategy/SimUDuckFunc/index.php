@@ -16,22 +16,22 @@ use Strategy\SimUDuckFunc\Duck\DecoyDuck;
 use Strategy\SimUDuckFunc\Duck\MallardDuck;
 use Strategy\SimUDuckFunc\Duck\RedheadDuck;
 use Strategy\SimUDuckFunc\Duck\RubberDuck;
-use Strategy\SimUDuckFunc\Fly\FlyWithWings;
 
 $mallardDuck = new MallardDuck();
 $mallardDuck->swim();
 $mallardDuck->quack('quack');
-$flyWithWings = new FlyWithWings();
-$mallardDuck->fly($flyWithWings->fly());
-$mallardDuck->fly($flyWithWings->fly());
+$fly = fly();
+$mallardDuck->fly($fly);
+$mallardDuck->fly($fly);
+$mallardDuck->fly($fly);
 $mallardDuck->dance('danceWaltz');
 
 $mallardDuck = new RedheadDuck();
 $mallardDuck->swim();
 $mallardDuck->quack('quack');
 $mallardDuck->quack('squeak');
-$flyWithWings = new FlyWithWings();
-$mallardDuck->fly($flyWithWings->fly());
+$fly = fly();
+$mallardDuck->fly($fly);
 $mallardDuck->dance('danceMinuet');
 
 $mallardDuck = new RubberDuck();
@@ -44,7 +44,4 @@ $mallardDuck = new DecoyDuck();
 $mallardDuck->swim();
 $mallardDuck->quack('muteQuack');
 $mallardDuck->fly('flyNoWay');
-$flyWithWings = new FlyWithWings();
-$mallardDuck->fly($flyWithWings->fly());
-$mallardDuck->fly($flyWithWings->fly());
 $mallardDuck->dance('noDance');
