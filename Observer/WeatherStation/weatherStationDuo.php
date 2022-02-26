@@ -10,14 +10,11 @@ include 'Observer/ObserverInterface.php';
 include 'WeatherData/WeatherData.php';
 include 'WeatherDisplay/Display.php';
 include 'WeatherDisplay/StatsDisplay.php';
-include 'WeatherDisplay/StatsCalculatorInterface.php';
 include 'WeatherDisplay/StatsCalculator.php';
 
-$weatherDataIn = new WeatherData();
-$weatherDataIn->setType(ObservableType::INSIDE);
+$weatherDataIn = new WeatherData(ObservableType::INSIDE);
 
-$weatherDataOut = new WeatherData();
-$weatherDataOut->setType(ObservableType::OUTSIDE);
+$weatherDataOut = new WeatherData(ObservableType::OUTSIDE);
 
 $display = new Display();
 $weatherDataIn->registerObserver($display, 1);

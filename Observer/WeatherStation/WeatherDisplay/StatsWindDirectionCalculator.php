@@ -4,12 +4,8 @@ declare(strict_types=1);
 /**
  * @template T
  */
-class StatsWindDirectionCalculator implements StatsCalculatorInterface
+class StatsWindDirectionCalculator
 {
-    /** @var float */
-    private $minValue;
-    /** @var float */
-    private $maxValue;
     /** @var float */
     private $accSinValue = 0;
     /** @var float */
@@ -19,35 +15,8 @@ class StatsWindDirectionCalculator implements StatsCalculatorInterface
 
     public function update($newValue): void
     {
-        if (!$this->minValue)
-        {
-            $this->minValue = $newValue;
-        }
-        if (!$this->maxValue)
-        {
-            $this->maxValue = $newValue;
-        }
-
-        if ($this->minValue > $newValue)
-        {
-            $this->minValue = $newValue;
-        }
-        if ($this->maxValue < $newValue)
-        {
-            $this->maxValue = $newValue;
-        }
         ++$this->countAcc;
         $this->changeAccValue($newValue);
-    }
-
-    public function getMinValue(): float
-    {
-        return $this->minValue;
-    }
-
-    public function getMaxValue(): float
-    {
-        return $this->maxValue;
     }
 
     public function getAverage(): float

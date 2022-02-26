@@ -75,7 +75,7 @@ class WeatherDataPro extends Observable
         $this->measurementsChanged();
     }
 
-    protected function getChangedData(): WeatherDuoInfo
+    public function getChangedData(): WeatherDuoInfo
     {
         return new WeatherDuoInfo(
             $this->getTemperature(),

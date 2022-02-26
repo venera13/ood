@@ -3,7 +3,7 @@
 /**
  * @template T
  */
-class StatsCalculator implements StatsCalculatorInterface
+class StatsCalculator
 {
     /** @var float */
     private $minValue;

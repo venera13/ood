@@ -12,7 +12,12 @@ class MockObservable extends Observable
         return false;
     }
 
-    protected function getChangedData(): WeatherInfo
+    public function getObserverByKey(int $key): ObserverData
+    {
+        return $this->observers[$key];
+    }
+
+    public function getChangedData(): WeatherInfo
     {
         return new WeatherInfo(
             0.0,

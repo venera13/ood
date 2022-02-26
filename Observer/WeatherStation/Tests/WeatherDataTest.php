@@ -9,17 +9,37 @@ include '../Observer/ObserverInterface.php';
 include '../WeatherData/WeatherData.php';
 include '../WeatherDisplay/Display.php';
 include '../WeatherDisplay/StatsDisplay.php';
+include '../WeatherDisplay/StatsCalculatorInterface.php';
 include '../WeatherDisplay/StatsCalculator.php';
 include 'MockObservable.php';
 include 'SelfRemoverObserver.php';
 include 'FirstObserver.php';
 include 'SecondObserver.php';
 include 'ObserverWithCheckType.php';
+include 'TestObserver.php';
 
 use PHPUnit\Framework\TestCase;
 
 class WeatherDataTest extends TestCase
 {
+    public function testRemoveObserver(): void
+    {
+        $observable = new MockObservable();
+
+        $firstObserver = new TestObserver();
+        $observable->registerObserver($firstObserver);
+
+        $secondObserver = new TestObserver();
+        $observable->registerObserver($secondObserver);
+
+        $thirdObserver = new TestObserver();
+        $observable->registerObserver($thirdObserver);
+
+        $observable->removeObserver($secondObserver);
+
+        $this->assertEquals(true, $observable->getObserverByKey(1) !== null);
+    }
+
     public function testSelfRemoverObserver(): void
     {
         $observable = new MockObservable();
@@ -29,9 +49,8 @@ class WeatherDataTest extends TestCase
 
         $this->assertEquals(true, $observable->hasObserver($selfRemoverObserver));
 
-        $this->expectException(NotifyObserverException::class);
         $observable->notifyObservers();
-        $this->assertEquals(true, $observable->hasObserver($selfRemoverObserver));
+        $this->assertEquals(false, $observable->hasObserver($selfRemoverObserver));
     }
 
     public function testObserverUpdatePriority(): void
@@ -50,11 +69,9 @@ class WeatherDataTest extends TestCase
 
     public function testDuoObservable(): void
     {
-        $observableIn = new MockObservable();
-        $observableIn->setType(ObservableType::INSIDE);
+        $observableIn = new MockObservable(ObservableType::INSIDE);
 
-        $observableOut = new MockObservable();
-        $observableOut->setType(ObservableType::OUTSIDE);
+        $observableOut = new MockObservable(ObservableType::OUTSIDE);
 
         $observer = new ObserverWithCheckType();
         $observableIn->registerObserver($observer);

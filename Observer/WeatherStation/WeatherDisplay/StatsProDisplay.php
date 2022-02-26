@@ -6,15 +6,15 @@ declare(strict_types=1);
  */
 class StatsProDisplay implements ObserverInterface
 {
-    /** @var StatsCalculatorInterface */
+    /** @var StatsCalculator */
     private $temperatureStats;
-    /** @var StatsCalculatorInterface */
+    /** @var StatsCalculator */
     private $humidityStats;
-    /** @var StatsCalculatorInterface */
+    /** @var StatsCalculator */
     private $pressureStats;
-    /** @var StatsCalculatorInterface */
+    /** @var StatsCalculator */
     private $windSpeedStats;
-    /** @var StatsCalculatorInterface */
+    /** @var StatsWindDirectionCalculator */
     private $windDirectionStats;
 
     public function __construct()
@@ -26,24 +26,25 @@ class StatsProDisplay implements ObserverInterface
         $this->windDirectionStats = new StatsWindDirectionCalculator();
     }
 
-    public function update(mixed $weatherInfo, ?string $observableType = null): void
+    public function update(mixed $subject): void
     {
-        if ($observableType)
+        $data = $subject->getChangedData();
+        if ($subject->getType())
         {
-            print_r('Observable type ' . $observableType . '</br>');
+            print_r('Observable type ' . $subject->getType() . '</br>');
         }
 
-        $this->updateStatistics($weatherInfo);
+        $this->updateStatistics($data);
         $this->printStatistics();
     }
 
-    private function updateStatistics($weatherInfo): void
+    private function updateStatistics($observableData): void
     {
-        $this->temperatureStats->update($weatherInfo->getTemperature());
-        $this->humidityStats->update($weatherInfo->getHumidity());
-        $this->pressureStats->update($weatherInfo->getPressure());
-        $this->windSpeedStats->update($weatherInfo->getWindSpeed());
-        $this->windDirectionStats->update($weatherInfo->getWindDirection());
+        $this->temperatureStats->update($observableData->getTemperature());
+        $this->humidityStats->update($observableData->getHumidity());
+        $this->pressureStats->update($observableData->getPressure());
+        $this->windSpeedStats->update($observableData->getWindSpeed());
+        $this->windDirectionStats->update($observableData->getWindDirection());
     }
 
     private function printStatistics(): void
@@ -61,9 +62,9 @@ class StatsProDisplay implements ObserverInterface
      */
     private function printStatistic(string $paramName, mixed $stats): void
     {
-        print_r('Min ' . $paramName . ' ' . $stats->getMinValue() . '</br>');
-        print_r('Max ' . $paramName . ' ' . $stats->getMaxValue() . '</br>');
-        print_r('Average ' . $paramName . ' ' . $stats->getAverage() . '</br>');
+        if (method_exists($stats, 'getMinValue')) print_r('Min ' . $paramName . ' ' . $stats->getMinValue() . '</br>');
+        if (method_exists($stats, 'getMaxValue')) print_r('Max ' . $paramName . ' ' . $stats->getMaxValue() . '</br>');
+        if (method_exists($stats, 'getAverage')) print_r('Average ' . $paramName . ' ' . $stats->getAverage() . '</br>');
         print_r('------------------</br>');
     }
 }

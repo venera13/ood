@@ -14,15 +14,12 @@ include 'WeatherDisplay/Display.php';
 include 'WeatherDisplay/StatsDisplay.php';
 include 'WeatherDisplay/ProDisplay.php';
 include 'WeatherDisplay/StatsProDisplay.php';
-include 'WeatherDisplay/StatsCalculatorInterface.php';
 include 'WeatherDisplay/StatsCalculator.php';
 include 'WeatherDisplay/StatsWindDirectionCalculator.php';
 
-$weatherDataIn = new WeatherData();
-$weatherDataIn->setType(ObservableType::INSIDE);
+$weatherDataIn = new WeatherData(ObservableType::INSIDE);
 
-$weatherDataOut = new WeatherDataPro();
-$weatherDataOut->setType(ObservableType::OUTSIDE);
+$weatherDataOut = new WeatherDataPro(ObservableType::OUTSIDE);
 
 $display = new Display();
 $statsDisplay = new StatsDisplay();

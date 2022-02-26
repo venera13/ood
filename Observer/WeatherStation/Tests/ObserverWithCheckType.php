@@ -6,8 +6,8 @@ declare(strict_types=1);
  */
 class ObserverWithCheckType implements ObserverInterface
 {
-    public function update(mixed $weatherInfo, ?string $observableType = null): void
+    public function update(mixed $subject): void
     {
-        echo $observableType;
+        echo $subject->getType();
     }
 }

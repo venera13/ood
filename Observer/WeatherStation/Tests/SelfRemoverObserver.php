@@ -6,8 +6,8 @@ declare(strict_types=1);
  */
 class SelfRemoverObserver implements ObserverInterface
 {
-    public function update(mixed $weatherInfo, ?string $observableType = null): void
+    public function update(mixed $subject): void
     {
-        $weatherInfo->removeObserver($this);
+        $subject->removeObserver($this);
     }
 }

@@ -6,7 +6,7 @@ declare(strict_types=1);
  */
 class SecondObserver implements ObserverInterface
 {
-    public function update(mixed $weatherInfo, ?string $observableType = null): void
+    public function update(mixed $subject): void
     {
         echo '2';
     }

@@ -48,7 +48,7 @@ class WeatherData extends Observable
         $this->measurementsChanged();
     }
 
-    protected function getChangedData(): WeatherInfo
+    public function getChangedData(): WeatherInfo
     {
         return new WeatherInfo(
             $this->getTemperature(),
