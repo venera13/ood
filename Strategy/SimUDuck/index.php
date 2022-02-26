@@ -17,11 +17,7 @@ include 'Dance/DanceWaltz.php';
 include 'Dance/DanceMinuet.php';
 include 'Dance/NoDance.php';
 
-$mallardDuck = new MallardDuck(
-    new Quack(),
-    new FlyWithWings(),
-    new DanceWaltz()
-);
+$mallardDuck = new MallardDuck();
 $mallardDuck->quack();
 $mallardDuck->fly();
 $mallardDuck->fly();
@@ -30,11 +26,7 @@ $mallardDuck->setFly(new FlyNoWay());
 $mallardDuck->fly();
 $mallardDuck->fly();
 
-$redheadDuck = new RedheadDuck(
-    new Quack(),
-    new FlyWithWings(),
-    new DanceMinuet()
-);
+$redheadDuck = new RedheadDuck();
 $redheadDuck->quack();
 $redheadDuck->setFly(new FlyNoWay);
 $redheadDuck->fly();
@@ -42,22 +34,13 @@ $redheadDuck->dance();
 $redheadDuck->setDance(new DanceWaltz());
 $redheadDuck->dance();
 
-$rubberDuck = new RubberDuck(
-    new Squeak(),
-    new FlyNoWay(),
-    new NoDance()
-);
+$rubberDuck = new RubberDuck();
 $rubberDuck->quack();
-$rubberDuck->setQuack(new Quack());
 $rubberDuck->quack();
 $rubberDuck->fly();
 $rubberDuck->dance();
 
-$rubberDuck = new DecoyDuck(
-    new MuteQuack(),
-    new FlyNoWay(),
-    new NoDance()
-);
+$rubberDuck = new DecoyDuck();
 $rubberDuck->quack();
 $rubberDuck->fly();
 $rubberDuck->dance();

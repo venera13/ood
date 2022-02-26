@@ -19,21 +19,6 @@ class Duck
         $this->danceBehavior = $danceBehavior;
     }
 
-    public function setQuack(IQuackBehavior $quackBehavior): void
-    {
-        $this->quackBehavior = $quackBehavior;
-    }
-
-    public function setFly(IFlyBehavior $flyBehavior): void
-    {
-        $this->flyBehavior = $flyBehavior;
-    }
-
-    public function setDance(IDanceBehavior $danceBehavior): void
-    {
-        $this->danceBehavior = $danceBehavior;
-    }
-
     public function swim(): void
     {
         // Duck swims
