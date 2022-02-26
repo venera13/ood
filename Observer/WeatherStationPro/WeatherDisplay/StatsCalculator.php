@@ -6,7 +6,7 @@ namespace Observer\WeatherStationPro\WeatherDisplay;
 /**
  * @template T
  */
-class StatsCalculator implements StatsCalculatorInterface
+class StatsCalculator
 {
     /** @var float */
     private $minValue;

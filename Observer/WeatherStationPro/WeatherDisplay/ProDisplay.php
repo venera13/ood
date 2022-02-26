@@ -34,19 +34,21 @@ class ProDisplay implements ObserverInterface
         return $this->events;
     }
 
-    public function update(mixed $weatherInfo, ?string $observableType = null): void
+    public function update(mixed $subject): void
     {
-        if ($observableType)
+        if ($subject->getType())
         {
-            print_r('Observable type ' . $observableType . '</br>');
+            print_r('Observable type ' . $subject->getType() . '</br>');
         }
+
+        $data = $subject->getChangedData();
         foreach ($this->getEvents() as $event)
         {
-            foreach ($weatherInfo->getList() as $currentWeatherInfo)
+            foreach ($data->getList() as $currentSubjectInfo)
             {
-                if ($event === $currentWeatherInfo->getEventType())
+                if ($event === $currentSubjectInfo->getEventType())
                 {
-                    print_r('Current ' . $currentWeatherInfo->getEventType() . ' ' . $currentWeatherInfo->getValue() . '</br>');
+                    print_r('Current ' . $currentSubjectInfo->getEventType() . ' ' . $currentSubjectInfo->getValue() . '</br>');
                 }
             }
         }

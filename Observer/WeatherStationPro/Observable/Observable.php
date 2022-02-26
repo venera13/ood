@@ -20,9 +20,14 @@ abstract class Observable implements ObservableInterface
     /** @var string|null */
     private $type = null;
 
-    public function setType(string $type): void
+    public function __construct(?string $type = null)
     {
         $this->type = $type;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
     }
 
     public function registerObserver(ObserverInterface $observer, int $priority = 0): void
@@ -41,7 +46,7 @@ abstract class Observable implements ObservableInterface
         {
             if ($value->getObserver() === $observer)
             {
-                unset($this->observers[$key]);
+                array_splice($this->observers, $key, 1);
             }
         }
     }
@@ -50,11 +55,9 @@ abstract class Observable implements ObservableInterface
     {
         try
         {
-            $data = $this->getChangedData();
-
             foreach ($this->observers as $observer)
             {
-                $observer->getObserver()->update($data, $this->type);
+                $observer->getObserver()->update($this);
             }
         }
         catch (Throwable $exception)
@@ -66,7 +69,7 @@ abstract class Observable implements ObservableInterface
     /**
      * @return T
      */
-    protected abstract function getChangedData();
+    public abstract function getChangedData();
 
     private function sortObservers(): void
     {

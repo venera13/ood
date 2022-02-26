@@ -24,8 +24,7 @@ interface ObserverInterface
     public function getEvents(): array;
 
     /**
-     * @param T $weatherInfo
-     * @param string|null $observableType
+     * @param T $subject
      */
-    public function update(mixed $weatherInfo, ?string $observableType = null): void;
+    public function update(mixed $subject): void;
 }

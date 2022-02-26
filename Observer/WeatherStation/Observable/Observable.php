@@ -13,9 +13,6 @@ abstract class Observable implements ObservableInterface
     /** @var string|null */
     private $type = null;
 
-    /**
-     * @param string|null $type
-     */
     public function __construct(?string $type = null)
     {
         $this->type = $type;

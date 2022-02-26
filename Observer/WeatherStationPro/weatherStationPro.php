@@ -12,7 +12,6 @@ include 'Observer/ObserverInterface.php';
 include 'WeatherData/WeatherDataPro.php';
 include 'WeatherDisplay/ProDisplay.php';
 include 'WeatherDisplay/StatsProDisplay.php';
-include 'WeatherDisplay/StatsCalculatorInterface.php';
 include 'WeatherDisplay/StatsCalculator.php';
 include 'WeatherDisplay/StatsWindDirectionCalculator.php';
 
@@ -36,7 +35,7 @@ $weatherData->registerObserver($statsDisplay);
 $weatherData->setMeasurements(5, 0.9, 750, 10, 1);
 $weatherData->setMeasurements(10, 0.5, 754, 5, 359);
 
-//$display->removeEventListener(WeatherInfoType::PRESSURE);
-//$statsDisplay->removeEventListener(WeatherInfoType::PRESSURE);
-//
-//$weatherData->setMeasurements(-10, 1, 750, 5, 270);
+$display->removeEventListener(WeatherInfoType::TEMPERATURE);
+$statsDisplay->removeEventListener(WeatherInfoType::TEMPERATURE);
+
+$weatherData->setMeasurements(-10, 1, 750, 5, 270);

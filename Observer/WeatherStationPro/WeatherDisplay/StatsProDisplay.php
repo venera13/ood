@@ -46,25 +46,25 @@ class StatsProDisplay implements ObserverInterface
         return $this->events;
     }
 
-    public function update(mixed $weatherInfo, ?string $observableType = null): void
+    public function update(mixed $subject): void
     {
-        if ($observableType)
+        if ($subject->getType())
         {
-            print_r('Observable type ' . $observableType . '</br>');
+            print_r('Observable type ' . $subject->getType() . '</br>');
         }
 
-        $this->updateStatistics($weatherInfo);
+        $this->updateStatistics($subject->getChangedData());
     }
 
-    private function updateStatistics($weatherInfo): void
+    private function updateStatistics($subjectInfo): void
     {
         foreach ($this->getEvents() as $event)
         {
-            foreach ($weatherInfo->getList() as $currentWeatherInfo)
+            foreach ($subjectInfo->getList() as $currentSubjectInfo)
             {
-                if ($event === $currentWeatherInfo->getEventType())
+                if ($event === $currentSubjectInfo->getEventType())
                 {
-                    $this->stats[$event]->update($currentWeatherInfo->getValue());
+                    $this->stats[$event]->update($currentSubjectInfo->getValue());
                     $this->printStatistic($event, $this->stats[$event]);
                 }
             }
@@ -77,9 +77,9 @@ class StatsProDisplay implements ObserverInterface
      */
     private function printStatistic(string $paramName, mixed $stats): void
     {
-        print_r('Min ' . $paramName . ' ' . $stats->getMinValue() . '</br>');
-        print_r('Max ' . $paramName . ' ' . $stats->getMaxValue() . '</br>');
-        print_r('Average ' . $paramName . ' ' . $stats->getAverage() . '</br>');
+        if (method_exists($stats, 'getMinValue')) print_r('Min ' . $paramName . ' ' . $stats->getMinValue() . '</br>');
+        if (method_exists($stats, 'getMaxValue')) print_r('Max ' . $paramName . ' ' . $stats->getMaxValue() . '</br>');
+        if (method_exists($stats, 'getAverage')) print_r('Average ' . $paramName . ' ' . $stats->getAverage() . '</br>');
         print_r('------------------</br>');
     }
 }

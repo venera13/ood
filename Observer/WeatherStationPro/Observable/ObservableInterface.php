@@ -10,7 +10,7 @@ use Observer\WeatherStationPro\Observer\ObserverInterface;
  */
 interface ObservableInterface
 {
-    public function setType(string $type): void;
+    public function getType(): ?string;
 
     public function registerObserver(ObserverInterface $observer, int $priority = 0): void;
 
