@@ -39,7 +39,8 @@ abstract class Observable implements ObservableInterface
         {
             if ($value->getObserver() === $observer)
             {
-                array_splice($this->observers, $key, 1);
+                unset($this->observers[$key]);
+                $this->observers = array_values($this->observers);
             }
         }
     }
