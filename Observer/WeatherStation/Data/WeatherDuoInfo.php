@@ -9,17 +9,17 @@ class WeatherDuoInfo
     private $humidity;
     /** @var int */
     private $pressure;
-    /** @var float */
+    /** @var float|null */
     private $windSpeed;
-    /** @var int */
+    /** @var int|null */
     private $windDirection;
 
     public function __construct(
         float $temperature,
         float $humidity,
         int $pressure,
-        float $windSpeed,
-        int $windDirection
+        ?float $windSpeed,
+        ?int $windDirection
     ) {
         $this->temperature = $temperature;
         $this->humidity = $humidity;
@@ -53,17 +53,17 @@ class WeatherDuoInfo
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getWindSpeed(): float
+    public function getWindSpeed(): ?float
     {
         return $this->windSpeed;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWindDirection(): int
+    public function getWindDirection(): ?int
     {
         return $this->windDirection;
     }

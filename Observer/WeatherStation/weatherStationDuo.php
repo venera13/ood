@@ -14,7 +14,6 @@ include 'WeatherDisplay/StatsDisplay.php';
 include 'WeatherDisplay/StatsCalculator.php';
 
 $weatherDataIn = new WeatherDataInside();
-
 $weatherDataOut = new WeatherDataOutside();
 
 $display = new Display();

@@ -12,6 +12,7 @@ class Display implements ObserverInterface
 
         $subjectType = $subject instanceof WeatherDataInside ? 'Inside' : 'Outside';
         print_r('Observable type ' . $subjectType . '</br>');
+        print_r('----' . '</br>');
 
         print_r('Current Temp ' . $data->getTemperature() . '</br>');
         print_r('Current Hum ' . $data->getHumidity() . '</br>');

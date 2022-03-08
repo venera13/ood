@@ -26,6 +26,7 @@ class StatsDisplay implements ObserverInterface
 
         $subjectType = $subject instanceof WeatherDataInside ? 'Inside' : 'Outside';
         print_r('Observable type ' . $subjectType . '</br>');
+        print_r('----' . '</br>');
 
         $this->updateStatistics($data);
         $this->printStatistics();
