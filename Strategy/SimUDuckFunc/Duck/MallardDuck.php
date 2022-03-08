@@ -8,7 +8,7 @@ class MallardDuck extends Duck
     {
         $this->swim();
         $this->quack('quack');
-        $fly = flyWithWings();
+        $fly = makeFlyWithWings();
         $this->fly($fly);
         $this->fly($fly);
         $this->fly($fly);

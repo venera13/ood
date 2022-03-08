@@ -9,7 +9,7 @@ class RedheadDuck extends Duck
         $this->swim();
         $this->quack('quack');
         $this->quack('squeak');
-        $fly = flyWithWings();
+        $fly = makeFlyWithWings();
         $this->fly($fly);
         $this->dance('danceMinuet');
         print_r('-----------<br />');

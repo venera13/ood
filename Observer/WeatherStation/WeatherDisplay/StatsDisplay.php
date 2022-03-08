@@ -23,10 +23,9 @@ class StatsDisplay implements ObserverInterface
     public function update(mixed $subject): void
     {
         $data = $subject->getChangedData();
-        if ($subject->getType())
-        {
-            print_r('Observable type ' . $subject->getType() . '</br>');
-        }
+
+        $subjectType = $subject instanceof WeatherDataInside ? 'Inside' : 'Outside';
+        print_r('Observable type ' . $subjectType . '</br>');
 
         $this->updateStatistics($data);
         $this->printStatistics();

@@ -8,6 +8,7 @@ class ObserverWithCheckType implements ObserverInterface
 {
     public function update(mixed $subject): void
     {
-        echo $subject->getType();
+        $subjectType = $subject instanceof MockObservableInside ? 'inside' : 'outside';
+        echo $subjectType;
     }
 }

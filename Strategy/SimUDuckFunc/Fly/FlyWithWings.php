@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-function flyWithWings(): callable
+function makeFlyWithWings(): callable
 {
     $flightCount = 0;
     return function() use (&$flightCount)

@@ -10,18 +10,6 @@ abstract class Observable implements ObservableInterface
 {
     /** @var ObserverData[] */
     public $observers = [];
-    /** @var string|null */
-    private $type = null;
-
-    public function __construct(?string $type = null)
-    {
-        $this->type = $type;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
 
     public function registerObserver(ObserverInterface $observer, int $priority = 0): void
     {
@@ -40,9 +28,10 @@ abstract class Observable implements ObservableInterface
             if ($value->getObserver() === $observer)
             {
                 unset($this->observers[$key]);
-                $this->observers = array_values($this->observers);
+                break;
             }
         }
+        $this->observers = array_values($this->observers);
     }
     
     public function notifyObservers(): void

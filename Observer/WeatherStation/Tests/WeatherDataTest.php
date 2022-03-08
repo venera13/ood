@@ -2,7 +2,6 @@
 
 include '../Data/WeatherInfo.php';
 include '../Data/ObserverData.php';
-include '../Domain/ObservableType.php';
 include '../Observable/ObservableInterface.php';
 include '../Observable/Observable.php';
 include '../Observer/ObserverInterface.php';
@@ -11,6 +10,8 @@ include '../WeatherDisplay/Display.php';
 include '../WeatherDisplay/StatsDisplay.php';
 include '../WeatherDisplay/StatsCalculator.php';
 include 'MockObservable.php';
+include 'MockObservableInside.php';
+include 'MockObservableOutside.php';
 include 'SelfRemoverObserver.php';
 include 'FirstObserver.php';
 include 'SecondObserver.php';
@@ -68,9 +69,9 @@ class WeatherDataTest extends TestCase
 
     public function testDuoObservable(): void
     {
-        $observableIn = new MockObservable(ObservableType::INSIDE);
+        $observableIn = new MockObservableInside();
 
-        $observableOut = new MockObservable(ObservableType::OUTSIDE);
+        $observableOut = new MockObservableOutside();
 
         $observer = new ObserverWithCheckType();
         $observableIn->registerObserver($observer);
