@@ -3,68 +3,30 @@ declare(strict_types=1);
 
 class WeatherDuoInfo
 {
-    /** @var float */
-    private $temperature;
-    /** @var float */
-    private $humidity;
-    /** @var int */
-    private $pressure;
+    /** @var string */
+    private $eventType;
     /** @var float|null */
-    private $windSpeed;
-    /** @var int|null */
-    private $windDirection;
+    private $value;
 
-    public function __construct(
-        float $temperature,
-        float $humidity,
-        int $pressure,
-        ?float $windSpeed,
-        ?int $windDirection
-    ) {
-        $this->temperature = $temperature;
-        $this->humidity = $humidity;
-        $this->pressure = $pressure;
-        $this->windSpeed = $windSpeed;
-        $this->windDirection = $windDirection;
+    public function __construct(string $eventType, ?float $value)
+    {
+        $this->eventType = $eventType;
+        $this->value = $value;
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getTemperature(): float
+    public function getEventType(): string
     {
-        return $this->temperature;
-    }
-
-    /**
-     * @return float
-     */
-    public function getHumidity(): float
-    {
-        return $this->humidity;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPressure(): int
-    {
-        return $this->pressure;
+        return $this->eventType;
     }
 
     /**
      * @return float|null
      */
-    public function getWindSpeed(): ?float
+    public function getValue(): ?float
     {
-        return $this->windSpeed;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getWindDirection(): ?int
-    {
-        return $this->windDirection;
+        return $this->value;
     }
 }

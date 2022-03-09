@@ -4,6 +4,8 @@ declare(strict_types=1);
 include 'Data/WeatherInfo.php';
 include 'Data/WeatherDuoInfo.php';
 include 'Data/ObserverData.php';
+include 'Data/WeatherDuoInfoList.php';
+include 'Domain/WeatherInfoType.php';
 include 'Observable/ObservableInterface.php';
 include 'Observable/Observable.php';
 include 'Observer/ObserverInterface.php';
@@ -24,6 +26,8 @@ $display = new Display();
 $statsDisplay = new StatsDisplay();
 $weatherDataIn->registerObserver($display);
 $weatherDataIn->registerObserver($statsDisplay);
+$weatherDataIn->addEventListener($display, WeatherInfoType::TEMPERATURE);
+$weatherDataIn->addEventListener($display, WeatherInfoType::PRESSURE);
 
 $proDisplay = new ProDisplay();
 $statsProDisplay = new StatsProDisplay();
@@ -31,8 +35,12 @@ $weatherDataOut->registerObserver($proDisplay);
 $weatherDataOut->registerObserver($statsProDisplay);
 
 $weatherDataIn->setMeasurements(20, 0.4, 750);
+
+$weatherDataIn->removeEventListener($display, WeatherInfoType::TEMPERATURE);
+$weatherDataIn->removeEventListener($display, WeatherInfoType::PRESSURE);
+
 $weatherDataIn->setMeasurements(22, 0.5, 750);
 
-$weatherDataIn->setMeasurements(6, 0.9, 750, 10, 1);
+//$weatherDataIn->setMeasurements(6, 0.9, 750, 10, 1);
 //$weatherDataOut->setMeasurements(5, 0.9, 750, 10, 1);
 //$weatherDataOut->setMeasurements(10, 0.5, 754, 5, 359);

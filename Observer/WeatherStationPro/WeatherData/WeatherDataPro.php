@@ -92,7 +92,6 @@ class WeatherDataPro extends Observable
                 new WeatherDuoInfo(WeatherInfoType::WIND_SPEED, $this->getWindSpeed()),
                 new WeatherDuoInfo(WeatherInfoType::WIND_DIRECTION, $this->getWindDirection()),
             ]
-
         );
     }
 }

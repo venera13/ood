@@ -11,11 +11,15 @@ abstract class Observable implements ObservableInterface
     /** @var ObserverData[] */
     public $observers = [];
 
-    public function registerObserver(ObserverInterface $observer, int $priority = 0): void
-    {
+    public function registerObserver(
+        ObserverInterface $observer,
+        int $priority = 0,
+        ?string $measurementKey = null
+    ): void {
         $this->observers[] = new ObserverData(
             $priority,
-            $observer
+            $observer,
+            $measurementKey ? [$measurementKey] : null
         );
 
         $this->sortObservers();
@@ -38,14 +42,55 @@ abstract class Observable implements ObservableInterface
     {
         try
         {
+            $observableInfoList = $this->getChangedData()->getList();
+
             foreach ($this->observers as $observer)
             {
-                $observer->getObserver()->update($this);
+                foreach ($observableInfoList as $observableInfo)
+                {
+                    print_r($observer->getEvents());
+                    print_r('</br>');
+                    if ($observer->getEvents() && in_array($observableInfo->getEventType(), $observer->getEvents()))
+                    {
+                        $observer->getObserver()->update($this);
+                        break;
+                    }
+                }
             }
         }
         catch (Throwable $exception)
         {
             throw new NotifyObserverException($exception->getMessage());
+        }
+    }
+
+    public function addEventListener(ObserverInterface $observer, string $observerEventType): void
+    {
+        foreach ($this->observers as $currentObserver)
+        {
+            if ($currentObserver->getObserver() === $observer)
+            {
+                $events = $currentObserver->getEvents();
+                $events[] = $observerEventType;
+                $currentObserver->setEvents($events);
+                break;
+            };
+        }
+
+//        print_r($currentObserver->getEvents());
+//        print_r('</br>');
+    }
+
+    public function removeEventListener(ObserverInterface $observer, string $observerEventType): void
+    {
+        foreach ($this->observers as $currentObserver)
+        {
+            if ($currentObserver->getObserver() === $observer)
+            {
+                unset($currentObserver->getEvents()[$observerEventType]);
+                $currentObserver->setEvents(array_values($currentObserver->getEvents()));
+                break;
+            };
         }
     }
 

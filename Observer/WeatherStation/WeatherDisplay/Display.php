@@ -8,15 +8,16 @@ class Display implements ObserverInterface
 {
     public function update(mixed $subject): void
     {
-        $data = $subject->getChangedData();
+        $data = $subject->getChangedData()->getList();
 
         $subjectType = $subject instanceof WeatherDataInside ? 'Inside' : 'Outside';
         print_r('Observable type ' . $subjectType . '</br>');
         print_r('----' . '</br>');
 
-        print_r('Current Temp ' . $data->getTemperature() . '</br>');
-        print_r('Current Hum ' . $data->getHumidity() . '</br>');
-        print_r('Current Pressure ' . $data->getPressure() . '</br>');
+        foreach ($data as $currentSubjectInfo)
+        {
+            print_r('Current ' . $currentSubjectInfo->getEventType() . ' ' . $currentSubjectInfo->getValue() . '</br>');
+        }
         print_r('------------------</br>');
     }
 }
