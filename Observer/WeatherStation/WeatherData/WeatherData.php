@@ -23,17 +23,17 @@ class WeatherData extends Observable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getHumidity(): float
+    public function getHumidity(): ?float
     {
         return $this->humidity;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPressure(): int
+    public function getPressure(): ?int
     {
         return $this->pressure;
     }
@@ -61,8 +61,8 @@ class WeatherData extends Observable
 
     public function setMeasurements(
         int $temperature,
-        float $humidity,
-        int $pressure,
+        ?float $humidity = null,
+        ?int $pressure = null,
         ?float $windSpeed = null,
         ?int $windDirection = null,
     ): void {

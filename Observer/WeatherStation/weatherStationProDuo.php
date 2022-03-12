@@ -25,16 +25,16 @@ $weatherDataOut = new WeatherDataOutside();
 $display = new Display();
 $statsDisplay = new StatsDisplay();
 $weatherDataIn->registerObserver($display);
-$weatherDataIn->registerObserver($statsDisplay);
+//$weatherDataIn->registerObserver($statsDisplay);
 $weatherDataIn->addEventListener($display, WeatherInfoType::TEMPERATURE);
 $weatherDataIn->addEventListener($display, WeatherInfoType::PRESSURE);
 
-$proDisplay = new ProDisplay();
-$statsProDisplay = new StatsProDisplay();
-$weatherDataOut->registerObserver($proDisplay);
-$weatherDataOut->registerObserver($statsProDisplay);
+//$proDisplay = new ProDisplay();
+//$statsProDisplay = new StatsProDisplay();
+//$weatherDataOut->registerObserver($proDisplay);
+//$weatherDataOut->registerObserver($statsProDisplay);
 
-$weatherDataIn->setMeasurements(20, 0.4, 750);
+$weatherDataIn->setMeasurements(20);
 
 $weatherDataIn->removeEventListener($display, WeatherInfoType::TEMPERATURE);
 $weatherDataIn->removeEventListener($display, WeatherInfoType::PRESSURE);

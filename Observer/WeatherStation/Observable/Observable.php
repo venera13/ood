@@ -48,8 +48,6 @@ abstract class Observable implements ObservableInterface
             {
                 foreach ($observableInfoList as $observableInfo)
                 {
-                    print_r($observer->getEvents());
-                    print_r('</br>');
                     if ($observer->getEvents() && in_array($observableInfo->getEventType(), $observer->getEvents()))
                     {
                         $observer->getObserver()->update($this);
@@ -76,9 +74,6 @@ abstract class Observable implements ObservableInterface
                 break;
             };
         }
-
-//        print_r($currentObserver->getEvents());
-//        print_r('</br>');
     }
 
     public function removeEventListener(ObserverInterface $observer, string $observerEventType): void
