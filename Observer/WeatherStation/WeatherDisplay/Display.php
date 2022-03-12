@@ -16,7 +16,7 @@ class Display implements ObserverInterface
 
         foreach ($data as $currentSubjectInfo)
         {
-            if($currentSubjectInfo->getValue())
+            if($currentSubjectInfo->getValue() !== null)
             {
                 print_r('Current ' . $currentSubjectInfo->getEventType() . ' ' . $currentSubjectInfo->getValue() . '</br>');
             }
