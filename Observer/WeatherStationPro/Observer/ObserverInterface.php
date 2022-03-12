@@ -9,21 +9,6 @@ namespace Observer\WeatherStationPro\Observer;
 interface ObserverInterface
 {
     /**
-     * @param string $observableEventType
-     */
-    public function setEventListener(string $observableEventType): void;
-
-    /**
-     * @param string $observableEventType
-     */
-    public function removeEventListener(string $observableEventType): void;
-
-    /**
-     * @return string[]
-     */
-    public function getEvents(): array;
-
-    /**
      * @param T $subject
      */
     public function update(mixed $subject): void;

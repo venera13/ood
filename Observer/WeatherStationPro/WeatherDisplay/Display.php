@@ -9,7 +9,7 @@ use Observer\WeatherStationPro\WeatherData\WeatherDataInside;
 /**
  * @template T
  */
-class ProDisplay implements ObserverInterface
+class Display implements ObserverInterface
 {
     public function update(mixed $subject): void
     {
@@ -21,7 +21,10 @@ class ProDisplay implements ObserverInterface
 
         foreach ($data as $currentSubjectInfo)
         {
-            print_r('Current ' . $currentSubjectInfo->getEventType() . ' ' . $currentSubjectInfo->getValue() . '</br>');
+            if($currentSubjectInfo->getValue())
+            {
+                print_r('Current ' . $currentSubjectInfo->getEventType() . ' ' . $currentSubjectInfo->getValue() . '</br>');
+            }
         }
         print_r('------------------</br>');
     }

@@ -28,7 +28,7 @@ class StatsWindDirectionCalculator
         return round(rad2deg(atan2($averageSinValue, $averageCosValue)), 2);
     }
 
-    private function changeAccValue(float $newValue): void
+    private function changeAccValue(int $newValue): void
     {
         $this->accSinValue += sin(deg2rad($newValue));
         $this->accCosValue += cos(deg2rad($newValue));

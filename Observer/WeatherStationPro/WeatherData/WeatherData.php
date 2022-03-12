@@ -9,7 +9,7 @@ use Observer\WeatherStationPro\Observable\Observable;
 use Observer\WeatherStationPro\Data\WeatherDuoInfo;
 use Observer\WeatherStationPro\Utils\Arrays;
 
-class WeatherDataPro extends Observable
+class WeatherData extends Observable
 {
     /** @var float */
     private $temperature = 0.0;
@@ -17,10 +17,10 @@ class WeatherDataPro extends Observable
     private $humidity = 0.0;
     /** @var int */
     private $pressure = 750;
-    /** @var float */
-    private $windSpeed = 0.0;
-    /** @var int */
-    private $windDirection = 0;
+    /** @var float|null */
+    private $windSpeed = null;
+    /** @var int|null */
+    private $windDirection = null;
 
     /**
      * @return float
@@ -31,33 +31,33 @@ class WeatherDataPro extends Observable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getHumidity(): float
+    public function getHumidity(): ?float
     {
         return $this->humidity;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPressure(): int
+    public function getPressure(): ?int
     {
         return $this->pressure;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getWindSpeed(): float
+    public function getWindSpeed(): ?float
     {
         return $this->windSpeed;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWindDirection(): int
+    public function getWindDirection(): ?int
     {
         return $this->windDirection;
     }
@@ -69,10 +69,10 @@ class WeatherDataPro extends Observable
 
     public function setMeasurements(
         int $temperature,
-        float $humidity,
-        int $pressure,
-        float $windSpeed,
-        int $windDirection,
+        ?float $humidity = null,
+        ?int $pressure = null,
+        ?float $windSpeed = null,
+        ?int $windDirection = null,
     ): void {
         $this->temperature = $temperature;
         $this->humidity = $humidity;
@@ -87,11 +87,11 @@ class WeatherDataPro extends Observable
     {
         return new WeatherDuoInfoList(
             Arrays::removeNulls([
-                new WeatherDuoInfo(WeatherInfoType::TEMPERATURE, $this->getTemperature()),
-                new WeatherDuoInfo(WeatherInfoType::HUMIDITY, $this->getHumidity()),
-                new WeatherDuoInfo(WeatherInfoType::PRESSURE, $this->getPressure()),
-                new WeatherDuoInfo(WeatherInfoType::WIND_SPEED, $this->getWindSpeed()),
-                new WeatherDuoInfo(WeatherInfoType::WIND_DIRECTION, $this->getWindDirection()),
+                $this->getTemperature() ? new WeatherDuoInfo(WeatherInfoType::TEMPERATURE, $this->getTemperature()) : null,
+                $this->getHumidity() ? new WeatherDuoInfo(WeatherInfoType::HUMIDITY, $this->getHumidity()) : null,
+                $this->getPressure() ? new WeatherDuoInfo(WeatherInfoType::PRESSURE, $this->getPressure()) : null,
+                $this->getWindSpeed() ? new WeatherDuoInfo(WeatherInfoType::WIND_SPEED, $this->getWindSpeed()) : null,
+                $this->getWindDirection() ? new WeatherDuoInfo(WeatherInfoType::WIND_DIRECTION, $this->getWindDirection()) : null,
             ])
         );
     }

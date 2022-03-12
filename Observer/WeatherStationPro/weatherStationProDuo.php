@@ -20,6 +20,12 @@ include 'WeatherDisplay/StatsProDisplay.php';
 include 'WeatherDisplay/StatsCalculator.php';
 include 'WeatherDisplay/StatsWindDirectionCalculator.php';
 
+use Observer\WeatherStationPro\Domain\WeatherInfoType;
+use Observer\WeatherStationPro\WeatherData\WeatherDataInside;
+use Observer\WeatherStationPro\WeatherData\WeatherDataOutside;
+use Observer\WeatherStationPro\WeatherDisplay\Display;
+use Observer\WeatherStationPro\WeatherDisplay\StatsDisplay;
+
 $weatherDataIn = new WeatherDataInside();
 $weatherDataOut = new WeatherDataOutside();
 
@@ -27,8 +33,8 @@ $display = new Display();
 $statsDisplay = new StatsDisplay();
 $weatherDataIn->registerObserver($display);
 //$weatherDataIn->registerObserver($statsDisplay);
-$weatherDataIn->addEventListener($display, WeatherInfoType::TEMPERATURE);
-//$weatherDataIn->addEventListener($display, WeatherInfoType::PRESSURE);
+//$weatherDataIn->addEventListener($display, WeatherInfoType::TEMPERATURE);
+$weatherDataIn->addEventListener($display, WeatherInfoType::PRESSURE);
 
 //$proDisplay = new ProDisplay();
 //$statsProDisplay = new StatsProDisplay();

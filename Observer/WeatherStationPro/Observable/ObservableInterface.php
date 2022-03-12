@@ -10,11 +10,13 @@ use Observer\WeatherStationPro\Observer\ObserverInterface;
  */
 interface ObservableInterface
 {
-    public function getType(): ?string;
-
     public function registerObserver(ObserverInterface $observer, int $priority = 0): void;
 
     public function removeObserver(ObserverInterface $observer): void;
     
     public function notifyObservers(): void;
+
+    public function addEventListener(ObserverInterface $observer, string $observerEventType): void;
+
+    public function removeEventListener(ObserverInterface $observer, string $observerEventType): void;
 }

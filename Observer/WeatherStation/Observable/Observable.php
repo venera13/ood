@@ -14,12 +14,12 @@ abstract class Observable implements ObservableInterface
     public function registerObserver(
         ObserverInterface $observer,
         int $priority = 0,
-        ?string $measurementKey = null
+        ?array $measurementKeys = null
     ): void {
         $this->observers[] = new ObserverData(
             $priority,
             $observer,
-            $measurementKey ? [$measurementKey] : null
+            $measurementKeys
         );
 
         $this->sortObservers();
@@ -82,8 +82,9 @@ abstract class Observable implements ObservableInterface
         {
             if ($currentObserver->getObserver() === $observer)
             {
-                unset($currentObserver->getEvents()[$observerEventType]);
-                $currentObserver->setEvents(array_values($currentObserver->getEvents()));
+                $events = $currentObserver->getEvents();
+                unset($events[array_search($observerEventType, $events)]);
+                $currentObserver->setEvents(array_values($events));
                 break;
             };
         }

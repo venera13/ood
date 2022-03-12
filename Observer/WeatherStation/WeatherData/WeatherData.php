@@ -78,13 +78,13 @@ class WeatherData extends Observable
     public function getChangedData(): WeatherDuoInfoList
     {
         return new WeatherDuoInfoList(
-            [
+            Arrays::removeNulls([
                 new WeatherDuoInfo(WeatherInfoType::TEMPERATURE, $this->getTemperature()),
                 new WeatherDuoInfo(WeatherInfoType::HUMIDITY, $this->getHumidity()),
                 new WeatherDuoInfo(WeatherInfoType::PRESSURE, $this->getPressure()),
                 new WeatherDuoInfo(WeatherInfoType::WIND_SPEED, $this->getWindSpeed()),
                 new WeatherDuoInfo(WeatherInfoType::WIND_DIRECTION, $this->getWindDirection()),
-            ]
+            ])
         );
     }
 }
