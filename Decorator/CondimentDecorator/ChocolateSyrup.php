@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Decorator\CondimentDecorator;
-
 class ChocolateSyrup extends CondimentDecorator
 {
     public function getCondimentDescription(): string

@@ -1,10 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Decorator\CondimentDecorator;
-
-use Decorator\Beverage\BeverageInterface;
-
 class Chocolate extends CondimentDecorator
 {
     /** @var int */

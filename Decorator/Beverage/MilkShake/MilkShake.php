@@ -1,11 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Decorator\Beverage\Milkshake;
-
-use Decorator\Beverage\BeverageInterface;
-use Decorator\Domain\MilkShakePortionTypes;
-
 class MilkShake implements BeverageInterface
 {
     /** @var string */

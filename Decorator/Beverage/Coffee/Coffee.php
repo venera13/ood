@@ -1,11 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Decorator\Beverage\Coffee;
-
-use Decorator\Beverage\BeverageInterface;
-use Decorator\Domain\CoffeePortionTypes;
-
 abstract class Coffee implements BeverageInterface
 {
     /** @var string */

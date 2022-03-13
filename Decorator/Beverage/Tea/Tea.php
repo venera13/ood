@@ -1,10 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Decorator\Beverage\Tea;
-
-use Decorator\Beverage\BeverageInterface;
-
 abstract class Tea implements BeverageInterface
 {
     public function getDescription(): string

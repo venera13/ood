@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Decorator\Beverage\Coffee;
-
 class Сappuccino extends Coffee
 {
     public function getStandardCost(): int

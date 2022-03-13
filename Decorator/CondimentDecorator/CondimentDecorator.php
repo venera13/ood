@@ -1,10 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Decorator\CondimentDecorator;
-
-use Decorator\Beverage\BeverageInterface;
-
 abstract class CondimentDecorator implements BeverageInterface
 {
     /** @var BeverageInterface */

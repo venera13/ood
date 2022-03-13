@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-namespace Decorator;
-
 include 'Beverage/BeverageInterface.php';
 include 'Beverage/Coffee/Coffee.php';
 include 'Beverage/Coffee/Latte.php';
@@ -25,22 +23,6 @@ include 'Domain/TeaTypes.php';
 include 'Domain/MilkShakePortionTypes.php';
 include 'Domain/LiquorType.php';
 include 'CondimentDecorator/Condiment.php';
-
-use Decorator\Beverage\BeverageInterface;
-use Decorator\CondimentDecorator\Condiment;
-use Decorator\CondimentDecorator\Liquor;
-use Decorator\Domain\CoffeePortionTypes;
-use Decorator\Domain\LiquorType;
-use Decorator\CondimentDecorator\Chocolate;
-use Decorator\CondimentDecorator\Сream;
-use Decorator\Beverage\Tea\BlackTea;
-use Decorator\Beverage\Coffee\Latte;
-use Decorator\Beverage\Coffee\Сappuccino;
-use Decorator\Beverage\Milkshake\MilkShake;
-use Decorator\CondimentDecorator\Cinnamon;
-use Decorator\CondimentDecorator\Lemon;
-use Decorator\CondimentDecorator\ChocolateCrumbs;
-use Decorator\CondimentDecorator\CoconutFlakes;
 
 $latte = new Latte(CoffeePortionTypes::STANDARD);
 $cinnamon = Condiment::makeCondiment('Cinnamon');
