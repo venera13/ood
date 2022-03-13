@@ -24,7 +24,10 @@ include 'Domain/CoffeePortionTypes.php';
 include 'Domain/TeaTypes.php';
 include 'Domain/MilkShakePortionTypes.php';
 include 'Domain/LiquorType.php';
+include 'CondimentDecorator/Condiment.php';
 
+use Decorator\Beverage\BeverageInterface;
+use Decorator\CondimentDecorator\Condiment;
 use Decorator\CondimentDecorator\Liquor;
 use Decorator\Domain\CoffeePortionTypes;
 use Decorator\Domain\LiquorType;
@@ -40,36 +43,33 @@ use Decorator\CondimentDecorator\ChocolateCrumbs;
 use Decorator\CondimentDecorator\CoconutFlakes;
 
 $latte = new Latte(CoffeePortionTypes::STANDARD);
-$cinnamon = new Cinnamon($latte);
-print_r($cinnamon->getDescription() . '</br>');
-print_r($cinnamon->getCost() . '</br>');
+$cinnamon = Condiment::makeCondiment('Cinnamon');
+printInfo($cinnamon($latte));
 
 $сappuccino = new Сappuccino(CoffeePortionTypes::DOUBLE);
-$chocolateCrumbs = new ChocolateCrumbs($сappuccino);
-print_r($chocolateCrumbs->getDescription() . '</br>');
-print_r($chocolateCrumbs->getCost() . '</br>');
+$chocolateCrumbs = Condiment::makeCondiment('ChocolateCrumbs');
+printInfo($chocolateCrumbs($сappuccino));
 
 $сappuccino = new Сappuccino(CoffeePortionTypes::DOUBLE);
-$cream = new Сream($сappuccino);
-print_r($cream->getDescription() . '</br>');
-print_r($cream->getCost() . '</br>');
+$cream = Condiment::makeCondiment('Сream');
+printInfo($cream($сappuccino));
 
 $blackTea = new BlackTea();
-$lemon = new Lemon($blackTea, 2);
-print_r($lemon->getDescription() . '</br>');
-print_r($lemon->getCost() . '</br>');
+$lemon2 = Condiment::makeCondiment('Lemon', 2);
+printInfo($lemon2($blackTea));
 
 $milkShake = new MilkShake();
-$coconutFlakes = new CoconutFlakes($milkShake);
-print_r($coconutFlakes->getDescription() . '</br>');
-print_r($coconutFlakes->getCost() . '</br>');
+$coconutFlakes = Condiment::makeCondiment('CoconutFlakes');
+$liquor = Condiment::makeCondiment('Liquor', LiquorType::CHOCOLATE);
+printInfo($liquor($coconutFlakes($milkShake)));
 
 $milkShake = new MilkShake();
-$chocolate = new Chocolate($milkShake, 6);
-print_r($chocolate->getDescription() . '</br>');
-print_r($chocolate->getCost() . '</br>');
+$chocolate = Condiment::makeCondiment('Chocolate', 6);
+printInfo($chocolate($milkShake));
 
-$milkShake = new MilkShake();
-$liquor = new Liquor($milkShake, LiquorType::CHOCOLATE);
-print_r($liquor->getDescription() . '</br>');
-print_r($liquor->getCost() . '</br>');
+function printInfo(BeverageInterface $beverage): void
+{
+    print_r($beverage->getDescription() . '</br>');
+    print_r('Cost - ' . $beverage->getCost() . '</br>');
+    print_r('------------------</br></br>');
+}
