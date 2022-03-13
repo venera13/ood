@@ -6,7 +6,7 @@ abstract class Coffee implements BeverageInterface
     /** @var string */
     private $portion;
 
-    public function __construct(?string $portion = CoffeePortionTypes::STANDARD)
+    public function __construct(?string $portion = CoffeePortionType::STANDARD)
     {
         $this->portion = $portion;
     }
@@ -14,12 +14,12 @@ abstract class Coffee implements BeverageInterface
     public function getDescription(): string
     {
         $description = 'coffee';
-        return ucfirst($this->portion === CoffeePortionTypes::DOUBLE ? $this->portion . ' ' . $description : $description);
+        return ucfirst($this->portion === CoffeePortionType::DOUBLE ? $this->portion . ' ' . $description : $description);
     }
 
     public function getCost(): int
     {
-        return $this->portion === CoffeePortionTypes::DOUBLE ? $this->getDoubleCost() : $this->getStandardCost();
+        return $this->portion === CoffeePortionType::DOUBLE ? $this->getDoubleCost() : $this->getStandardCost();
     }
 
     /**

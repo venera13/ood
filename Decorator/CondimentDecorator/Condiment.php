@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 class Condiment
 {
-    public static function makeCondiment(string $condiment, mixed $args = null): callable
+    public static function makeCondiment(string $condiment, mixed ...$args): callable
     {
         return function(BeverageInterface $beverage) use ($condiment, $args)
         {
-            return new $condiment($beverage, $args);
+            return new $condiment($beverage, ...$args);
         };
     }
 }

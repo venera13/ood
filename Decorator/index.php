@@ -13,32 +13,34 @@ include 'CondimentDecorator/ChocolateCrumbs.php';
 include 'CondimentDecorator/ChocolateSyrup.php';
 include 'CondimentDecorator/Cinnamon.php';
 include 'CondimentDecorator/CoconutFlakes.php';
-include 'CondimentDecorator/Ice.php';
+include 'CondimentDecorator/IceCube.php';
 include 'CondimentDecorator/Lemon.php';
 include 'CondimentDecorator/Сream.php';
 include 'CondimentDecorator/Chocolate.php';
 include 'CondimentDecorator/Liquor.php';
-include 'Domain/CoffeePortionTypes.php';
+include 'Domain/CoffeePortionType.php';
 include 'Domain/TeaTypes.php';
-include 'Domain/MilkShakePortionTypes.php';
+include 'Domain/MilkShakePortionType.php';
 include 'Domain/LiquorType.php';
+include 'Domain/IceCubeType.php';
 include 'CondimentDecorator/Condiment.php';
 
-$latte = new Latte(CoffeePortionTypes::STANDARD);
+$latte = new Latte(CoffeePortionType::STANDARD);
 $cinnamon = Condiment::makeCondiment('Cinnamon');
 printInfo($cinnamon($latte));
 
-$сappuccino = new Сappuccino(CoffeePortionTypes::DOUBLE);
+$сappuccino = new Сappuccino(CoffeePortionType::DOUBLE);
 $chocolateCrumbs = Condiment::makeCondiment('ChocolateCrumbs');
 printInfo($chocolateCrumbs($сappuccino));
 
-$сappuccino = new Сappuccino(CoffeePortionTypes::DOUBLE);
+$сappuccino = new Сappuccino(CoffeePortionType::DOUBLE);
 $cream = Condiment::makeCondiment('Сream');
 printInfo($cream($сappuccino));
 
 $blackTea = new BlackTea();
 $lemon2 = Condiment::makeCondiment('Lemon', 2);
-printInfo($lemon2($blackTea));
+$iceCube = Condiment::makeCondiment('IceCube', 2, IceCubeType::DRY);
+printInfo($iceCube($lemon2($blackTea)));
 
 $milkShake = new MilkShake();
 $coconutFlakes = Condiment::makeCondiment('CoconutFlakes');

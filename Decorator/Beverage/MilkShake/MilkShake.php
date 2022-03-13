@@ -6,7 +6,7 @@ class MilkShake implements BeverageInterface
     /** @var string */
     private $portion;
 
-    public function __construct(?string $portion = MilkShakePortionTypes::STANDARD)
+    public function __construct(?string $portion = MilkShakePortionType::STANDARD)
     {
         $this->portion = $portion;
     }
@@ -14,18 +14,18 @@ class MilkShake implements BeverageInterface
     public function getDescription(): string
     {
         $description = 'milk shake';
-        return ucfirst($this->portion !== MilkShakePortionTypes::STANDARD ? $this->portion . ' ' . $description : $description);
+        return ucfirst($this->portion !== MilkShakePortionType::STANDARD ? $this->portion . ' ' . $description : $description);
     }
 
     public function getCost(): int
     {
         switch ($this->portion)
         {
-            case MilkShakePortionTypes::SMALL:
+            case MilkShakePortionType::SMALL:
                 return 50;
-            case MilkShakePortionTypes::BIG:
+            case MilkShakePortionType::BIG:
                 return 80;
-            case MilkShakePortionTypes::STANDARD:
+            case MilkShakePortionType::STANDARD:
             default:
                 return 60;
         }
