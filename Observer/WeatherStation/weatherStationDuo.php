@@ -25,9 +25,9 @@ $weatherDataIn->registerObserver($statsDisplay, 2);
 $weatherDataOut->registerObserver($statsDisplay, 2);
 
 $weatherDataIn->setMeasurements(5, 0.9, 750);
-$weatherDataOut->setMeasurements(10, 0.5, 754);
+$weatherDataOut->setMeasurements(10, 0.5, 754, 5, 5);
 
 $weatherDataIn->removeObserver($statsDisplay);
 
 $weatherDataIn->setMeasurements(-10, 1, 750);
-$weatherDataOut->setMeasurements(0, 0.1, 745);
+$weatherDataOut->setMeasurements(0, 0.1, 745, 0, 5);

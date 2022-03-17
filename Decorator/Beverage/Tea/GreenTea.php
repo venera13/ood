@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-class RedTea extends Tea
+class GreenTea extends Tea
 {
     public function getTeaType(): string
     {
-        return TeaTypes::RED;
+        return TeaTypes::GREEN;
     }
 }
