@@ -7,6 +7,7 @@ include 'Data/WeatherDuoInfo.php';
 include 'Data/ObserverData.php';
 include 'Data/WeatherDuoInfoList.php';
 include 'Data/SensorStats.php';
+include 'Data/ObservableData.php';
 include 'Domain/WeatherInfoType.php';
 include 'Observable/ObservableInterface.php';
 include 'Observable/Observable.php';
@@ -22,14 +23,20 @@ include 'WeatherDisplay/StatsProDisplay.php';
 include 'WeatherDisplay/StatsCalculator.php';
 include 'WeatherDisplay/StatsWindDirectionCalculator.php';
 
-$weatherDataIn = new WeatherDataInside();
-$weatherDataOut = new WeatherDataOutside();
+$weatherDataIn = new WeatherData();
+$weatherDataOut = new WeatherDataPro();
 
 $display = new Display();
+$display->setObservable('Inside', $weatherDataIn);
+$display->setObservable('Outside', $weatherDataOut);
+
 $weatherDataIn->registerObserver($display, 1);
 $weatherDataOut->registerObserver($display, 1);
 
 $statsDisplay = new StatsDisplay();
+$statsDisplay->setObservable('Inside', $weatherDataIn);
+$statsDisplay->setObservable('Outside', $weatherDataOut);
+
 $weatherDataIn->registerObserver($statsDisplay, 2);
 $weatherDataOut->registerObserver($statsDisplay, 2);
 

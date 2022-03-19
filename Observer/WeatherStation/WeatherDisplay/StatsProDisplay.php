@@ -26,16 +26,38 @@ class StatsProDisplay implements ObserverInterface
         $this->windDirectionStats = new StatsWindDirectionCalculator();
     }
 
-    public function update(mixed $subject): void
+    public function update(ObservableInterface $subject): void
     {
         $data = $subject->getChangedData();
 
-        $subjectType = $subject instanceof WeatherDataInside ? 'Inside' : 'Outside';
-        print_r('Observable type ' . $subjectType . '</br>');
-        print_r('----' . '</br>');
+        $this->printObservableType($subject);
 
         $this->updateStatistics($data);
         $this->printStatistics();
+    }
+
+    public function setObservable(string $observableType, ObservableInterface $subject): void
+    {
+        $this->observableList[] = new ObservableData($observableType, $subject);
+    }
+
+    private function printObservableType(ObservableInterface $subject): void
+    {
+        $observableType = '';
+        if (empty($this->observableList))
+        {
+            return;
+        }
+        foreach ($this->observableList as $observable)
+        {
+            if ($observable->getObservable() === $subject)
+            {
+                $observableType = $observable->getType();
+                break;
+            }
+        }
+        print_r('Observable type ' . $observableType . '</br>');
+        print_r('----' . '</br>');
     }
 
     private function updateStatistics($observableData): void

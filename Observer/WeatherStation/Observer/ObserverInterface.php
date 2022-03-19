@@ -7,7 +7,7 @@ declare(strict_types=1);
 interface ObserverInterface
 {
     /**
-     * @param T $subject
+     * @param ObservableInterface $subject
      */
-    public function update(mixed $subject): void;
+    public function update(ObservableInterface $subject): void;
 }

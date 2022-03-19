@@ -8,21 +8,45 @@ class StatsDisplay implements ObserverInterface
 {
     /** @var SensorStats[] */
     private $sensorStats = [];
+    /** @var ObservableData[] */
+    private $observableList;
 
-    public function update(mixed $subject): void
+    public function update(ObservableInterface $subject): void
     {
-        $subjectType = $subject instanceof WeatherDataInside ? 'Inside' : 'Outside';
-        print_r('Observable type ' . $subjectType . '</br>');
-        print_r('----' . '</br>');
+        $this->printObservableType($subject);
 
         $this->updateStatistics($subject);
         $this->printStatistics();
     }
 
+    public function setObservable(string $observableType, ObservableInterface $subject): void
+    {
+        $this->observableList[] = new ObservableData($observableType, $subject);
+    }
+
+    private function printObservableType(ObservableInterface $subject): void
+    {
+        $observableType = '';
+        if (empty($this->observableList))
+        {
+            return;
+        }
+        foreach ($this->observableList as $observable)
+        {
+            if ($observable->getObservable() === $subject)
+            {
+                $observableType = $observable->getType();
+                break;
+            }
+        }
+        print_r('Observable type ' . $observableType . '</br>');
+        print_r('----' . '</br>');
+    }
+
     /**
      * @param mixed $subject
      */
-    private function updateStatistics(mixed $subject): void
+    private function updateStatistics(ObservableInterface $subject): void
     {
         $data = $subject->getChangedData()->getList();
         foreach ($data as $currentObservableData)
@@ -34,7 +58,7 @@ class StatsDisplay implements ObserverInterface
         }
     }
 
-    private function updateSensorStats(mixed $subject, $observableData)
+    private function updateSensorStats(ObservableInterface $subject, $observableData)
     {
         if (empty($this->sensorStats) || !$this->findSensorStats($subject, $observableData->getEventType()))
         {
@@ -80,7 +104,7 @@ class StatsDisplay implements ObserverInterface
      * @param $eventType
      * @return SensorStats|null
      */
-    private function findSensorStats(mixed $subject, $eventType): ?SensorStats
+    private function findSensorStats(ObservableInterface $subject, $eventType): ?SensorStats
     {
         $result = null;
         foreach ($this->sensorStats as $sensorStats)

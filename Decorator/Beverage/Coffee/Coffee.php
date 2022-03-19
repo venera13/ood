@@ -25,6 +25,7 @@ abstract class Coffee implements BeverageInterface
     /**
      * @return int
      */
+    // сделать защищенным
     public abstract function getStandardCost(): int;
 
     /**

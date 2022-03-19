@@ -1,14 +1,22 @@
 <?php
 declare(strict_types=1);
 
+include 'Utils/Arrays.php';
 include 'Data/WeatherInfo.php';
 include 'Data/WeatherDuoInfo.php';
 include 'Data/ObserverData.php';
-include 'Domain/ObservableType.php';
+include 'Data/WeatherDuoInfoList.php';
+include 'Data/SensorStats.php';
+include 'Domain/WeatherInfoType.php';
 include 'Observable/ObservableInterface.php';
 include 'Observable/Observable.php';
 include 'Observer/ObserverInterface.php';
+include 'WeatherData/WeatherData.php';
 include 'WeatherData/WeatherDataPro.php';
+include 'WeatherData/WeatherDataInside.php';
+include 'WeatherData/WeatherDataOutside.php';
+include 'WeatherDisplay/Display.php';
+include 'WeatherDisplay/StatsDisplay.php';
 include 'WeatherDisplay/ProDisplay.php';
 include 'WeatherDisplay/StatsProDisplay.php';
 include 'WeatherDisplay/StatsCalculator.php';

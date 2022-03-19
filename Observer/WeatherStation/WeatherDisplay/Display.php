@@ -6,13 +6,14 @@ declare(strict_types=1);
  */
 class Display implements ObserverInterface
 {
-    public function update(mixed $subject): void
+    /** @var ObservableData[] */
+    private $observableList;
+
+    public function update(ObservableInterface $subject): void
     {
         $data = $subject->getChangedData()->getList();
 
-        $subjectType = $subject instanceof WeatherDataInside ? 'Inside' : 'Outside';
-        print_r('Observable type ' . $subjectType . '</br>');
-        print_r('----' . '</br>');
+        $this->printObservableType($subject);
 
         foreach ($data as $currentSubjectInfo)
         {
@@ -22,5 +23,29 @@ class Display implements ObserverInterface
             }
         }
         print_r('------------------</br>');
+    }
+
+    public function setObservable(string $observableType, ObservableInterface $subject): void
+    {
+        $this->observableList[] = new ObservableData($observableType, $subject);
+    }
+
+    private function printObservableType(ObservableInterface $subject): void
+    {
+        $observableType = '';
+        if (empty($this->observableList))
+        {
+            return;
+        }
+        foreach ($this->observableList as $observable)
+        {
+            if ($observable->getObservable() === $subject)
+            {
+                $observableType = $observable->getType();
+                break;
+            }
+        }
+        print_r('Observable type ' . $observableType . '</br>');
+        print_r('----' . '</br>');
     }
 }
