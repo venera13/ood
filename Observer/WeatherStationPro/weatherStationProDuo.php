@@ -46,31 +46,31 @@ $weatherDataIn->registerObserver($statsDisplay);
 
 $weatherDataIn->addEventListener($display, WeatherInfoType::TEMPERATURE);
 $weatherDataIn->addEventListener($display, WeatherInfoType::PRESSURE);
-//$weatherDataIn->addEventListener($statsDisplay, WeatherInfoType::TEMPERATURE);
+$weatherDataIn->addEventListener($statsDisplay, WeatherInfoType::TEMPERATURE);
 
-$weatherDataIn->setMeasurements(20, 20, 20);
+$weatherDataIn->setMeasurements(20);
 
-//$proDisplay = new ProDisplay();
-//$proDisplay->setObservable('Inside', $weatherDataIn);
-//$proDisplay->setObservable('Outside', $weatherDataOut);
-//
-//$statsProDisplay = new StatsProDisplay();
-//$statsDisplay->setObservable('Inside', $weatherDataIn);
-//$statsDisplay->setObservable('Outside', $weatherDataOut);
-//
-//$weatherDataOut->registerObserver($proDisplay);
-//$weatherDataOut->registerObserver($statsProDisplay);
-//$weatherDataOut->addEventListener($proDisplay, WeatherInfoType::TEMPERATURE);
-//$weatherDataOut->addEventListener($proDisplay, WeatherInfoType::PRESSURE);
-//$weatherDataOut->addEventListener($statsProDisplay, WeatherInfoType::TEMPERATURE);
-//
-//$weatherDataOut->setMeasurements(20, null, null, null, 50);
+$proDisplay = new ProDisplay();
+$proDisplay->setObservable('Inside', $weatherDataIn);
+$proDisplay->setObservable('Outside', $weatherDataOut);
 
-//$weatherDataIn->removeEventListener($display, WeatherInfoType::TEMPERATURE);
-//$weatherDataIn->removeEventListener($display, WeatherInfoType::PRESSURE);
+$statsProDisplay = new StatsProDisplay();
+$statsDisplay->setObservable('Inside', $weatherDataIn);
+$statsDisplay->setObservable('Outside', $weatherDataOut);
 
-//$weatherDataIn->setMeasurements(22, 0.5, 750);
+$weatherDataOut->registerObserver($proDisplay);
+$weatherDataOut->registerObserver($statsProDisplay);
+$weatherDataOut->addEventListener($proDisplay, WeatherInfoType::TEMPERATURE);
+$weatherDataOut->addEventListener($proDisplay, WeatherInfoType::PRESSURE);
+$weatherDataOut->addEventListener($statsProDisplay, WeatherInfoType::TEMPERATURE);
 
-//$weatherDataIn->setMeasurements(6, 0.9, 750, 10, 1);
-//$weatherDataOut->setMeasurements(5, 0.9, 750, 10, 1);
-//$weatherDataOut->setMeasurements(10, 0.5, 754, 5, 359);
+$weatherDataOut->setMeasurements(20, null, null, null, 50);
+
+$weatherDataIn->removeEventListener($display, WeatherInfoType::TEMPERATURE);
+$weatherDataIn->removeEventListener($display, WeatherInfoType::PRESSURE);
+
+$weatherDataIn->setMeasurements(22, 0.5, 750);
+
+$weatherDataIn->setMeasurements(6, 0.9, 750, 10, 1);
+$weatherDataOut->setMeasurements(5, 0.9, 750, 10, 1);
+$weatherDataOut->setMeasurements(10, 0.5, 754, 5, 359);
