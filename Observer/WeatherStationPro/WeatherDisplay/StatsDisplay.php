@@ -3,14 +3,18 @@ declare(strict_types=1);
 
 namespace Observer\WeatherStationPro\WeatherDisplay;
 
+use Observer\WeatherStationPro\Data\ObservableData;
+use Observer\WeatherStationPro\Domain\WeatherInfoType;
+use Observer\WeatherStationPro\Observable\ObservableInterface;
 use Observer\WeatherStationPro\Observer\ObserverInterface;
-use Observer\WeatherStationPro\WeatherData\WeatherDataInside;
 
 /**
  * @template T
  */
 class StatsDisplay implements ObserverInterface
 {
+    /** @var ObservableData[] */
+    private $observableList;
     /** @var StatsCalculator */
     private $temperatureStats;
     /** @var StatsCalculator */
@@ -27,31 +31,63 @@ class StatsDisplay implements ObserverInterface
 
     public function update(mixed $subject): void
     {
-        $data = $subject->getChangedData();
+        $observableType = $this->getObservableType($subject);
 
-        $subjectType = $subject instanceof WeatherDataInside ? 'Inside' : 'Outside';
-        print_r('Observable type ' . $subjectType . '</br>');
+        print_r('Observable type ' . $observableType . '</br>');
         print_r('----' . '</br>');
 
+        $data = $subject->getChangedData()->getList();
+
         $this->updateStatistics($data);
-        $this->printStatistics();
+    }
+
+    public function setObservable(string $observableType, ObservableInterface $subject): void
+    {
+        $this->observableList[] = new ObservableData($observableType, $subject);
+    }
+
+    private function getObservableType(ObservableInterface $subject): ?string
+    {
+        $observableType = null;
+        if (empty($this->observableList))
+        {
+            return $observableType;
+        }
+        foreach ($this->observableList as $observable)
+        {
+            if ($observable->getObservable() === $subject)
+            {
+                $observableType = $observable->getType();
+                break;
+            }
+        }
+        return $observableType;
     }
 
     /**
-     * @param $observableData
+     * @param $changedData
      */
-    private function updateStatistics($observableData): void
+    private function updateStatistics($changedData): void
     {
-        $this->temperatureStats->update($observableData->getTemperature());
-        $this->humidityStats->update($observableData->getHumidity());
-        $this->pressureStats->update($observableData->getPressure());
-    }
+        $temperature = $this->findObservableStats($changedData, WeatherInfoType::TEMPERATURE);
+        $humidity = $this->findObservableStats($changedData, WeatherInfoType::HUMIDITY);
+        $pressure = $this->findObservableStats($changedData, WeatherInfoType::PRESSURE);
 
-    private function printStatistics(): void
-    {
-        $this->printStatistic('Temperature', $this->temperatureStats);
-        $this->printStatistic('Humidity', $this->humidityStats);
-        $this->printStatistic('Pressure', $this->pressureStats);
+        if ($temperature)
+        {
+            $this->temperatureStats->update($temperature->getValue());
+            $this->printStatistic('Temperature', $this->temperatureStats);
+        }
+        if ($humidity)
+        {
+            $this->humidityStats->update($humidity->getValue());
+            $this->printStatistic('Humidity', $this->humidityStats);
+        }
+        if ($pressure)
+        {
+            $this->pressureStats->update($pressure->getValue());
+            $this->printStatistic('Pressure', $this->pressureStats);
+        }
     }
 
     /**
@@ -64,5 +100,24 @@ class StatsDisplay implements ObserverInterface
         print_r('Max ' . $paramName . ' ' . $stats->getMaxValue() . '</br>');
         print_r('Average ' . $paramName . ' ' . $stats->getAverage() . '</br>');
         print_r('------------------</br>');
+    }
+
+    /**
+     * @param $changedData
+     * @param string $eventType
+     * @return mixed
+     */
+    private function findObservableStats($changedData, string $eventType): mixed
+    {
+        $result = null;
+        foreach ($changedData as $currentSubjectInfo)
+        {
+            if ($currentSubjectInfo->getEventType() === $eventType)
+            {
+                $result = $currentSubjectInfo;
+                break;
+            }
+        }
+        return $result;
     }
 }
