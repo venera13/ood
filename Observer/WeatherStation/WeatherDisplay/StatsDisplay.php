@@ -6,17 +6,38 @@ declare(strict_types=1);
  */
 class StatsDisplay implements ObserverInterface
 {
-    /** @var SensorStats[] */
-    private $sensorStats = [];
     /** @var ObservableData[] */
     private $observableList;
+    /** @var array */
+    private $weatherDataSensorStats;
+    /** @var array */
+    private $weatherProDataSensorStats;
+
+    public function __construct()
+    {
+        $this->weatherDataSensorStats = [
+            'temperature' => new StatsCalculator(),
+            'humidity' => new StatsCalculator(),
+            'pressure' => new StatsCalculator(),
+        ];
+        $this->weatherProDataSensorStats = [
+            'temperature' => new StatsCalculator(),
+            'humidity' => new StatsCalculator(),
+            'pressure' => new StatsCalculator(),
+            'windSpeed' => new StatsCalculator(),
+            'windDirection' => new StatsWindDirectionCalculator(),
+        ];
+    }
+
 
     public function update(ObservableInterface $subject): void
     {
-        $this->printObservableType($subject);
+        $observableType = $this->getObservableType($subject);
 
-        $this->updateStatistics($subject);
-        $this->printStatistics();
+        print_r('Observable type ' . $observableType . '</br>');
+        print_r('----' . '</br>');
+
+        $this->updateStatistics($subject, $observableType);
     }
 
     public function setObservable(string $observableType, ObservableInterface $subject): void
@@ -24,12 +45,12 @@ class StatsDisplay implements ObserverInterface
         $this->observableList[] = new ObservableData($observableType, $subject);
     }
 
-    private function printObservableType(ObservableInterface $subject): void
+    private function getObservableType(ObservableInterface $subject): ?string
     {
-        $observableType = '';
+        $observableType = null;
         if (empty($this->observableList))
         {
-            return;
+            return $observableType;
         }
         foreach ($this->observableList as $observable)
         {
@@ -39,52 +60,58 @@ class StatsDisplay implements ObserverInterface
                 break;
             }
         }
-        print_r('Observable type ' . $observableType . '</br>');
-        print_r('----' . '</br>');
+        return $observableType;
     }
 
     /**
      * @param mixed $subject
      */
-    private function updateStatistics(ObservableInterface $subject): void
+    private function updateStatistics(ObservableInterface $subject, string $observableType): void
     {
-        $data = $subject->getChangedData()->getList();
-        foreach ($data as $currentObservableData)
+        $data = $subject->getChangedData();
+
+        if ($observableType === 'Inside')
         {
-            if ($currentObservableData->getValue() !== null)
-            {
-                $this->updateSensorStats($subject, $currentObservableData);
-            }
+            $this->updateWeatherInfoStatistic($data);
+            $this->printWeatherInfoStatistic();
+        }
+        else if ($observableType === 'Outside')
+        {
+            $this->updateWeatherInfoProStatistic($data);
+            $this->printWeatherInfoProStatistic();
         }
     }
 
-    private function updateSensorStats(ObservableInterface $subject, $observableData)
+    private function updateWeatherInfoStatistic(WeatherInfo $weatherInfo): void
     {
-        if (empty($this->sensorStats) || !$this->findSensorStats($subject, $observableData->getEventType()))
-        {
-            $calculator = $observableData->getEventType() === WeatherInfoType::WIND_DIRECTION ? new StatsWindDirectionCalculator() : new StatsCalculator();
-            $this->sensorStats[] = new SensorStats(
-                $observableData->getEventType(),
-                $subject,
-                $calculator
-            );
-        }
-        foreach ($this->sensorStats as $sensorStats)
-        {
-            if ($sensorStats->getSensor() === $observableData->getEventType() && $sensorStats->getSubject() === $subject)
-            {
-                $sensorStats->getStatsCalculator()->update($observableData->getValue());
-                break;
-            }
-        }
+        $this->weatherDataSensorStats['temperature']->update($weatherInfo->getTemperature());
+        $this->weatherDataSensorStats['humidity']->update($weatherInfo->getHumidity());
+        $this->weatherDataSensorStats['pressure']->update($weatherInfo->getPressure());
     }
 
-    private function printStatistics(): void
+    private function updateWeatherInfoProStatistic(WeatherInfoPro $weatherInfoPro): void
     {
-        foreach ($this->sensorStats as $sensorStats)
-        {
-            $this->printStatistic($sensorStats->getSensor(), $sensorStats->getStatsCalculator());
-        }
+        $this->weatherProDataSensorStats['temperature']->update($weatherInfoPro->getTemperature());
+        $this->weatherProDataSensorStats['humidity']->update($weatherInfoPro->getHumidity());
+        $this->weatherProDataSensorStats['pressure']->update($weatherInfoPro->getPressure());
+        $this->weatherProDataSensorStats['windSpeed']->update($weatherInfoPro->getWindSpeed());
+        $this->weatherProDataSensorStats['windDirection']->update($weatherInfoPro->getWindDirection());
+    }
+
+    private function printWeatherInfoStatistic(): void
+    {
+        $this->printStatistic('temperature', $this->weatherDataSensorStats['temperature']);
+        $this->printStatistic('humidity', $this->weatherDataSensorStats['humidity']);
+        $this->printStatistic('pressure', $this->weatherDataSensorStats['pressure']);
+    }
+
+    private function printWeatherInfoProStatistic(): void
+    {
+        $this->printStatistic('temperature', $this->weatherProDataSensorStats['temperature']);
+        $this->printStatistic('humidity', $this->weatherProDataSensorStats['humidity']);
+        $this->printStatistic('pressure', $this->weatherProDataSensorStats['pressure']);
+        $this->printStatistic('windSpeed', $this->weatherProDataSensorStats['windSpeed']);
+        $this->printStatistic('windDirection', $this->weatherProDataSensorStats['windDirection']);
     }
 
     /**
@@ -97,23 +124,5 @@ class StatsDisplay implements ObserverInterface
         if (method_exists($stats, 'getMaxValue')) print_r('Max ' . $paramName . ' ' . $stats->getMaxValue() . '</br>');
         if (method_exists($stats, 'getAverage')) print_r('Average ' . $paramName . ' ' . $stats->getAverage() . '</br>');
         print_r('------------------</br>');
-    }
-
-    /**
-     * @param mixed $subject
-     * @param $eventType
-     * @return SensorStats|null
-     */
-    private function findSensorStats(ObservableInterface $subject, $eventType): ?SensorStats
-    {
-        $result = null;
-        foreach ($this->sensorStats as $sensorStats)
-        {
-            if ($sensorStats->getSensor() === $eventType && $sensorStats->getSubject() === $subject)
-            {
-                $result = $sensorStats;
-            }
-        }
-        return $result;
     }
 }

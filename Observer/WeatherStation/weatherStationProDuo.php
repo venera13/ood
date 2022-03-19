@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 include 'Utils/Arrays.php';
 include 'Data/WeatherInfo.php';
+include 'Data/WeatherInfoPro.php';
 include 'Data/WeatherDuoInfo.php';
 include 'Data/ObserverData.php';
 include 'Data/WeatherDuoInfoList.php';
 include 'Data/SensorStats.php';
+include 'Data/ObservableData.php';
 include 'Domain/WeatherInfoType.php';
 include 'Observable/ObservableInterface.php';
 include 'Observable/Observable.php';
@@ -22,10 +24,12 @@ include 'WeatherDisplay/StatsProDisplay.php';
 include 'WeatherDisplay/StatsCalculator.php';
 include 'WeatherDisplay/StatsWindDirectionCalculator.php';
 
-$weatherDataIn = new WeatherDataInside();
-$weatherDataOut = new WeatherDataOutside();
+$weatherDataIn = new WeatherData();
+$weatherDataOut = new WeatherDataPro();
 
 $display = new StatsDisplay();
+$display->setObservable('Inside', $weatherDataIn);
+$display->setObservable('Outside', $weatherDataOut);
 $weatherDataIn->registerObserver($display);
 $weatherDataOut->registerObserver($display);
 
