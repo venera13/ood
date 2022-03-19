@@ -11,16 +11,20 @@ class Display implements ObserverInterface
 
     public function update(ObservableInterface $subject): void
     {
-        $data = $subject->getChangedData()->getList();
+        $observableType = $this->getObservableType($subject);
 
-        $this->printObservableType($subject);
+        print_r('Observable type ' . $observableType . '</br>');
+        print_r('----' . '</br>');
 
-        foreach ($data as $currentSubjectInfo)
+        $data = $subject->getChangedData();
+
+        if ($observableType === 'Inside')
         {
-            if($currentSubjectInfo->getValue() !== null)
-            {
-                print_r('Current ' . $currentSubjectInfo->getEventType() . ' ' . $currentSubjectInfo->getValue() . '</br>');
-            }
+            $this->printWeatherInfo($data);
+        }
+        else if ($observableType === 'Outside')
+        {
+            $this->printWeatherInfoPro($data);
         }
         print_r('------------------</br>');
     }
@@ -30,12 +34,28 @@ class Display implements ObserverInterface
         $this->observableList[] = new ObservableData($observableType, $subject);
     }
 
-    private function printObservableType(ObservableInterface $subject): void
+    private function printWeatherInfo(WeatherInfo $weatherInfo): void
     {
-        $observableType = '';
+        print_r('Current temperature ' . $weatherInfo->getTemperature() . '</br>');
+        print_r('Current humidity ' . $weatherInfo->getHumidity() . '</br>');
+        print_r('Current pressure ' . $weatherInfo->getPressure() . '</br>');
+    }
+
+    private function printWeatherInfoPro(WeatherInfoPro $weatherInfoPro): void
+    {
+        print_r('Current temperature ' . $weatherInfoPro->getTemperature() . '</br>');
+        print_r('Current humidity ' . $weatherInfoPro->getHumidity() . '</br>');
+        print_r('Current pressure ' . $weatherInfoPro->getPressure() . '</br>');
+        print_r('Current wind speed ' . $weatherInfoPro->getWindSpeed() . '</br>');
+        print_r('Current wind direction ' . $weatherInfoPro->getWindDirection() . '</br>');
+    }
+
+    private function getObservableType(ObservableInterface $subject): ?string
+    {
+        $observableType = null;
         if (empty($this->observableList))
         {
-            return;
+            return $observableType;
         }
         foreach ($this->observableList as $observable)
         {
@@ -45,7 +65,6 @@ class Display implements ObserverInterface
                 break;
             }
         }
-        print_r('Observable type ' . $observableType . '</br>');
-        print_r('----' . '</br>');
+        return $observableType;
     }
 }
