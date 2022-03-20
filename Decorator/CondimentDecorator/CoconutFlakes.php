@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 class CoconutFlakes extends CondimentDecorator
 {
-    public function getCondimentDescription(): string
+    protected function getCondimentDescription(): string
     {
         return 'Coconut Flakes';
     }
 
-    public function getCondimentCost(): int
+    protected function getCondimentCost(): int
     {
         return 20;
     }

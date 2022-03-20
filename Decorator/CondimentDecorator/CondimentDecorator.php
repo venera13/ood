@@ -24,11 +24,10 @@ abstract class CondimentDecorator implements BeverageInterface
     /**
      * @return string
      */
-    // сделать защищенным
-    public abstract function getCondimentDescription(): string;
+    protected abstract function getCondimentDescription(): string;
 
     /**
      * @return int
      */
-    public abstract function getCondimentCost(): int;
+    protected abstract function getCondimentCost(): int;
 }

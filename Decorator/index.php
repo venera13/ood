@@ -4,7 +4,9 @@ declare(strict_types=1);
 include 'Beverage/BeverageInterface.php';
 include 'Beverage/Coffee/Coffee.php';
 include 'Beverage/Coffee/Latte.php';
+include 'Beverage/Coffee/DoubleLatte.php';
 include 'Beverage/Coffee/Сappuccino.php';
+include 'Beverage/Coffee/DoubleСappuccino.php';
 include 'Beverage/MilkShake/MilkShake.php';
 include 'Beverage/Tea/Tea.php';
 include 'Beverage/Tea/BlackTea.php';
@@ -18,22 +20,21 @@ include 'CondimentDecorator/Lemon.php';
 include 'CondimentDecorator/Сream.php';
 include 'CondimentDecorator/Chocolate.php';
 include 'CondimentDecorator/Liquor.php';
-include 'Domain/CoffeePortionType.php';
 include 'Domain/TeaTypes.php';
 include 'Domain/MilkShakePortionType.php';
 include 'Domain/LiquorType.php';
 include 'Domain/IceCubeType.php';
 include 'CondimentDecorator/Condiment.php';
 
-$latte = new Latte(CoffeePortionType::STANDARD);
+$latte = new Latte();
 $cinnamon = Condiment::makeCondiment('Cinnamon');
 printInfo($cinnamon($latte));
 
-$сappuccino = new Сappuccino(CoffeePortionType::DOUBLE);
+$сappuccino = new DoubleСappuccino();
 $chocolateCrumbs = Condiment::makeCondiment('ChocolateCrumbs');
 printInfo($chocolateCrumbs($сappuccino));
 
-$сappuccino = new Сappuccino(CoffeePortionType::DOUBLE);
+$сappuccino = new Сappuccino();
 $cream = Condiment::makeCondiment('Сream');
 printInfo($cream($сappuccino));
 

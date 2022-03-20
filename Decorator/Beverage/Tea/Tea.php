@@ -16,5 +16,5 @@ abstract class Tea implements BeverageInterface
     /**
      * @return string
      */
-    public abstract function getTeaType(): string;
+    protected abstract function getTeaType(): string;
 }

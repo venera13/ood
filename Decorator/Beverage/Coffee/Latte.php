@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 class Latte extends Coffee
 {
-    public function getStandardCost(): int
+    public function getDescription(): string
     {
-        return 90;
+        return 'Latte';
     }
 
-    public function getDoubleCost(): int
+    public function getCost(): int
     {
-        return 130;
+        return 90;
     }
 }

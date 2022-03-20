@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-class Сappuccino extends Coffee
+class DoubleLatte extends Coffee
 {
     public function getDescription(): string
     {
-        return 'Сappuccino';
+        return 'Double latte';
     }
 
     public function getCost(): int
     {
-        return 80;
+        return 130;
     }
 }

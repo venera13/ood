@@ -21,12 +21,12 @@ class Chocolate extends CondimentDecorator
         }
     }
 
-    public function getCondimentDescription(): string
+    protected function getCondimentDescription(): string
     {
         return 'Chocolate * ' . $this->quantity;
     }
 
-    public function getCondimentCost(): int
+    protected function getCondimentCost(): int
     {
         return 10 * $this->quantity;
     }

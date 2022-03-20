@@ -16,12 +16,12 @@ class IceCube extends CondimentDecorator
         $this->type = $type;
     }
 
-    public function getCondimentDescription(): string
+    protected function getCondimentDescription(): string
     {
         return $this->type . ' ice * ' . $this->quantity;
     }
 
-    public function getCondimentCost(): int
+    protected function getCondimentCost(): int
     {
         return 5 * $this->quantity;
     }
