@@ -21,7 +21,7 @@ abstract class Observable implements ObservableInterface
     public function registerObserver(
         ObserverInterface $observer,
         int $priority = 0,
-        ?array $measurementKeys = null
+        ?array $measurementKeys = null //??
     ): void {
         $this->observers[] = new ObserverData(
             $priority,
@@ -71,6 +71,7 @@ abstract class Observable implements ObservableInterface
 
     public function addEventListener(ObserverInterface $observer, string $observerEventType): void
     {
+        //добавить возможность подписаться на интересующее событие, вызвать addEventListener
         foreach ($this->observers as $currentObserver)
         {
             if ($currentObserver->getObserver() === $observer)

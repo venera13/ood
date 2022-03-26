@@ -6,65 +6,53 @@ declare(strict_types=1);
  */
 class Display implements ObserverInterface
 {
-    /** @var ObservableData[] */
-    private $observableList;
+    /** @var ObservableInterface */
+    private $observableInside;
+    /** @var ObservableInterface */
+    private $observableOutside;
+    /** @var WeatherInfo */
+    private $weatherInfo;
+    /** @var WeatherInfoPro */
+    private $weatherInfoPro;
+
+    public function __construct(ObservableInterface $observableInside, ObservableInterface $observableOutside)
+    {
+        $this->observableInside = $observableInside;
+        $this->observableOutside = $observableOutside;
+    }
 
     public function update(ObservableInterface $subject): void
     {
-        $observableType = $this->getObservableType($subject);
-
-        print_r('Observable type ' . $observableType . '</br>');
-        print_r('----' . '</br>');
-
-        $data = $subject->getChangedData();
-
-        if ($observableType === 'Inside')
+        if ($subject === $this->observableInside)
         {
-            $this->printWeatherInfo($data);
+            print_r('Observable type Inside </br>');
+            print_r('----' . '</br>');
+            $this->weatherInfo = $subject->getChangedData();
+            $this->printWeatherInfo();
         }
-        else if ($observableType === 'Outside')
+        else if ($subject === $this->observableOutside)
         {
-            $this->printWeatherInfoPro($data);
+            print_r('Observable type Outside </br>');
+            print_r('----' . '</br>');
+            $this->weatherInfoPro = $subject->getChangedData();
+            $this->printWeatherInfoPro();
         }
         print_r('------------------</br>');
     }
 
-    public function setObservable(string $observableType, ObservableInterface $subject): void
+    private function printWeatherInfo(): void
     {
-        $this->observableList[] = new ObservableData($observableType, $subject);
+        print_r('Current temperature ' . $this->weatherInfo->getTemperature() . '</br>');
+        print_r('Current humidity ' . $this->weatherInfo->getHumidity() . '</br>');
+        print_r('Current pressure ' . $this->weatherInfo->getPressure() . '</br>');
     }
 
-    private function printWeatherInfo(WeatherInfo $weatherInfo): void
+    private function printWeatherInfoPro(): void
     {
-        print_r('Current temperature ' . $weatherInfo->getTemperature() . '</br>');
-        print_r('Current humidity ' . $weatherInfo->getHumidity() . '</br>');
-        print_r('Current pressure ' . $weatherInfo->getPressure() . '</br>');
-    }
-
-    private function printWeatherInfoPro(WeatherInfoPro $weatherInfoPro): void
-    {
-        print_r('Current temperature ' . $weatherInfoPro->getTemperature() . '</br>');
-        print_r('Current humidity ' . $weatherInfoPro->getHumidity() . '</br>');
-        print_r('Current pressure ' . $weatherInfoPro->getPressure() . '</br>');
-        print_r('Current wind speed ' . $weatherInfoPro->getWindSpeed() . '</br>');
-        print_r('Current wind direction ' . $weatherInfoPro->getWindDirection() . '</br>');
-    }
-
-    private function getObservableType(ObservableInterface $subject): ?string
-    {
-        $observableType = null;
-        if (empty($this->observableList))
-        {
-            return $observableType;
-        }
-        foreach ($this->observableList as $observable)
-        {
-            if ($observable->getObservable() === $subject)
-            {
-                $observableType = $observable->getType();
-                break;
-            }
-        }
-        return $observableType;
+        print_r('Current temperature ' . $this->weatherInfoPro->getTemperature() . '</br>');
+        print_r('Current humidity ' . $this->weatherInfoPro->getHumidity() . '</br>');
+        print_r('Current pressure ' . $this->weatherInfoPro->getPressure() . '</br>');
+        print_r('Current wind speed ' . $this->weatherInfoPro->getWindSpeed() . '</br>');
+        print_r('Current wind direction ' . $this->weatherInfoPro->getWindDirection() . '</br>');
     }
 }
