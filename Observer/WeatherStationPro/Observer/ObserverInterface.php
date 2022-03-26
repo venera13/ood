@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace Observer\WeatherStationPro\Observer;
 
+use Observer\WeatherStationPro\Observable\ObservableInterface;
+
 /**
  * @template T
  */
 interface ObserverInterface
 {
-    /**
-     * @param T $subject
-     */
-    public function update(mixed $subject): void;
+    public function update(ObservableInterface $subject): void;
 }

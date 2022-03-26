@@ -36,11 +36,6 @@ class StatsProDisplay implements ObserverInterface
         $this->printStatistics();
     }
 
-    public function setObservable(string $observableType, ObservableInterface $subject): void
-    {
-        $this->observableList[] = new ObservableData($observableType, $subject);
-    }
-
     private function printObservableType(ObservableInterface $subject): void
     {
         $observableType = '';

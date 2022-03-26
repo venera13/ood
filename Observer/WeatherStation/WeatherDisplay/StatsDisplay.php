@@ -40,8 +40,6 @@ class StatsDisplay implements ObserverInterface
 
     public function update(ObservableInterface $subject): void
     {
-        $data = $subject->getChangedData();
-
         if ($subject === $this->observableInside)
         {
             print_r('Observable type Inside </br>');

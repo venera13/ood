@@ -11,10 +11,10 @@ class ObserverData
     private $priority;
     /** @var ObserverInterface */
     private $observer;
-    /** @var string[]|null */
+    /** @var array */
     private $events;
 
-    public function __construct(int $priority, ObserverInterface $observer, ?array $events)
+    public function __construct(int $priority, ObserverInterface $observer, array $events)
     {
         $this->priority = $priority;
         $this->observer = $observer;
@@ -38,9 +38,9 @@ class ObserverData
     }
 
     /**
-     * @return string[]|null
+     * @return string[]
      */
-    public function getEvents(): ?array
+    public function getEvents(): array
     {
         return $this->events;
     }

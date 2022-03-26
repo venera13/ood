@@ -15,8 +15,6 @@ include 'Observable/Observable.php';
 include 'Observer/ObserverInterface.php';
 include 'WeatherData/WeatherData.php';
 include 'WeatherData/WeatherDataPro.php';
-include 'WeatherData/WeatherDataInside.php';
-include 'WeatherData/WeatherDataOutside.php';
 include 'WeatherDisplay/Display.php';
 include 'WeatherDisplay/StatsDisplay.php';
 include 'WeatherDisplay/ProDisplay.php';
@@ -27,9 +25,7 @@ include 'WeatherDisplay/StatsWindDirectionCalculator.php';
 $weatherDataIn = new WeatherData();
 $weatherDataOut = new WeatherDataPro();
 
-$display = new StatsDisplay();
-$display->setObservable('Inside', $weatherDataIn);
-$display->setObservable('Outside', $weatherDataOut);
+$display = new StatsDisplay($weatherDataIn, $weatherDataOut);
 $weatherDataIn->registerObserver($display);
 $weatherDataOut->registerObserver($display);
 

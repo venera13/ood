@@ -5,17 +5,17 @@ namespace Observer\WeatherStationPro\Data;
 
 class WeatherInfo
 {
-    /** @var float|null */
+    /** @var WeatherDuoData|null */
     private $temperature;
-    /** @var float|null */
+    /** @var WeatherDuoData|null */
     private $humidity;
-    /** @var int|null */
+    /** @var WeatherDuoData|null */
     private $pressure;
 
     public function __construct(
-        ?float $temperature = null,
-        ?float $humidity = null,
-        ?int $pressure = null
+        ?WeatherDuoData $temperature = null,
+        ?WeatherDuoData $humidity = null,
+        ?WeatherDuoData $pressure = null
     ) {
         $this->temperature = $temperature;
         $this->humidity = $humidity;
@@ -23,25 +23,25 @@ class WeatherInfo
     }
 
     /**
-     * @return float|null
+     * @return WeatherDuoData|null
      */
-    public function getTemperature(): ?float
+    public function getTemperature(): ?WeatherDuoData
     {
         return $this->temperature;
     }
 
     /**
-     * @return float|null
+     * @return WeatherDuoData|null
      */
-    public function getHumidity(): ?float
+    public function getHumidity(): ?WeatherDuoData
     {
         return $this->humidity;
     }
 
     /**
-     * @return int|null
+     * @return WeatherDuoData|null
      */
-    public function getPressure(): ?int
+    public function getPressure(): ?WeatherDuoData
     {
         return $this->pressure;
     }

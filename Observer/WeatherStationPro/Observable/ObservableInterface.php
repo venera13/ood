@@ -5,18 +5,11 @@ namespace Observer\WeatherStationPro\Observable;
 
 use Observer\WeatherStationPro\Observer\ObserverInterface;
 
-/**
- * @template T
- */
 interface ObservableInterface
 {
-    public function registerObserver(ObserverInterface $observer, int $priority = 0): void;
+    public function registerObserver(string $event, ObserverInterface $observer, int $priority = 0): void;
 
-    public function removeObserver(ObserverInterface $observer): void;
-    
+    public function removeObserver(string $event, ObserverInterface $observer): void;
+
     public function notifyObservers(): void;
-
-    public function addEventListener(ObserverInterface $observer, string $observerEventType): void;
-
-    public function removeEventListener(ObserverInterface $observer, string $observerEventType): void;
 }

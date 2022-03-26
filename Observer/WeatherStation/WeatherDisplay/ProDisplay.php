@@ -6,9 +6,6 @@ declare(strict_types=1);
  */
 class ProDisplay implements ObserverInterface
 {
-    /** @var ObservableData[] */
-    private $observableList;
-
     public function update(ObservableInterface $subject): void
     {
         $data = $subject->getChangedData()->getList();
@@ -23,11 +20,6 @@ class ProDisplay implements ObserverInterface
             }
         }
         print_r('------------------</br>');
-    }
-
-    public function setObservable(string $observableType, ObservableInterface $subject): void
-    {
-        $this->observableList[] = new ObservableData($observableType, $subject);
     }
 
     private function printObservableType(ObservableInterface $subject): void

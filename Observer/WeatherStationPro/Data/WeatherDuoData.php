@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Observer\WeatherStationPro\Data;
 
-class WeatherDuoInfo
+class WeatherDuoData
 {
     /** @var string */
     private $eventType;

@@ -10,30 +10,42 @@ use Throwable;
 
 include 'Exceptions/NotifyObserverException.php';
 
-/**
- * @template T
- */
 abstract class Observable implements ObservableInterface
 {
     /** @var ObserverData[] */
     public $observers = [];
 
     public function registerObserver(
+        string $event,
         ObserverInterface $observer,
         int $priority = 0,
-        ?array $measurementKeys = null //??
     ): void {
-        $this->observers[] = new ObserverData(
-            $priority,
-            $observer,
-            $measurementKeys
-        );
+        $observerData = $this->findObserver($observer);
+        if ($observerData !== null)
+        {
+            $this->addEventListener($event, $observerData);
+        }
+        else
+        {
+            $this->observers[] = new ObserverData(
+                $priority,
+                $observer,
+                [$event]
+            );
 
-        $this->sortObservers();
+            $this->sortObservers();
+        }
     }
-    
-    public function removeObserver(ObserverInterface $observer): void
+
+    public function removeObserver(string $event, ObserverInterface $observer): void
     {
+        $observerData = $this->findObserver($observer);
+        if ($observerData !== null && !empty($observerData->getEvents()) && $observerData->getEvents() !== [$event])
+        {
+            $this->removeEventListener($event, $observerData);
+            return;
+        }
+
         foreach ($this->observers as $key => $value)
         {
             if ($value->getObserver() === $observer)
@@ -44,12 +56,26 @@ abstract class Observable implements ObservableInterface
         }
         $this->observers = array_values($this->observers);
     }
-    
+
+    private function removeEventListener(string $event, ObserverData $observer): void
+    {
+        $events = $observer->getEvents();
+        unset($events[array_search($event, $events)]);
+        $observer->setEvents(array_values($events));
+    }
+
+    private function addEventListener(string $observerEventType, ObserverData $observer): void
+    {
+        $events = $observer->getEvents();
+        $events[] = $observerEventType;
+        $observer->setEvents($events);
+    }
+
     public function notifyObservers(): void
     {
         try
         {
-            $observableInfoList = $this->getChangedData()->getList();
+            $observableInfoList = $this->getChangedData();
 
             foreach ($this->observers as $observer)
             {
@@ -69,38 +95,6 @@ abstract class Observable implements ObservableInterface
         }
     }
 
-    public function addEventListener(ObserverInterface $observer, string $observerEventType): void
-    {
-        //добавить возможность подписаться на интересующее событие, вызвать addEventListener
-        foreach ($this->observers as $currentObserver)
-        {
-            if ($currentObserver->getObserver() === $observer)
-            {
-                $events = $currentObserver->getEvents();
-                $events[] = $observerEventType;
-                $currentObserver->setEvents($events);
-                break;
-            };
-        }
-    }
-
-    public function removeEventListener(ObserverInterface $observer, string $observerEventType): void
-    {
-        foreach ($this->observers as $currentObserver)
-        {
-            if ($currentObserver->getObserver() === $observer)
-            {
-                $events = $currentObserver->getEvents();
-                unset($events[array_search($observerEventType, $events)]);
-                $currentObserver->setEvents(array_values($events));
-                break;
-            };
-        }
-    }
-
-    /**
-     * @return T
-     */
     public abstract function getChangedData();
 
     private function sortObservers(): void
@@ -109,5 +103,19 @@ abstract class Observable implements ObservableInterface
         {
             return $firstValue->getPriority() < $secondValue->getPriority() ? 1 : -1;
         });
+    }
+
+    private function findObserver(ObserverInterface $observer): ?ObserverData
+    {
+        $result = null;
+        foreach ($this->observers as $currentObserver)
+        {
+            if ($currentObserver->getObserver() === $observer)
+            {
+                $result = $currentObserver;
+                break;
+            }
+        }
+        return $result;
     }
 }
