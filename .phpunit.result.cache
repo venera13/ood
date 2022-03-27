@@ -1,0 +1,1 @@
+{"version":1,"defects":{"WeatherDataTest::testSelfRemoverObserver":3,"WeatherDataTest::testObserverUpdatePriority":4,"WeatherDataTest::testDuoObservable":4,"WeatherDataTest::testRemoveObserver":4},"times":{"WeatherDataTest::testSelfRemoverObserver":0,"WeatherDataTest::testObserverUpdatePriority":0,"WeatherDataTest::testDuoObservable":0,"WeatherDataTest::testRemoveObserver":0}}
