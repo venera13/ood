@@ -13,27 +13,25 @@ include 'Exceptions/NotifyObserverException.php';
 abstract class Observable implements ObservableInterface
 {
     /** @var ObserverData[] */
-    public $observers = [];
+    private $observers = [];
+    /** @var array */
+    private $events;
 
     public function registerObserver(
         string $event,
         ObserverInterface $observer,
-        int $priority = 0,
+        ?int $priority = 0,
     ): void {
         $observerData = $this->findObserver($observer);
-        if ($observerData !== null)
+
+        if ($observerData === null)
+        {
+            $this->addObserver($observer, $priority);
+            $observerData = $this->findObserver($observer);
+        }
+        if (!$this->isSubscribeObserver($event, $observer))
         {
             $this->addEventListener($event, $observerData);
-        }
-        else
-        {
-            $this->observers[] = new ObserverData(
-                $priority,
-                $observer,
-                [$event]
-            );
-
-            $this->sortObservers();
         }
     }
 
@@ -45,40 +43,24 @@ abstract class Observable implements ObservableInterface
             return;
         }
 
-        if ($event !== null && !empty($observerData->getEvents()) && count($observerData->getEvents()) !== 1)
+        if ($event !== null && $this->isSubscribeObserver($event, $observer))
         {
             $this->removeEventListener($event, $observerData);
             return;
         }
 
-        foreach ($this->observers as $key => $value)
+        if (!$this->isSubscribeObserver($event, $observer))
         {
-            if ($value->getObserver() === $observer)
+            foreach ($this->observers as $key => $value)
             {
-                unset($this->observers[$key]);
-                break;
+                if ($value->getObserver() === $observer)
+                {
+                    unset($this->observers[$key]);
+                    break;
+                }
             }
+            $this->observers = array_values($this->observers);
         }
-        $this->observers = array_values($this->observers);
-    }
-
-    private function removeEventListener(string $event, ObserverData $observer): void
-    {
-        $events = $observer->getEvents();
-        unset($events[array_search($event, $events)]);
-        $observer->setEvents(array_values($events));
-    }
-
-    private function addEventListener(string $observerEventType, ObserverData $observer): void
-    {
-        $events = $observer->getEvents();
-        if (in_array($observerEventType, $events))
-        {
-            return;
-        }
-
-        $events[] = $observerEventType;
-        $observer->setEvents($events);
     }
 
     public function notifyObservers(): void
@@ -87,15 +69,11 @@ abstract class Observable implements ObservableInterface
         {
             $observableInfoList = $this->getChangedData();
 
-            foreach ($this->observers as $observer)
+            foreach ($observableInfoList as $observableInfo)
             {
-                foreach ($observableInfoList as $observableInfo)
+                if (array_key_exists($observableInfo->getEventType(), $this->events))
                 {
-                    if ($observer->getEvents() && in_array($observableInfo->getEventType(), $observer->getEvents()))
-                    {
-                        $observer->getObserver()->update($this);
-                        break;
-                    }
+                    $this->notifyObserverByEvent($observableInfo->getEventType());
                 }
             }
         }
@@ -107,9 +85,30 @@ abstract class Observable implements ObservableInterface
 
     public abstract function getChangedData();
 
-    private function sortObservers(): void
+    private function addObserver(ObserverInterface $observer, int $priority): void
     {
-        usort($this->observers, static function($firstValue, $secondValue): int
+        $this->observers[] = new ObserverData(
+            $priority,
+            $observer
+        );
+    }
+
+    private function addEventListener(string $observerEventType, ObserverData $observer): void
+    {
+        $this->events[$observerEventType][] = $observer;
+
+        $this->sortObservers($observerEventType);
+    }
+
+    private function removeEventListener(string $event, ObserverData $observer): void
+    {
+        unset($this->events[$event][$observer]);
+        $this->events[$event][] = array_values($this->events[$event]);
+    }
+
+    private function sortObservers(string $event): void
+    {
+        usort($this->events[$event], static function($firstValue, $secondValue): int
         {
             return $firstValue->getPriority() < $secondValue->getPriority() ? 1 : -1;
         });
@@ -127,5 +126,23 @@ abstract class Observable implements ObservableInterface
             }
         }
         return $result;
+    }
+
+    private function isSubscribeObserver(string $event, ObserverInterface $observer): bool
+    {
+        if (!$this->events || !array_key_exists($event, $this->events))
+        {
+            return false;
+        }
+
+        return in_array($observer, $this->events[$event]);
+    }
+
+    private function notifyObserverByEvent(string $event)
+    {
+        foreach ($this->events[$event] as $observer)
+        {
+            $observer->getObserver()->update($this);
+        }
     }
 }

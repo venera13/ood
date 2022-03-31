@@ -27,15 +27,15 @@ $weatherDataIn = new WeatherData();
 $weatherDataOut = new WeatherDataPro();
 
 $display = new StatsDisplay($weatherDataIn, $weatherDataOut);
-$weatherDataIn->registerObserver(WeatherInfoType::TEMPERATURE, $display);
-$weatherDataIn->registerObserver(WeatherInfoType::HUMIDITY, $display);
-$weatherDataOut->registerObserver(WeatherInfoType::PRESSURE, $display);
+$weatherDataIn->registerObserver(WeatherInfoType::TEMPERATURE, $display, 1);
+$weatherDataIn->registerObserver(WeatherInfoType::HUMIDITY, $display, 0);
+//$weatherDataOut->registerObserver(WeatherInfoType::TEMPERATURE, $display);
 
 $weatherDataIn->setMeasurements(5, 0.9, 750);
 
 $weatherDataIn->removeObserver($display, WeatherInfoType::TEMPERATURE);
 
-$weatherDataIn->setMeasurements(10, 0.5, 754);
-
-$weatherDataOut->setMeasurements(-10, 1, 750, 5, 270);
-$weatherDataOut->setMeasurements(0, 0.1, 745, 2, 0);
+//$weatherDataIn->setMeasurements(10, 0.5, 754);
+//
+//$weatherDataOut->setMeasurements(-10, 1, 750, 5, 270);
+//$weatherDataOut->setMeasurements(0, 0.1, 745, 2, 0);
