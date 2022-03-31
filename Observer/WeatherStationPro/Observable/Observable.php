@@ -67,6 +67,11 @@ abstract class Observable implements ObservableInterface
     private function addEventListener(string $observerEventType, ObserverData $observer): void
     {
         $events = $observer->getEvents();
+        if (in_array($observerEventType, $events))
+        {
+            return;
+        }
+
         $events[] = $observerEventType;
         $observer->setEvents($events);
     }
