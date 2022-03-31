@@ -33,7 +33,7 @@ $weatherDataOut->registerObserver(WeatherInfoType::PRESSURE, $display);
 
 $weatherDataIn->setMeasurements(5, 0.9, 750);
 
-$weatherDataIn->removeObserver(WeatherInfoType::TEMPERATURE, $display);
+$weatherDataIn->removeObserver($display, WeatherInfoType::TEMPERATURE);
 
 $weatherDataIn->setMeasurements(10, 0.5, 754);
 

@@ -9,7 +9,7 @@ interface ObservableInterface
 {
     public function registerObserver(string $event, ObserverInterface $observer, int $priority = 0): void;
 
-    public function removeObserver(string $event, ObserverInterface $observer): void;
+    public function removeObserver(ObserverInterface $observer, ?string $event): void;
 
     public function notifyObservers(): void;
 }
