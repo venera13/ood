@@ -40,7 +40,12 @@ abstract class Observable implements ObservableInterface
     public function removeObserver(string $event, ObserverInterface $observer): void
     {
         $observerData = $this->findObserver($observer);
-        if ($observerData !== null && !empty($observerData->getEvents()) && $observerData->getEvents() !== [$event])
+        if ($observerData === null)
+        {
+            return;
+        }
+
+        if (!empty($observerData->getEvents()) && count($observerData->getEvents()) !== 1)
         {
             $this->removeEventListener($event, $observerData);
             return;
