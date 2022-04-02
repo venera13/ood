@@ -17,7 +17,7 @@ class ShapeFactory implements ShapeFactoryInterface
 {
     public function createShape(string $description): ShapeInterface
     {
-        $params = explode(' ', $description);
+        $params = explode(' ', trim($description));
 
         if (empty($params))
         {
@@ -40,7 +40,12 @@ class ShapeFactory implements ShapeFactoryInterface
 
     private static function createEllipse(array $params): ShapeInterface
     {
-        if (count($params) !== 5)
+        if (count($params) !== 5
+            || !ctype_alpha($params[0])
+            || !ctype_digit($params[1])
+            || !ctype_digit($params[2])
+            || !ctype_digit($params[3])
+            || !ctype_digit($params[4]))
         {
             throw new InvalidArgumentsException('Invalid arguments');
         }
@@ -55,7 +60,12 @@ class ShapeFactory implements ShapeFactoryInterface
 
     private static function createRectangle(array $params): ShapeInterface
     {
-        if (count($params) !== 5)
+        if (count($params) !== 5
+            || !ctype_alpha($params[0])
+            || !ctype_digit($params[1])
+            || !ctype_digit($params[2])
+            || !ctype_digit($params[3])
+            || !ctype_digit($params[4]))
         {
             throw new InvalidArgumentsException('Invalid arguments');
         }
@@ -69,7 +79,12 @@ class ShapeFactory implements ShapeFactoryInterface
 
     private static function createRegularPolygon(array $params): ShapeInterface
     {
-        if (count($params) !== 5)
+        if (count($params) !== 5
+            || !ctype_alpha($params[0])
+            || !ctype_digit($params[1])
+            || !ctype_digit($params[2])
+            || !ctype_digit($params[3])
+            || !ctype_digit($params[4]))
         {
             throw new InvalidArgumentsException('Invalid arguments');
         }
@@ -84,7 +99,14 @@ class ShapeFactory implements ShapeFactoryInterface
 
     private static function createTriangle(array $params): ShapeInterface
     {
-        if (count($params) !== 7)
+        if (count($params) !== 7
+            || !ctype_alpha($params[0])
+            || !ctype_digit($params[1])
+            || !ctype_digit($params[2])
+            || !ctype_digit($params[3])
+            || !ctype_digit($params[4])
+            || !ctype_digit($params[5])
+            || !ctype_digit($params[6]))
         {
             throw new InvalidArgumentsException('Invalid arguments');
         }
