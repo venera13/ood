@@ -12,8 +12,6 @@ include 'Exceptions/NotifyObserverException.php';
 
 abstract class Observable implements ObservableInterface
 {
-    /** @var ObserverData[] */
-    private $observers = [];
     /** @var array */
     private $events;
 
@@ -22,58 +20,44 @@ abstract class Observable implements ObservableInterface
         ObserverInterface $observer,
         ?int $priority = 0,
     ): void {
-        $observerData = $this->findObserver($observer);
+        $observerData = $this->findObserver($event, $observer);
 
         if ($observerData === null)
         {
-            $this->addObserver($observer, $priority);
-            $observerData = $this->findObserver($observer);
+            $observerData = new ObserverData(
+                $priority,
+                $observer
+            );
         }
-        if (!$this->isSubscribeObserver($event, $observer))
+        if (!$this->isObserverSubscribed($event, $observer))
         {
             $this->addEventListener($event, $observerData);
         }
     }
 
-    public function removeObserver(ObserverInterface $observer, ?string $event): void
+    public function removeObserver(ObserverInterface $observer, ?string $event): void //не удалять наблюдателя из всех событий
     {
-        $observerData = $this->findObserver($observer);
+        $observerData = $this->findObserver($event, $observer);
         if ($observerData === null)
         {
             return;
         }
 
-        if ($event !== null && $this->isSubscribeObserver($event, $observer))
+        if ($event !== null && $this->isObserverSubscribed($event, $observer))
         {
             $this->removeEventListener($event, $observerData);
-            return;
-        }
-
-        if (!$this->isSubscribeObserver($event, $observer))
-        {
-            foreach ($this->observers as $key => $value)
-            {
-                if ($value->getObserver() === $observer)
-                {
-                    unset($this->observers[$key]);
-                    break;
-                }
-            }
-            $this->observers = array_values($this->observers);
         }
     }
 
-    public function notifyObservers(): void
+    public function notifyObservers(array $changeEvents): void // передавать сюда в параметре событие - класс с типом event
     {
         try
         {
-            $observableInfoList = $this->getChangedData();
-
-            foreach ($observableInfoList as $observableInfo)
+            foreach ($changeEvents as $event)
             {
-                if (array_key_exists($observableInfo->getEventType(), $this->events))
+                if (array_key_exists($event, $this->events))
                 {
-                    $this->notifyObserverByEvent($observableInfo->getEventType());
+                    $this->notifyObserverByEvent($event);
                 }
             }
         }
@@ -84,14 +68,6 @@ abstract class Observable implements ObservableInterface
     }
 
     public abstract function getChangedData();
-
-    private function addObserver(ObserverInterface $observer, int $priority): void
-    {
-        $this->observers[] = new ObserverData(
-            $priority,
-            $observer
-        );
-    }
 
     private function addEventListener(string $observerEventType, ObserverData $observer): void
     {
@@ -114,21 +90,25 @@ abstract class Observable implements ObservableInterface
         });
     }
 
-    private function findObserver(ObserverInterface $observer): ?ObserverData
+    private function findObserver(string $event, ObserverInterface $observer): ?ObserverData
     {
-        $result = null;
-        foreach ($this->observers as $currentObserver)
+        if (!$this->events || !array_key_exists($event, $this->events))
         {
-            if ($currentObserver->getObserver() === $observer)
+            return null;
+        }
+
+        foreach ($this->events[$event] as $subscribedObserver)
+        {
+            if ($subscribedObserver->getObserver() === $observer)
             {
-                $result = $currentObserver;
-                break;
+                return $subscribedObserver;
             }
         }
-        return $result;
+
+        return null;
     }
 
-    private function isSubscribeObserver(string $event, ObserverInterface $observer): bool
+    private function isObserverSubscribed(string $event, ObserverInterface $observer): bool
     {
         if (!$this->events || !array_key_exists($event, $this->events))
         {

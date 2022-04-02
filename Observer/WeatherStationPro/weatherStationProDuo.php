@@ -8,6 +8,8 @@ include 'Data/WeatherDuoData.php';
 include 'Data/ObserverData.php';
 include 'Data/SensorStats.php';
 include 'Data/ObservableData.php';
+include 'Event/Event.php';
+include 'Event/WeatherInfoEvent.php';
 include 'Domain/WeatherInfoType.php';
 include 'Observable/ObservableInterface.php';
 include 'Observable/Observable.php';

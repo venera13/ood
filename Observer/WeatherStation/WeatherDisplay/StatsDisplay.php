@@ -40,16 +40,14 @@ class StatsDisplay implements ObserverInterface
         {
             print_r('Observable type Inside </br>');
             print_r('----' . '</br>');
-            $weatherInfo = $this->observableInside->getChangedData();
-            $this->updateWeatherInfoStatistic($weatherInfo);
+            $this->updateWeatherInfoStatistic($this->observableInside->getChangedData());
             $this->printWeatherInfoStatistic();
         }
         else if ($subject === $this->observableOutside)
         {
             print_r('Observable type Outside </br>');
             print_r('----' . '</br>');
-            $weatherInfo = $this->observableOutside->getChangedData();
-            $this->updateWeatherInfoProStatistic($weatherInfo);
+            $this->updateWeatherInfoProStatistic($this->observableOutside->getChangedData());
             $this->printWeatherInfoProStatistic();
         }
     }

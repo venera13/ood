@@ -11,5 +11,5 @@ interface ObservableInterface
 
     public function removeObserver(ObserverInterface $observer, ?string $event): void;
 
-    public function notifyObservers(): void;
+    public function notifyObservers(array $changeEvents): void;
 }

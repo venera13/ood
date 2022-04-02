@@ -6,6 +6,7 @@ namespace Observer\WeatherStationPro\WeatherData;
 use Observer\WeatherStationPro\Data\WeatherDuoInfoList;
 use Observer\WeatherStationPro\Data\WeatherInfo;
 use Observer\WeatherStationPro\Domain\WeatherInfoType;
+use Observer\WeatherStationPro\Event\WeatherInfoEvent;
 use Observer\WeatherStationPro\Observable\Observable;
 use Observer\WeatherStationPro\Data\WeatherDuoData;
 use Observer\WeatherStationPro\Utils\Arrays;
@@ -45,7 +46,12 @@ class WeatherData extends Observable
 
     public function measurementsChanged(): void
     {
-        $this->notifyObservers();
+        $changeEvents = Arrays::removeNulls([
+            $this->getTemperature() !== null ? WeatherInfoEvent::TEMPERATURE_CHANGED : null,
+            $this->getHumidity() !== null ? WeatherInfoEvent::HUMIDITY_CHANGED : null,
+            $this->getPressure() !== null ? WeatherInfoEvent::PRESSURE_CHANGED : null,
+        ]);
+        $this->notifyObservers($changeEvents);
     }
 
     public function setMeasurements(
@@ -60,12 +66,12 @@ class WeatherData extends Observable
         $this->measurementsChanged();
     }
 
-    public function getChangedData(): array
+    public function getChangedData(): WeatherInfo
     {
-        return Arrays::removeNulls([
-            $this->getTemperature() !== null ? new WeatherDuoData(WeatherInfoType::TEMPERATURE, $this->getTemperature()) : null,
-            $this->getHumidity() !== null ? new WeatherDuoData(WeatherInfoType::HUMIDITY, $this->getHumidity()) : null,
-            $this->getPressure() !== null ? new WeatherDuoData(WeatherInfoType::PRESSURE, $this->getPressure()) : null,
-        ]);
+        return new WeatherInfo(
+            $this->getTemperature(),
+            $this->getHumidity(),
+            $this->getPressure()
+        );
     }
 }

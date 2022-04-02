@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Observer\WeatherStationPro\WeatherData;
 
+use Observer\WeatherStationPro\Data\WeatherInfoPro;
 use Observer\WeatherStationPro\Domain\WeatherInfoType;
+use Observer\WeatherStationPro\Event\WeatherInfoEvent;
 use Observer\WeatherStationPro\Observable\Observable;
 use Observer\WeatherStationPro\Data\WeatherDuoData;
 use Observer\WeatherStationPro\Utils\Arrays;
@@ -63,7 +65,14 @@ class WeatherDataPro extends Observable
 
     public function measurementsChanged(): void
     {
-        $this->notifyObservers();
+        $changeEvents = Arrays::removeNulls([
+            $this->getTemperature() !== null ? WeatherInfoEvent::TEMPERATURE_CHANGED : null,
+            $this->getHumidity() !== null ? WeatherInfoEvent::HUMIDITY_CHANGED : null,
+            $this->getPressure() !== null ? WeatherInfoEvent::PRESSURE_CHANGED : null,
+            $this->getWindSpeed() !== null ? WeatherInfoEvent::WIND_SPEED_CHANGED : null,
+            $this->getWindDirection() !== null ? WeatherInfoEvent::WIND_DIRECTION_CHANGED : null,
+        ]);
+        $this->notifyObservers($changeEvents);
     }
 
     public function setMeasurements(
@@ -82,14 +91,14 @@ class WeatherDataPro extends Observable
         $this->measurementsChanged();
     }
 
-    public function getChangedData(): array
+    public function getChangedData(): WeatherInfoPro
     {
-        return Arrays::removeNulls([
-            $this->getTemperature() !== null ? new WeatherDuoData(WeatherInfoType::TEMPERATURE, $this->getTemperature()) : null,
-            $this->getHumidity() !== null ? new WeatherDuoData(WeatherInfoType::HUMIDITY, $this->getHumidity()) : null,
-            $this->getPressure() !== null ? new WeatherDuoData(WeatherInfoType::PRESSURE, $this->getPressure()) : null,
-            $this->getWindSpeed() !== null ? new WeatherDuoData(WeatherInfoType::WIND_SPEED, $this->getWindSpeed()) : null,
-            $this->getWindDirection() !== null ? new WeatherDuoData(WeatherInfoType::WIND_DIRECTION, $this->getWindDirection()) : null,
-        ]);
+        return new WeatherInfoPro(
+            $this->getTemperature(),
+            $this->getHumidity(),
+            $this->getPressure(),
+            $this->getWindSpeed(),
+            $this->getWindDirection(),
+        );
     }
 }

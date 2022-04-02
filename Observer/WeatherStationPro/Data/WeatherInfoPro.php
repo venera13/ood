@@ -5,23 +5,23 @@ namespace Observer\WeatherStationPro\Data;
 
 class WeatherInfoPro
 {
-    /** @var WeatherDuoData|null */
+    /** @var float */
     private $temperature;
-    /** @var WeatherDuoData|null */
+    /** @var float */
     private $humidity;
-    /** @var WeatherDuoData|null */
+    /** @var int */
     private $pressure;
-    /** @var WeatherDuoData|null */
+    /** @var float */
     private $windSpeed;
-    /** @var WeatherDuoData|null */
+    /** @var int */
     private $windDirection;
 
     public function __construct(
-        ?WeatherDuoData $temperature,
-        ?WeatherDuoData $humidity,
-        ?WeatherDuoData $pressure,
-        ?WeatherDuoData $windSpeed,
-        ?WeatherDuoData $windDirection
+        float $temperature,
+        float $humidity,
+        int $pressure,
+        float $windSpeed,
+        int $windDirection
     ) {
         $this->temperature = $temperature;
         $this->humidity = $humidity;
@@ -31,41 +31,41 @@ class WeatherInfoPro
     }
 
     /**
-     * @return WeatherDuoData
+     * @return float
      */
-    public function getTemperature(): WeatherDuoData
+    public function getTemperature(): float
     {
         return $this->temperature;
     }
 
     /**
-     * @return WeatherDuoData
+     * @return float
      */
-    public function getHumidity(): WeatherDuoData
+    public function getHumidity(): float
     {
         return $this->humidity;
     }
 
     /**
-     * @return WeatherDuoData
+     * @return int
      */
-    public function getPressure(): WeatherDuoData
+    public function getPressure(): int
     {
         return $this->pressure;
     }
 
     /**
-     * @return WeatherDuoData
+     * @return float
      */
-    public function getWindSpeed(): WeatherDuoData
+    public function getWindSpeed(): float
     {
         return $this->windSpeed;
     }
 
     /**
-     * @return WeatherDuoData
+     * @return int
      */
-    public function getWindDirection(): WeatherDuoData
+    public function getWindDirection(): int
     {
         return $this->windDirection;
     }

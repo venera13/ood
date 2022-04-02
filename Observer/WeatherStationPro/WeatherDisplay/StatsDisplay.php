@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Observer\WeatherStationPro\WeatherDisplay;
 
+use Observer\WeatherStationPro\Data\WeatherInfo;
+use Observer\WeatherStationPro\Data\WeatherInfoPro;
 use Observer\WeatherStationPro\Domain\WeatherInfoType;
 use Observer\WeatherStationPro\Observable\ObservableInterface;
 use Observer\WeatherStationPro\Observer\ObserverInterface;
@@ -16,10 +18,6 @@ class StatsDisplay implements ObserverInterface
     private $observableInside;
     /** @var ObservableInterface */
     private $observableOutside;
-    /** @var array */
-    private $weatherInfo;
-    /** @var array */
-    private $weatherInfoPro;
     /** @var array */
     private $weatherDataSensorStats;
     /** @var array */
@@ -50,44 +48,32 @@ class StatsDisplay implements ObserverInterface
         {
             print_r('Observable type Inside </br>');
             print_r('----' . '</br>');
-            $this->weatherInfo = $subject->getChangedData();
-            $this->updateWeatherInfoStatistic();
+            $this->updateWeatherInfoStatistic($this->observableInside->getChangedData());
             $this->printWeatherInfoStatistic();
         }
         else if ($subject === $this->observableOutside)
         {
             print_r('Observable type Outside </br>');
             print_r('----' . '</br>');
-            $this->weatherInfoPro = $subject->getChangedData();
-            $this->updateWeatherInfoProStatistic();
+            $this->updateWeatherInfoProStatistic($this->observableOutside->getChangedData());
             $this->printWeatherInfoProStatistic();
         }
     }
 
-    private function updateWeatherInfoStatistic(): void
+    private function updateWeatherInfoStatistic(WeatherInfo $weatherInfo): void
     {
-        $temperature = $this->findObservableStats($this->weatherInfo, WeatherInfoType::TEMPERATURE);
-        $humidity = $this->findObservableStats($this->weatherInfo, WeatherInfoType::HUMIDITY);
-        $pressure = $this->findObservableStats($this->weatherInfo, WeatherInfoType::PRESSURE);
-
-        $this->weatherDataSensorStats[WeatherInfoType::TEMPERATURE]->update($temperature->getValue());
-        $this->weatherDataSensorStats[WeatherInfoType::HUMIDITY]->update($humidity->getValue());
-        $this->weatherDataSensorStats[WeatherInfoType::PRESSURE]->update($pressure->getValue());
+        $this->weatherDataSensorStats[WeatherInfoType::TEMPERATURE]->update($weatherInfo->getTemperature());
+        $this->weatherDataSensorStats[WeatherInfoType::HUMIDITY]->update($weatherInfo->getHumidity());
+        $this->weatherDataSensorStats[WeatherInfoType::PRESSURE]->update($weatherInfo->getPressure());
     }
 
-    private function updateWeatherInfoProStatistic(): void
+    private function updateWeatherInfoProStatistic(WeatherInfoPro $weatherInfo): void
     {
-        $temperature = $this->findObservableStats($this->weatherInfoPro, WeatherInfoType::TEMPERATURE);
-        $humidity = $this->findObservableStats($this->weatherInfoPro, WeatherInfoType::HUMIDITY);
-        $pressure = $this->findObservableStats($this->weatherInfoPro, WeatherInfoType::PRESSURE);
-        $windSpeed = $this->findObservableStats($this->weatherInfoPro, WeatherInfoType::WIND_SPEED);
-        $windDirection = $this->findObservableStats($this->weatherInfoPro, WeatherInfoType::WIND_DIRECTION);
-
-        $this->weatherProDataSensorStats[WeatherInfoType::TEMPERATURE]->update($temperature->getValue());
-        $this->weatherProDataSensorStats[WeatherInfoType::HUMIDITY]->update($humidity->getValue());
-        $this->weatherProDataSensorStats[WeatherInfoType::PRESSURE]->update($pressure->getValue());
-        $this->weatherProDataSensorStats[WeatherInfoType::WIND_SPEED]->update($windSpeed->getValue());
-        $this->weatherProDataSensorStats[WeatherInfoType::WIND_DIRECTION]->update($windDirection->getValue());
+        $this->weatherProDataSensorStats[WeatherInfoType::TEMPERATURE]->update($weatherInfo->getTemperature());
+        $this->weatherProDataSensorStats[WeatherInfoType::HUMIDITY]->update($weatherInfo->getHumidity());
+        $this->weatherProDataSensorStats[WeatherInfoType::PRESSURE]->update($weatherInfo->getPressure());
+        $this->weatherProDataSensorStats[WeatherInfoType::WIND_SPEED]->update($weatherInfo->getWindSpeed());
+        $this->weatherProDataSensorStats[WeatherInfoType::WIND_DIRECTION]->update($weatherInfo->getWindDirection());
     }
 
     private function printWeatherInfoStatistic(): void
