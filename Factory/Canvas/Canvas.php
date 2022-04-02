@@ -19,10 +19,9 @@ class Canvas implements CanvasInterface
         $this->image = imagecreatetruecolor(200, 200);
     }
 
-    public function drawImage(): void
+    public function __destruct()
     {
-        header("Content-type: image/png");
-        imagepng($this->image);
+        $this->drawImage();
     }
 
     public function setColor(string $color): void
@@ -58,5 +57,11 @@ class Canvas implements CanvasInterface
     public function drawEllipse(Point $center, int $verticalRadius, int $horizontalRadius): void
     {
         imageellipse($this->image, $center->getX(), $center->getY(), 2 * $horizontalRadius, 2 * $verticalRadius, $this->color);
+    }
+
+    private function drawImage(): void
+    {
+        header("Content-type: image/png");
+        imagepng($this->image);
     }
 }

@@ -16,6 +16,5 @@ class Painter
             $canvas->setColor($shape->getColor());
             $shape->draw($canvas);
         }
-        $canvas->drawImage();
     }
 }
