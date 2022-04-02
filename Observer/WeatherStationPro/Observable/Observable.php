@@ -49,7 +49,7 @@ abstract class Observable implements ObservableInterface
         }
     }
 
-    public function notifyObservers(array $changeEvents): void // передавать сюда в параметре событие - класс с типом event
+    public function notifyObservers(array $changeEvents): void
     {
         try
         {
