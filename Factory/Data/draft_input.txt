@@ -1,0 +1,4 @@
+ellipse red 10 15 15 10
+rectangle blue 0 50 20 30
+regular_polygon green 10 60 10 6
+triangle yellow 0 70 10 90 20 70
