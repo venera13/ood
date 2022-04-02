@@ -7,5 +7,5 @@ use Factory\PictureDraft\PictureDraft;
 
 interface DesignerInterface
 {
-    public function createDraft(string $fileName, ShapeFactoryInterface $shapeFactory): PictureDraft;
+    public function createDraft(string $fileName, ShapeFactoryInterface $shapeFactory): ?PictureDraft;
 }

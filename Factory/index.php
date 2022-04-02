@@ -32,6 +32,9 @@ $shapeFactory = new ShapeFactory();
 $designer = new Designer();
 $pictureDraft = $designer->createDraft('Data/draft_input.txt', $shapeFactory);
 
-$painter = new Painter();
-$canvas = new Canvas();
-$painter->drawPicture($pictureDraft, $canvas);
+if ($pictureDraft !== null)
+{
+    $painter = new Painter();
+    $canvas = new Canvas();
+    $painter->drawPicture($pictureDraft, $canvas);
+}

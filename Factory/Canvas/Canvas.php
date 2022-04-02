@@ -3,25 +3,60 @@ declare(strict_types=1);
 
 namespace Factory\Canvas;
 
+use Factory\Color\Color;
 use Factory\Point\Point;
+use GdImage;
 
 class Canvas implements CanvasInterface
 {
-    /** @var string */
+    /** @var int */
     private $color;
+    /** @var GdImage */
+    private $image;
+
+    public function __construct()
+    {
+        $this->image = imagecreatetruecolor(200, 200);
+    }
+
+    public function drawImage(): void
+    {
+        header("Content-type: image/png");
+        imagepng($this->image);
+    }
 
     public function setColor(string $color): void
     {
-        $this->color = $color;
+        switch ($color)
+        {
+            case Color::GREEN:
+                $this->color = imagecolorallocate($this->image, 0, 128, 0);
+                break;
+            case Color::RED:
+                $this->color = imagecolorallocate($this->image, 255, 0, 0);
+                break;
+            case Color::BLUE:
+                $this->color = imagecolorallocate($this->image, 0, 0, 255);
+                break;
+            case Color::YELLOW:
+                $this->color = imagecolorallocate($this->image, 255, 255, 0);
+                break;
+            case Color::PINK:
+                $this->color = imagecolorallocate($this->image, 255, 192, 203);
+                break;
+            case Color::BLACK:
+                $this->color = imagecolorallocate($this->image, 0, 0, 0);
+                break;
+        }
     }
 
     public function drawLine(Point $from, Point $to): void
     {
-        print_r('Draw line from (' . $from->getX() . ';' . $from->getY() . '), to (' . $to->getX() . ';' . $to->getY() . '). Color - ' . $this->color . '</br>');
+        imageline($this->image, $from->getX(), $from->getY(), $to->getX(), $to->getY(), $this->color);
     }
 
     public function drawEllipse(Point $center, int $verticalRadius, int $horizontalRadius): void
     {
-        print_r('Draw ellipse: center (' . $center->getX() . ';' . $center->getY() . '). Vertical radius - ' . $verticalRadius . ', horizontal radius - ' . $horizontalRadius . '. Color - ' . $this->color . '</br>');
+        imageellipse($this->image, $center->getX(), $center->getY(), 2 * $horizontalRadius, 2 * $verticalRadius, $this->color);
     }
 }

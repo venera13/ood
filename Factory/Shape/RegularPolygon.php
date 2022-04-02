@@ -30,7 +30,7 @@ class RegularPolygon extends Shape
 
         $prevPoint = null;
 
-        for ($i = 0; $i < $this->vertexesCount; ++$i)
+        for ($i = 0; $i <= $this->vertexesCount; ++$i)
         {
             $x = $this->center->getX() + $this->radius * sin($i * $angle);
             $y = $this->center->getY() + $this->radius * cos($i * $angle);
