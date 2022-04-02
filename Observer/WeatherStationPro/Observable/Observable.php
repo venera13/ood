@@ -35,7 +35,7 @@ abstract class Observable implements ObservableInterface
         }
     }
 
-    public function removeObserver(ObserverInterface $observer, ?string $event): void //не удалять наблюдателя из всех событий
+    public function removeObserver(ObserverInterface $observer, string $event): void
     {
         $observerData = $this->findObserver($event, $observer);
         if ($observerData === null)
@@ -43,7 +43,7 @@ abstract class Observable implements ObservableInterface
             return;
         }
 
-        if ($event !== null && $this->isObserverSubscribed($event, $observer))
+        if ($this->isObserverSubscribed($event, $observer))
         {
             $this->removeEventListener($event, $observerData);
         }
