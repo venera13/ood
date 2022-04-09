@@ -26,6 +26,6 @@ class Ellipse extends Shape
 
     public function draw(CanvasInterface $canvas): void
     {
-        $canvas->drawEllipse($this->center, $this->verticalRadius, $this->horizontalRadius);
+        $canvas->drawEllipse($this->center, $this->horizontalRadius * 2, $this->verticalRadius * 2);
     }
 }

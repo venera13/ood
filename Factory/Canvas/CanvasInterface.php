@@ -10,5 +10,5 @@ interface CanvasInterface
 
     public function drawLine(Point $from, Point $to): void;
 
-    public function drawEllipse(Point $center, int $verticalRadius, int $horizontalRadius): void;
+    public function drawEllipse(Point $center, int $width, int $height): void;
 }
