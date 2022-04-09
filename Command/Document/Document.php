@@ -3,11 +3,23 @@ declare(strict_types=1);
 
 namespace Command\Document;
 
+use Command\Command\ChangeStringCommand;
 use Command\Data\ConstDocumentItem;
 use Command\Data\DocumentItem;
+use Command\History\History;
 
 class Document implements DocumentInterface
 {
+    /** @var History */
+    private $history;
+    /** @var string */
+    private $title = '';
+
+    public function __construct(History $history)
+    {
+        $this->history = $history;
+    }
+
     public function insertParagraph(string $text, ?int $position = null): void
     {
         // TODO: Implement insertParagraph() method.
@@ -35,32 +47,33 @@ class Document implements DocumentInterface
 
     public function getTitle(): string
     {
-        // TODO: Implement getTitle() method.
+        return $this->title;
     }
 
-    public static function setTitle(string $title): void
+    public function setTitle(string $title): void
     {
-        // TODO: Implement setTitle() method.
+        $this->title = $title;
+        $this->history->addAndExecuteCommand(new ChangeStringCommand($this->getTitle(), $title));
     }
 
     public function canUndo(): bool
     {
-        // TODO: Implement canUndo() method.
+        return $this->history->canUndo();
     }
 
-    public function undo(): bool
+    public function undo(): void
     {
-        // TODO: Implement undo() method.
+        $this->history->undo();
     }
 
     public function canRedo(): bool
     {
-        // TODO: Implement canRedo() method.
+        return $this->history->canRedo();
     }
 
-    public function redo(): bool
+    public function redo(): void
     {
-        // TODO: Implement redo() method.
+        $this->history->redo();
     }
 
     public function save(): bool

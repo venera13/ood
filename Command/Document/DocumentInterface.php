@@ -20,15 +20,15 @@ interface DocumentInterface
 
     public function getTitle(): string;
 
-    public static function setTitle(string $title): void;
+    public function setTitle(string $title): void;
 
     public function canUndo(): bool;
 
-    public function undo(): bool;
+    public function undo(): void;
 
     public function canRedo(): bool;
 
-    public function redo(): bool;
+    public function redo(): void;
 
     public function save(): bool;
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Command\Editor;
 
 use Command\Document\DocumentInterface;
+use Command\DocumentExporter\DocumentHtmlExporter;
 use Command\Menu\Menu;
 
 class Editor
@@ -36,7 +37,11 @@ class Editor
         {
             $this->menu->exit();
         });
-        $this->addMenuItem('setTitle', 'Set title', 'setTitle');
+        $this->addMenuItem('setTitle', 'Changes title. Args: < new title >', 'setTitle');
+        $this->addMenuItem('undo', 'Undo command', 'undo');
+        $this->addMenuItem('redo', 'Redo command', 'redo');
+        $this->addMenuItem('list', 'Show document', 'list');
+        $this->addMenuItem('save', 'Save as html Args: < filePath >', 'save');
     }
 
     private function addMenuItem(string $shortcut, string $description, string $command): void
@@ -52,8 +57,46 @@ class Editor
         };
     }
 
-    private function setTitle(string $in): void
+    private function setTitle(string $title): void
     {
-        $this->document::setTitle($in);
+        $this->document->setTitle($title);
+    }
+
+    private function undo(): void
+    {
+        if ($this->document->canUndo())
+        {
+            $this->document->undo();
+        }
+        else
+        {
+            print_r("Can't undo</br>");
+        }
+    }
+
+    private function redo(): void
+    {
+        if ($this->document->canRedo())
+        {
+            $this->document->redo();
+        }
+        else
+        {
+            print_r("Can't redo</br>");
+        }
+    }
+
+    private function list(): void
+    {
+        print_r('-------------</br>');
+        print_r($this->document->getTitle());
+        print_r('-------------</br>');
+    }
+
+    private function save(string $fileName): void
+    {
+        $htmlExporter = new DocumentHtmlExporter($this->document);
+        $fileContent = $htmlExporter->generate();
+        file_put_contents($fileName, $fileContent);
     }
 }
