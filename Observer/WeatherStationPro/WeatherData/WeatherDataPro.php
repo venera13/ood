@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace Observer\WeatherStationPro\WeatherData;
 
 use Observer\WeatherStationPro\Data\WeatherInfoPro;
-use Observer\WeatherStationPro\Domain\WeatherInfoType;
 use Observer\WeatherStationPro\Event\WeatherInfoEvent;
 use Observer\WeatherStationPro\Observable\Observable;
-use Observer\WeatherStationPro\Data\WeatherDuoData;
 use Observer\WeatherStationPro\Utils\Arrays;
 
 class WeatherDataPro extends Observable
@@ -66,11 +64,11 @@ class WeatherDataPro extends Observable
     public function measurementsChanged(): void
     {
         $changeEvents = Arrays::removeNulls([
-            $this->getTemperature() !== null ? new WeatherInfoEvent(WeatherInfoEvent::TEMPERATURE_CHANGED) : null,
-            $this->getHumidity() !== null ? new WeatherInfoEvent(WeatherInfoEvent::HUMIDITY_CHANGED) : null,
-            $this->getPressure() !== null ? new WeatherInfoEvent(WeatherInfoEvent::PRESSURE_CHANGED) : null,
-            $this->getWindSpeed() !== null ? new WeatherInfoEvent(WeatherInfoEvent::WIND_SPEED_CHANGED) : null,
-            $this->getWindDirection() !== null ? new WeatherInfoEvent(WeatherInfoEvent::WIND_DIRECTION_CHANGED) : null,
+            $this->getTemperature() !== null ? new WeatherInfoEvent(WeatherInfoEvent::TEMPERATURE) : null,
+            $this->getHumidity() !== null ? new WeatherInfoEvent(WeatherInfoEvent::HUMIDITY) : null,
+            $this->getPressure() !== null ? new WeatherInfoEvent(WeatherInfoEvent::PRESSURE) : null,
+            $this->getWindSpeed() !== null ? new WeatherInfoEvent(WeatherInfoEvent::WIND_SPEED) : null,
+            $this->getWindDirection() !== null ? new WeatherInfoEvent(WeatherInfoEvent::WIND_DIRECTION) : null,
         ]);
         $this->notifyObservers($changeEvents);
     }

@@ -44,9 +44,9 @@ class WeatherData extends Observable
     public function measurementsChanged(): void
     {
         $changeEvents = Arrays::removeNulls([
-            $this->getTemperature() !== null ? new WeatherInfoEvent(WeatherInfoEvent::TEMPERATURE_CHANGED) : null,
-            $this->getHumidity() !== null ? new WeatherInfoEvent(WeatherInfoEvent::HUMIDITY_CHANGED) : null,
-            $this->getPressure() !== null ? new WeatherInfoEvent(WeatherInfoEvent::PRESSURE_CHANGED) : null,
+            $this->getTemperature() !== null ? new WeatherInfoEvent(WeatherInfoEvent::TEMPERATURE) : null,
+            $this->getHumidity() !== null ? new WeatherInfoEvent(WeatherInfoEvent::HUMIDITY) : null,
+            $this->getPressure() !== null ? new WeatherInfoEvent(WeatherInfoEvent::PRESSURE) : null,
         ]);//передавать объект события
         $this->notifyObservers($changeEvents);
     }
