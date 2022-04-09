@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Observer\WeatherStationPro\Event;
 
-class Event
+class Event implements EventInterface
 {
     /** @var string */
     private $type;

@@ -8,6 +8,7 @@ include 'Data/WeatherDuoData.php';
 include 'Data/ObserverData.php';
 include 'Data/SensorStats.php';
 include 'Data/ObservableData.php';
+include 'Event/EventInterface.php';
 include 'Event/Event.php';
 include 'Event/WeatherInfoEvent.php';
 include 'Domain/WeatherInfoType.php';
@@ -20,24 +21,24 @@ include 'WeatherDisplay/StatsDisplay.php';
 include 'WeatherDisplay/StatsCalculator.php';
 include 'WeatherDisplay/StatsWindDirectionCalculator.php';
 
+use Observer\WeatherStationPro\Event\WeatherInfoEvent;
 use Observer\WeatherStationPro\WeatherData\WeatherData;
 use Observer\WeatherStationPro\WeatherDisplay\StatsDisplay;
-use Observer\WeatherStationPro\Domain\WeatherInfoType;
 use Observer\WeatherStationPro\WeatherData\WeatherDataPro;
 
 $weatherDataIn = new WeatherData();
 $weatherDataOut = new WeatherDataPro();
 
 $display = new StatsDisplay($weatherDataIn, $weatherDataOut);
-$weatherDataIn->registerObserver(WeatherInfoType::TEMPERATURE, $display, 1);
-$weatherDataIn->registerObserver(WeatherInfoType::HUMIDITY, $display, 0);
+$weatherDataIn->registerObserver(WeatherInfoEvent::TEMPERATURE_CHANGED, $display, 1);
+$weatherDataIn->registerObserver(WeatherInfoEvent::HUMIDITY_CHANGED, $display, 0);
 //$weatherDataOut->registerObserver(WeatherInfoType::TEMPERATURE, $display);
 
 $weatherDataIn->setMeasurements(5, 0.9, 750);
 
-$weatherDataIn->removeObserver($display, WeatherInfoType::TEMPERATURE);
+$weatherDataIn->removeObserver($display, WeatherInfoEvent::TEMPERATURE_CHANGED);
 
-//$weatherDataIn->setMeasurements(10, 0.5, 754);
+$weatherDataIn->setMeasurements(10, 0.5, 754);
 //
 //$weatherDataOut->setMeasurements(-10, 1, 750, 5, 270);
 //$weatherDataOut->setMeasurements(0, 0.1, 745, 2, 0);

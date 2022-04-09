@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Observer\WeatherStationPro\Observer;
 
+use Observer\WeatherStationPro\Event\EventInterface;
 use Observer\WeatherStationPro\Observable\ObservableInterface;
 
 /**
@@ -10,5 +11,5 @@ use Observer\WeatherStationPro\Observable\ObservableInterface;
  */
 interface ObserverInterface
 {
-    public function update(ObservableInterface $subject): void;
+    public function update(EventInterface $event, ObservableInterface $subject): void;
 }

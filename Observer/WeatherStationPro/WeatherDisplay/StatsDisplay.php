@@ -5,7 +5,8 @@ namespace Observer\WeatherStationPro\WeatherDisplay;
 
 use Observer\WeatherStationPro\Data\WeatherInfo;
 use Observer\WeatherStationPro\Data\WeatherInfoPro;
-use Observer\WeatherStationPro\Domain\WeatherInfoType;
+use Observer\WeatherStationPro\Event\EventInterface;
+use Observer\WeatherStationPro\Event\WeatherInfoEvent;
 use Observer\WeatherStationPro\Observable\ObservableInterface;
 use Observer\WeatherStationPro\Observer\ObserverInterface;
 
@@ -29,67 +30,117 @@ class StatsDisplay implements ObserverInterface
         $this->observableOutside = $observableOutside;
 
         $this->weatherDataSensorStats = [
-            WeatherInfoType::TEMPERATURE => new StatsCalculator(),
-            WeatherInfoType::HUMIDITY => new StatsCalculator(),
-            WeatherInfoType::PRESSURE => new StatsCalculator(),
+            WeatherInfoEvent::TEMPERATURE_CHANGED => new StatsCalculator(),
+            WeatherInfoEvent::HUMIDITY_CHANGED => new StatsCalculator(),
+            WeatherInfoEvent::PRESSURE_CHANGED => new StatsCalculator(),
         ];
         $this->weatherProDataSensorStats = [
-            WeatherInfoType::TEMPERATURE => new StatsCalculator(),
-            WeatherInfoType::HUMIDITY => new StatsCalculator(),
-            WeatherInfoType::PRESSURE => new StatsCalculator(),
-            WeatherInfoType::WIND_SPEED => new StatsCalculator(),
-            WeatherInfoType::WIND_DIRECTION => new StatsWindDirectionCalculator(),
+            WeatherInfoEvent::TEMPERATURE_CHANGED => new StatsCalculator(),
+            WeatherInfoEvent::HUMIDITY_CHANGED => new StatsCalculator(),
+            WeatherInfoEvent::PRESSURE_CHANGED => new StatsCalculator(),
+            WeatherInfoEvent::WIND_SPEED_CHANGED => new StatsCalculator(),
+            WeatherInfoEvent::WIND_DIRECTION_CHANGED => new StatsWindDirectionCalculator(),
         ];
     }
 
-    public function update(ObservableInterface $subject): void
+    public function update(EventInterface $event, ObservableInterface $subject): void
     {
         if ($subject === $this->observableInside)
         {
             print_r('Observable type Inside </br>');
             print_r('----' . '</br>');
-            $this->updateWeatherInfoStatistic($this->observableInside->getChangedData());
-            $this->printWeatherInfoStatistic();
+            $this->updateWeatherInfoStatistic($event, $this->observableInside->getChangedData());
+            $this->printWeatherInfoStatistic($event);
         }
         else if ($subject === $this->observableOutside)
         {
             print_r('Observable type Outside </br>');
             print_r('----' . '</br>');
-            $this->updateWeatherInfoProStatistic($this->observableOutside->getChangedData());
-            $this->printWeatherInfoProStatistic();
+            $this->updateWeatherInfoProStatistic($event, $this->observableOutside->getChangedData());
+            $this->printWeatherInfoProStatistic($event);
         }
     }
 
-    private function updateWeatherInfoStatistic(WeatherInfo $weatherInfo): void
+    private function updateWeatherInfoStatistic(EventInterface $event, WeatherInfo $weatherInfo): void
     {
-        $this->weatherDataSensorStats[WeatherInfoType::TEMPERATURE]->update($weatherInfo->getTemperature());
-        $this->weatherDataSensorStats[WeatherInfoType::HUMIDITY]->update($weatherInfo->getHumidity());
-        $this->weatherDataSensorStats[WeatherInfoType::PRESSURE]->update($weatherInfo->getPressure());
+        if ($event->getType() === WeatherInfoEvent::TEMPERATURE_CHANGED)
+        {
+            $this->weatherDataSensorStats[WeatherInfoEvent::TEMPERATURE_CHANGED]->update($weatherInfo->getTemperature());
+        }
+
+        if ($event->getType() === WeatherInfoEvent::HUMIDITY_CHANGED)
+        {
+            $this->weatherDataSensorStats[WeatherInfoEvent::HUMIDITY_CHANGED]->update($weatherInfo->getHumidity());
+        }
+
+        if ($event->getType() === WeatherInfoEvent::PRESSURE_CHANGED)
+        {
+            $this->weatherDataSensorStats[WeatherInfoEvent::PRESSURE_CHANGED]->update($weatherInfo->getPressure());
+        }
     }
 
-    private function updateWeatherInfoProStatistic(WeatherInfoPro $weatherInfo): void
+    private function updateWeatherInfoProStatistic(EventInterface $event, WeatherInfoPro $weatherInfo): void
     {
-        $this->weatherProDataSensorStats[WeatherInfoType::TEMPERATURE]->update($weatherInfo->getTemperature());
-        $this->weatherProDataSensorStats[WeatherInfoType::HUMIDITY]->update($weatherInfo->getHumidity());
-        $this->weatherProDataSensorStats[WeatherInfoType::PRESSURE]->update($weatherInfo->getPressure());
-        $this->weatherProDataSensorStats[WeatherInfoType::WIND_SPEED]->update($weatherInfo->getWindSpeed());
-        $this->weatherProDataSensorStats[WeatherInfoType::WIND_DIRECTION]->update($weatherInfo->getWindDirection());
+        if ($event->getType() === WeatherInfoEvent::TEMPERATURE_CHANGED)
+        {
+            $this->weatherProDataSensorStats[WeatherInfoEvent::TEMPERATURE_CHANGED]->update($weatherInfo->getTemperature());
+        }
+        if ($event->getType() === WeatherInfoEvent::HUMIDITY_CHANGED)
+        {
+            $this->weatherProDataSensorStats[WeatherInfoEvent::HUMIDITY_CHANGED]->update($weatherInfo->getHumidity());
+        }
+        if ($event->getType() === WeatherInfoEvent::PRESSURE_CHANGED)
+        {
+            $this->weatherProDataSensorStats[WeatherInfoEvent::PRESSURE_CHANGED]->update($weatherInfo->getPressure());
+        }
+        if ($event->getType() === WeatherInfoEvent::WIND_SPEED_CHANGED)
+        {
+            $this->weatherProDataSensorStats[WeatherInfoEvent::WIND_SPEED_CHANGED]->update($weatherInfo->getWindSpeed());
+        }
+        if ($event->getType() === WeatherInfoEvent::WIND_DIRECTION_CHANGED)
+        {
+            $this->weatherProDataSensorStats[WeatherInfoEvent::WIND_DIRECTION_CHANGED]->update($weatherInfo->getWindDirection());
+        }
     }
 
-    private function printWeatherInfoStatistic(): void
+    private function printWeatherInfoStatistic(EventInterface $event): void
     {
-        $this->printStatistic(WeatherInfoType::TEMPERATURE, $this->weatherDataSensorStats[WeatherInfoType::TEMPERATURE]);
-        $this->printStatistic(WeatherInfoType::HUMIDITY, $this->weatherDataSensorStats[WeatherInfoType::HUMIDITY]);
-        $this->printStatistic(WeatherInfoType::PRESSURE, $this->weatherDataSensorStats[WeatherInfoType::PRESSURE]);
+        if ($event->getType() === WeatherInfoEvent::TEMPERATURE_CHANGED)
+        {
+            $this->printStatistic(WeatherInfoEvent::TEMPERATURE_CHANGED, $this->weatherDataSensorStats[WeatherInfoEvent::TEMPERATURE_CHANGED]);
+        }
+        if ($event->getType() === WeatherInfoEvent::HUMIDITY_CHANGED)
+        {
+            $this->printStatistic(WeatherInfoEvent::HUMIDITY_CHANGED, $this->weatherDataSensorStats[WeatherInfoEvent::HUMIDITY_CHANGED]);
+        }
+        if ($event->getType() === WeatherInfoEvent::PRESSURE_CHANGED)
+        {
+            $this->printStatistic(WeatherInfoEvent::PRESSURE_CHANGED, $this->weatherDataSensorStats[WeatherInfoEvent::PRESSURE_CHANGED]);
+        }
     }
 
-    private function printWeatherInfoProStatistic(): void
+    private function printWeatherInfoProStatistic(EventInterface $event): void
     {
-        $this->printStatistic(WeatherInfoType::TEMPERATURE, $this->weatherProDataSensorStats[WeatherInfoType::TEMPERATURE]);
-        $this->printStatistic(WeatherInfoType::HUMIDITY, $this->weatherProDataSensorStats[WeatherInfoType::HUMIDITY]);
-        $this->printStatistic(WeatherInfoType::PRESSURE, $this->weatherProDataSensorStats[WeatherInfoType::PRESSURE]);
-        $this->printStatistic(WeatherInfoType::WIND_SPEED, $this->weatherProDataSensorStats[WeatherInfoType::WIND_SPEED]);
-        $this->printStatistic(WeatherInfoType::WIND_DIRECTION, $this->weatherProDataSensorStats[WeatherInfoType::WIND_DIRECTION]);
+        if ($event->getType() === WeatherInfoEvent::TEMPERATURE_CHANGED)
+        {
+            $this->printStatistic(WeatherInfoEvent::TEMPERATURE_CHANGED, $this->weatherProDataSensorStats[WeatherInfoEvent::TEMPERATURE_CHANGED]);
+        }
+        if ($event->getType() === WeatherInfoEvent::HUMIDITY_CHANGED)
+        {
+            $this->printStatistic(WeatherInfoEvent::HUMIDITY_CHANGED, $this->weatherProDataSensorStats[WeatherInfoEvent::HUMIDITY_CHANGED]);
+        }
+        if ($event->getType() === WeatherInfoEvent::PRESSURE_CHANGED)
+        {
+            $this->printStatistic(WeatherInfoEvent::PRESSURE_CHANGED, $this->weatherProDataSensorStats[WeatherInfoEvent::PRESSURE_CHANGED]);
+        }
+        if ($event->getType() === WeatherInfoEvent::WIND_SPEED_CHANGED)
+        {
+            $this->printStatistic(WeatherInfoEvent::WIND_SPEED_CHANGED, $this->weatherProDataSensorStats[WeatherInfoEvent::WIND_SPEED_CHANGED]);
+        }
+        if ($event->getType() === WeatherInfoEvent::WIND_DIRECTION_CHANGED)
+        {
+            $this->printStatistic(WeatherInfoEvent::WIND_DIRECTION_CHANGED, $this->weatherProDataSensorStats[WeatherInfoEvent::WIND_DIRECTION_CHANGED]);
+        }
     }
 
     /**

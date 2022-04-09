@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Observer\WeatherStationPro\Observable;
 
+use Observer\WeatherStationPro\Event\EventInterface;
 use Observer\WeatherStationPro\Observer\ObserverInterface;
 use Observer\WeatherStationPro\Data\ObserverData;
 use Observer\WeatherStationPro\Observable\Exception\NotifyObserverException;
@@ -29,7 +30,7 @@ abstract class Observable implements ObservableInterface
                 $observer
             );
         }
-        if (!$this->isObserverSubscribed($event, $observer))
+        if (!$this->isObserverSubscribed($event, $observerData))
         {
             $this->addEventListener($event, $observerData);
         }
@@ -43,7 +44,7 @@ abstract class Observable implements ObservableInterface
             return;
         }
 
-        if ($this->isObserverSubscribed($event, $observer))
+        if ($this->isObserverSubscribed($event, $observerData))
         {
             $this->removeEventListener($event, $observerData);
         }
@@ -55,7 +56,7 @@ abstract class Observable implements ObservableInterface
         {
             foreach ($changeEvents as $event)
             {
-                if (array_key_exists($event, $this->events))
+                if (array_key_exists($event->getType(), $this->events))
                 {
                     $this->notifyObserverByEvent($event);
                 }
@@ -78,8 +79,15 @@ abstract class Observable implements ObservableInterface
 
     private function removeEventListener(string $event, ObserverData $observer): void
     {
-        unset($this->events[$event][$observer]);
-        $this->events[$event][] = array_values($this->events[$event]);
+        foreach ($this->events[$event] as $key => $value)
+        {
+            if ($value === $observer)
+            {
+                unset($this->events[$event][$key]);;
+                break;
+            }
+        }
+        $this->events[$event] = array_values($this->events[$event]);
     }
 
     private function sortObservers(string $event): void
@@ -108,7 +116,7 @@ abstract class Observable implements ObservableInterface
         return null;
     }
 
-    private function isObserverSubscribed(string $event, ObserverInterface $observer): bool
+    private function isObserverSubscribed(string $event, ObserverData $observer): bool
     {
         if (!$this->events || !array_key_exists($event, $this->events))
         {
@@ -118,11 +126,11 @@ abstract class Observable implements ObservableInterface
         return in_array($observer, $this->events[$event]);
     }
 
-    private function notifyObserverByEvent(string $event)
+    private function notifyObserverByEvent(EventInterface $event)
     {
-        foreach ($this->events[$event] as $observer)
+        foreach ($this->events[$event->getType()] as $observer)
         {
-            $observer->getObserver()->update($this);
+            $observer->getObserver()->update($event, $this);
         }
     }
 }

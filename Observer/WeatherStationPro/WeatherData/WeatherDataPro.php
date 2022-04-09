@@ -66,11 +66,11 @@ class WeatherDataPro extends Observable
     public function measurementsChanged(): void
     {
         $changeEvents = Arrays::removeNulls([
-            $this->getTemperature() !== null ? WeatherInfoEvent::TEMPERATURE_CHANGED : null,
-            $this->getHumidity() !== null ? WeatherInfoEvent::HUMIDITY_CHANGED : null,
-            $this->getPressure() !== null ? WeatherInfoEvent::PRESSURE_CHANGED : null,
-            $this->getWindSpeed() !== null ? WeatherInfoEvent::WIND_SPEED_CHANGED : null,
-            $this->getWindDirection() !== null ? WeatherInfoEvent::WIND_DIRECTION_CHANGED : null,
+            $this->getTemperature() !== null ? new WeatherInfoEvent(WeatherInfoEvent::TEMPERATURE_CHANGED) : null,
+            $this->getHumidity() !== null ? new WeatherInfoEvent(WeatherInfoEvent::HUMIDITY_CHANGED) : null,
+            $this->getPressure() !== null ? new WeatherInfoEvent(WeatherInfoEvent::PRESSURE_CHANGED) : null,
+            $this->getWindSpeed() !== null ? new WeatherInfoEvent(WeatherInfoEvent::WIND_SPEED_CHANGED) : null,
+            $this->getWindDirection() !== null ? new WeatherInfoEvent(WeatherInfoEvent::WIND_DIRECTION_CHANGED) : null,
         ]);
         $this->notifyObservers($changeEvents);
     }

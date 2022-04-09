@@ -15,7 +15,7 @@ abstract class Shape implements ShapeInterface
         $this->color = $color;
     }
 
-    public abstract function draw(CanvasInterface $canvas): void;
+    //public abstract function draw(CanvasInterface $canvas): void;
 
     public function getColor(): string
     {
