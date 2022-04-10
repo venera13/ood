@@ -1,1 +1,1 @@
-setTitle Hi!
+setTitle1 Hi!

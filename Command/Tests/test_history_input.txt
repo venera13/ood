@@ -8,4 +8,4 @@ setTitle 5
 undo
 redo
 undo
-save test
+save test_history

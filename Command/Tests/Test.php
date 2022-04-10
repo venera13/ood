@@ -4,6 +4,11 @@ declare(strict_types=1);
 namespace Command\Tests;
 
 include '../Data/Item.php';
+include '../Data/Image/ImageInterface.php';
+include '../Data/Image/Image.php';
+include '../Data/Paragraph/ParagraphInterface.php';
+include '../Data/Paragraph/Paragraph.php';
+include '../Data/DocumentItem.php';
 include '../Menu/Menu.php';
 include '../Editor/Editor.php';
 include '../Document/DocumentInterface.php';
@@ -11,6 +16,11 @@ include '../Document/Document.php';
 include '../History/History.php';
 include '../Command/CommandInterface.php';
 include '../Command/ChangeStringCommand.php';
+include '../Command/InsertItemCommand.php';
+include '../DocumentExporter/DocumentExporterInterface.php';
+include '../DocumentExporter/DocumentHtmlExporter.php';
+include '../Exceptions/InvalidPositionException.php';
+include '../Exceptions/InvalidCommandException.php';
 include 'MockDocument.php';
 
 use Command\Document\Document;
@@ -53,19 +63,6 @@ class Test extends TestCase
         $this->expectOutputString('help: Help</br>exit: Exit</br>helpexit');
     }
 
-    public function testEditor(): void
-    {
-        $history = new History();
-        $menu = new Menu();
-        $document = new Document($history);
-        $editor = new Editor($menu, $document);
-        $editor->start('test_editor_input.txt');
-
-        $rightString = 'help: Help</br>exit: Exit</br>setTitle: Changes title. Args: < new title ></br>undo: Undo command</br>redo: Redo command</br>list: Show document</br>save: Save as html Args: < filePath ></br>';
-
-        $this->expectOutputString($rightString);
-    }
-
     public function testHistory(): void
     {
         $history = new History();
@@ -76,6 +73,19 @@ class Test extends TestCase
 
         $rightString = '2';
 
-        $this->assertEquals(file_get_contents('test.html'), $rightString);
+        $this->assertEquals(file_get_contents('test_history.html'), $rightString);
+    }
+
+    public function testTextEditor(): void
+    {
+        $history = new History();
+        $menu = new Menu();
+        $document = new Document($history);
+        $editor = new Editor($menu, $document);
+        $editor->start('test_text_input.txt');
+
+        $rightString = '<!DOCTYPE html><html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body><p>1</p></body></html>';
+
+        $this->assertEquals(file_get_contents('test_input.html'), $rightString);
     }
 }
