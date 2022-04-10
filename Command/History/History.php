@@ -7,6 +7,8 @@ use Command\Command\CommandInterface;
 
 class History
 {
+    const MAX_HISTORY_DEPTH = 10;
+
     /** @var int */
     private $nextCommandIndex = 0;
     /** @var CommandInterface[] */
@@ -21,8 +23,8 @@ class History
     {
         if ($this->canUndo())
         {
-            $this->commands[$this->nextCommandIndex - 1]->unexecute();
             --$this->nextCommandIndex;
+            $this->commands[$this->nextCommandIndex]->unexecute();
         }
     }
 
@@ -45,5 +47,12 @@ class History
         $command->execute(); //TODO: добавить проверку на исключение
         $this->commands[] = $command;
         ++$this->nextCommandIndex;
+
+
+        if (count($this->commands) == self::MAX_HISTORY_DEPTH)
+        {
+            $this->commands = array_splice($this->commands, 1, self::MAX_HISTORY_DEPTH - 1);
+            $this->nextCommandIndex = self::MAX_HISTORY_DEPTH - 1;
+        }
     }
 }

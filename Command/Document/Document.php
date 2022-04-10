@@ -52,8 +52,7 @@ class Document implements DocumentInterface
 
     public function setTitle(string $title): void
     {
-        $this->title = $title;
-        $this->history->addAndExecuteCommand(new ChangeStringCommand($this->getTitle(), $title));
+        $this->history->addAndExecuteCommand(new ChangeStringCommand($this->title, $title));
     }
 
     public function canUndo(): bool

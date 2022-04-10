@@ -1,5 +1,21 @@
-setTitle Hi!
-setTitle Hello!
+setTitle Hi1
+setTitle Hi2
+setTitle Hi3
+setTitle Hi4
+setTitle Hi5
+setTitle Hi6
+setTitle Hi7
+setTitle Hi8
+setTitle Hi9
+setTitle Hi10
+setTitle Hi11
 undo
-redo
+undo
+undo
+undo
+undo
+undo
+undo
+undo
+undo
 save hello.html

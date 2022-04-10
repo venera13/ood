@@ -10,10 +10,10 @@ class ChangeStringCommand implements CommandInterface
     /** @var string */
     private $newValue;
 
-    public function __construct(string $target, string $newValue)
+    public function __construct(string &$target, string &$newValue)
     {
-        $this->target = $target;
-        $this->newValue = $newValue;
+        $this->target = &$target;
+        $this->newValue = &$newValue;
     }
 
     public function execute(): void
@@ -26,7 +26,7 @@ class ChangeStringCommand implements CommandInterface
         $this->swap($this->target, $this->newValue);
     }
 
-    private function swap( &$a, &$b ): void
+    private function swap(&$a, &$b): void
     {
         [$a, $b] = [$b, $a];
     }
