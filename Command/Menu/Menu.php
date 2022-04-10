@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Command\Menu;
 
 use Command\Data\Item;
+use Command\Exceptions\InvalidCommandException;
 
 class Menu
 {
@@ -57,6 +58,10 @@ class Menu
         $this->exit = false;
 
         $item = $this->findItem($command);
+        if ($item === null)
+        {
+            throw new InvalidCommandException('Invalid command');
+        }
 
         if ($item)
         {

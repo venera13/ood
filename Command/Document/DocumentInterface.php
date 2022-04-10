@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Command\Document;
 
-use Command\Data\ConstDocumentItem;
 use Command\Data\DocumentItem;
 
 interface DocumentInterface
@@ -14,7 +13,7 @@ interface DocumentInterface
 
     public function getItemsCount(): int;
 
-    public function getItem(): ConstDocumentItem|DocumentItem;
+    public function getItem(int $index): DocumentItem;
 
     public function deleteItem(int $index): void;
 

@@ -14,4 +14,10 @@ undo
 setTitle Hello
 undo
 undo
+insertParagraph Hello, end
+insertParagraph Friend end
+insertParagraph My 1
+undo
+redo
+list
 save hello

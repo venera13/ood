@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace Command\Document;
 
 use Command\Command\ChangeStringCommand;
-use Command\Data\ConstDocumentItem;
+use Command\Command\InsertItemCommand;
 use Command\Data\DocumentItem;
+use Command\Data\Paragraph\Paragraph;
 use Command\DocumentExporter\DocumentHtmlExporter;
+use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
 
 class Document implements DocumentInterface
@@ -15,6 +17,8 @@ class Document implements DocumentInterface
     private $history;
     /** @var string */
     private $title = '';
+    /** @var DocumentItem[] */
+    private $items = [];
 
     public function __construct(History $history)
     {
@@ -23,7 +27,13 @@ class Document implements DocumentInterface
 
     public function insertParagraph(string $text, ?int $position = null): void
     {
-        // TODO: Implement insertParagraph() method.
+        if ($position !== null && !$this->isVerifyPosition($position))
+        {
+            throw new InvalidPositionException();
+        }
+        $paragraph = new Paragraph();
+        $paragraph->setText($text);
+        $this->history->addAndExecuteCommand(new InsertItemCommand($this->items, new DocumentItem($paragraph, null), $position));
     }
 
     public function insertImage(string $path, int $width, int $height, ?int $position = null): void
@@ -33,12 +43,12 @@ class Document implements DocumentInterface
 
     public function getItemsCount(): int
     {
-        // TODO: Implement getItemsCount() method.
+        return count($this->items);
     }
 
-    public function getItem(): ConstDocumentItem|DocumentItem
+    public function getItem(int $index): DocumentItem
     {
-        // TODO: Implement getItem() method.
+        return $this->items[$index];
     }
 
     public function deleteItem(int $index): void
@@ -81,5 +91,10 @@ class Document implements DocumentInterface
         $htmlExporter = new DocumentHtmlExporter($this);
         $fileContent = $htmlExporter->generate();
         file_put_contents($fileName . '.html', $fileContent);
+    }
+
+    private function isVerifyPosition(int $position): bool
+    {
+        return $position < $this->getItemsCount();
     }
 }

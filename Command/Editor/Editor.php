@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Command\Editor;
 
 use Command\Document\DocumentInterface;
-use Command\DocumentExporter\DocumentHtmlExporter;
+use Command\Exceptions\InvalidCommandException;
+use Command\Exceptions\InvalidPositionException;
 use Command\Menu\Menu;
 
 class Editor
@@ -24,7 +25,14 @@ class Editor
 
     public function start(string $filePath): void
     {
-        $this->menu->run($filePath);
+        try
+        {
+            $this->menu->run($filePath);
+        }
+        catch(InvalidCommandException $exception)
+        {
+            echo ($exception->getMessage());
+        }
     }
 
     private function addCommands(): void
@@ -38,6 +46,7 @@ class Editor
             $this->menu->exit();
         });
         $this->addMenuItem('setTitle', 'Changes title. Args: < new title >', 'setTitle');
+        $this->addMenuItem('insertParagraph', 'Add paragraph. Args: < text position|end  >', 'insertParagraph');
         $this->addMenuItem('undo', 'Undo command', 'undo');
         $this->addMenuItem('redo', 'Redo command', 'redo');
         $this->addMenuItem('list', 'Show document', 'list');
@@ -60,6 +69,28 @@ class Editor
     private function setTitle(string $title): void
     {
         $this->document->setTitle($title);
+    }
+
+    private function insertParagraph(string $args): void
+    {
+        $params = explode(' ', trim($args));
+        $position = $params[count($params) - 1];
+        $position = $position === 'end' ? $position : (int) $position;
+        if (!$position)
+        {
+            echo('Incorrect paragraph position</br>');
+            return;
+        }
+        $params = array_slice($params, 0, count($params) - 1);
+        $text = implode(' ', $params);
+        try
+        {
+            $this->document->insertParagraph($text, gettype($position) !== 'string' ? $position : null);
+        }
+        catch (InvalidPositionException $exception)
+        {
+            echo('Incorrect paragraph position</br>');
+        }
     }
 
     private function undo(): void
@@ -89,7 +120,21 @@ class Editor
     private function list(): void
     {
         print_r('-------------</br>');
-        print_r($this->document->getTitle());
+        print_r('Title: ' . $this->document->getTitle() . '</br>');
+        for ($i = 0; $i < $this->document->getItemsCount(); $i++)
+        {
+            $item = $this->document->getItem($i);
+            if ($item->getImage())
+            {
+                $image = $item->getImage();
+                print_r($i . '. Image: ' . $image->getWidth() . '*' . $image->getHeight() . ' ' . $image->getPath() . '</br>');
+            }
+            else
+            {
+                $paragraph = $item->getText();
+                print_r($i . '. Paragraph: ' . $paragraph->getText() . '</br>');
+            }
+        }
         print_r('-------------</br>');
     }
 

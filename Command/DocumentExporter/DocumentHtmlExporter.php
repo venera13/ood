@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Command\DocumentExporter;
 
+use Command\Data\Image\ImageInterface;
+use Command\Data\Paragraph\ParagraphInterface;
 use Command\Document\DocumentInterface;
 
 class DocumentHtmlExporter implements DocumentExporterInterface
@@ -35,11 +37,32 @@ class DocumentHtmlExporter implements DocumentExporterInterface
 
     private function addFileBody(): void
     {
-
+        for ($i = 0; $i < $this->document->getItemsCount(); $i++)
+        {
+            $item = $this->document->getItem($i);
+            if ($item->getImage())
+            {
+                $this->addImage($item->getImage());
+            }
+            else
+            {
+                $this->addParagraph($item->getText());
+            }
+        }
     }
 
     private function addFileBottom(): void
     {
         $this->fileContent .= '</body></html>';
+    }
+
+    private function addImage(ImageInterface $image): void
+    {
+        $this->fileContent .= '<img width="' . $image->getWidth() . 'px" height="' . $image->getHeight() .'px" src="' . $image->getPath() . '"/>';
+    }
+
+    private function addParagraph(ParagraphInterface $paragraph): void
+    {
+        $this->fileContent .= '<p>' . $paragraph->getText() . '</p>';
     }
 }
