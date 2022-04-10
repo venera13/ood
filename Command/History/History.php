@@ -44,10 +44,14 @@ class History
 
     public function addAndExecuteCommand(CommandInterface $command): void
     {
+        if ($this->nextCommandIndex < count($this->commands))
+        {
+            $this->commands = array_splice($this->commands, 0, $this->nextCommandIndex);
+        }
+
         $command->execute(); //TODO: добавить проверку на исключение
         $this->commands[] = $command;
         ++$this->nextCommandIndex;
-
 
         if (count($this->commands) == self::MAX_HISTORY_DEPTH)
         {

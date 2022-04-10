@@ -1,0 +1,11 @@
+setTitle 1
+setTitle 2
+setTitle 3
+setTitle 4
+undo
+undo
+setTitle 5
+undo
+redo
+undo
+save test

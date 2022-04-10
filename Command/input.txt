@@ -11,11 +11,7 @@ setTitle Hi10
 setTitle Hi11
 undo
 undo
+setTitle Hello
 undo
 undo
-undo
-undo
-undo
-undo
-undo
-save hello.html
+save hello

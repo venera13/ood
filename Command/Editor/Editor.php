@@ -95,8 +95,6 @@ class Editor
 
     private function save(string $fileName): void
     {
-        $htmlExporter = new DocumentHtmlExporter($this->document);
-        $fileContent = $htmlExporter->generate();
-        file_put_contents($fileName, $fileContent);
+        $this->document->save($fileName);
     }
 }

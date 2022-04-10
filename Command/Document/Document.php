@@ -6,6 +6,7 @@ namespace Command\Document;
 use Command\Command\ChangeStringCommand;
 use Command\Data\ConstDocumentItem;
 use Command\Data\DocumentItem;
+use Command\DocumentExporter\DocumentHtmlExporter;
 use Command\History\History;
 
 class Document implements DocumentInterface
@@ -75,8 +76,10 @@ class Document implements DocumentInterface
         $this->history->redo();
     }
 
-    public function save(): bool
+    public function save(string $fileName): void
     {
-        // TODO: Implement save() method.
+        $htmlExporter = new DocumentHtmlExporter($this);
+        $fileContent = $htmlExporter->generate();
+        file_put_contents($fileName . '.html', $fileContent);
     }
 }

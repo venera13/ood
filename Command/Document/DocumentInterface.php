@@ -30,5 +30,5 @@ interface DocumentInterface
 
     public function redo(): void;
 
-    public function save(): bool;
+    public function save(string $fileName): void;
 }
