@@ -30,14 +30,14 @@ class History
 
     public function canRedo(): bool
     {
-        return $this->nextCommandIndex !== count($this->commands); //TODO: добавить проверку на исключение
+        return $this->nextCommandIndex !== count($this->commands);
     }
 
     public function redo(): void
     {
         if ($this->canRedo())
         {
-            $this->commands[$this->nextCommandIndex]->execute(); //TODO: добавить проверку на исключение
+            $this->commands[$this->nextCommandIndex]->execute();
             ++$this->nextCommandIndex;
         }
     }
@@ -49,7 +49,7 @@ class History
             $this->commands = array_splice($this->commands, 0, $this->nextCommandIndex);
         }
 
-        $command->execute(); //TODO: добавить проверку на исключение
+        $command->execute();
         $this->commands[] = $command;
         ++$this->nextCommandIndex;
 
