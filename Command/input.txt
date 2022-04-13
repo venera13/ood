@@ -17,6 +17,7 @@ undo
 insertParagraph Hello, end
 insertParagraph Friend end
 insertParagraph My 1
+replaceText 1 World
 undo
 redo
 list

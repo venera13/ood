@@ -53,7 +53,8 @@ class Document implements DocumentInterface
 
     public function deleteItem(int $index): void
     {
-        // TODO: Implement deleteItem() method.
+        unset($this->items[$index]);
+        $this->items = array_values($this->items);
     }
 
     public function getTitle(): string

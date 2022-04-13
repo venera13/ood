@@ -47,6 +47,7 @@ class Editor
         });
         $this->addMenuItem('setTitle', 'Changes title. Args: < new title >', 'setTitle');
         $this->addMenuItem('insertParagraph', 'Add paragraph. Args: < text position|end  >', 'insertParagraph');
+        $this->addMenuItem('replaceText', 'Replace paragraph. Args: < position text>', 'replaceText');
         $this->addMenuItem('undo', 'Undo command', 'undo');
         $this->addMenuItem('redo', 'Redo command', 'redo');
         $this->addMenuItem('list', 'Show document', 'list');
@@ -86,6 +87,40 @@ class Editor
         try
         {
             $this->document->insertParagraph($text, gettype($position) !== 'string' ? $position : null);
+        }
+        catch (InvalidPositionException $exception)
+        {
+            echo('Incorrect paragraph position</br>');
+        }
+    }
+
+    private function replaceText(string $args): void
+    {
+        $params = explode(' ', trim($args));
+        $position = (int) $params[0];
+        if (!$position)
+        {
+            echo('Incorrect paragraph position</br>');
+            return;
+        }
+        $params = array_slice($params, 1, count($params));
+        $text = implode(' ', $params);
+        try
+        {
+            $itemsCount = $this->document->getItemsCount();
+            if ($position >= $itemsCount)
+            {
+                throw new InvalidPositionException();
+            }
+            $item = $this->document->getItem($position);
+
+            if ($item->getText() === null)
+            {
+                throw new InvalidPositionException();
+            }
+
+            $this->document->deleteItem($position);
+            $this->document->insertParagraph($text, $position);
         }
         catch (InvalidPositionException $exception)
         {

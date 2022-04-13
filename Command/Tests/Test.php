@@ -22,6 +22,7 @@ include '../DocumentExporter/DocumentHtmlExporter.php';
 include '../Exceptions/InvalidPositionException.php';
 include '../Exceptions/InvalidCommandException.php';
 include 'MockDocument.php';
+include 'MockFileContentDocument.php';
 
 use Command\Document\Document;
 use Command\Editor\Editor;
@@ -58,7 +59,7 @@ class Test extends TestCase
         {
             print_r('exit');
         });
-        $menu->run('test_input.txt');
+        $menu->run('inputs/test_input.txt');
 
         $this->expectOutputString('help: Help</br>exit: Exit</br>helpexit');
     }
@@ -69,7 +70,7 @@ class Test extends TestCase
         $menu = new Menu();
         $document = new MockDocument($history);
         $editor = new Editor($menu, $document);
-        $editor->start('test_history_input.txt');
+        $editor->start('inputs/test_history_input.txt');
 
         $rightString = '2';
 
@@ -82,10 +83,23 @@ class Test extends TestCase
         $menu = new Menu();
         $document = new Document($history);
         $editor = new Editor($menu, $document);
-        $editor->start('test_text_input.txt');
+        $editor->start('inputs/test_text_input.txt');
 
         $rightString = '<!DOCTYPE html><html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body><p>1</p></body></html>';
 
         $this->assertEquals(file_get_contents('test_input.html'), $rightString);
+    }
+
+    public function testReplaceText(): void
+    {
+        $history = new History();
+        $menu = new Menu();
+        $document = new MockFileContentDocument($history);
+        $editor = new Editor($menu, $document);
+        $editor->start('inputs/test_replace_text_input.txt');
+
+        $rightString = '153';
+
+        $this->assertEquals(file_get_contents('test_replace_text.html'), $rightString);
     }
 }

@@ -1,0 +1,5 @@
+insertParagraph 1 end
+insertParagraph 2 end
+insertParagraph 3 end
+replaceText 1 5
+save test_replace_text
