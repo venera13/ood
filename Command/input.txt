@@ -14,9 +14,9 @@ undo
 setTitle Hello
 undo
 undo
-insertParagraph Hello, end
-insertParagraph Friend end
-insertParagraph My 1
+insertParagraph end Hello,
+insertParagraph end Friend
+insertParagraph 1 My
 replaceText 1 World
 undo
 redo

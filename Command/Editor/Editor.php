@@ -46,8 +46,9 @@ class Editor
             $this->menu->exit();
         });
         $this->addMenuItem('setTitle', 'Changes title. Args: < new title >', 'setTitle');
-        $this->addMenuItem('insertParagraph', 'Add paragraph. Args: < text position|end  >', 'insertParagraph');
-        $this->addMenuItem('replaceText', 'Replace paragraph. Args: < position text>', 'replaceText');
+        $this->addMenuItem('insertParagraph', 'Add paragraph. Args: < position|end > < text >', 'insertParagraph');
+        $this->addMenuItem('replaceText', 'Replace paragraph. Args: < position > < text>', 'replaceText');
+        $this->addMenuItem('insertImage', 'Insert image. Args: < position|end > < width > < height > < path to image >', 'insertImage');
         $this->addMenuItem('undo', 'Undo command', 'undo');
         $this->addMenuItem('redo', 'Redo command', 'redo');
         $this->addMenuItem('list', 'Show document', 'list');
@@ -75,14 +76,13 @@ class Editor
     private function insertParagraph(string $args): void
     {
         $params = explode(' ', trim($args));
-        $position = $params[count($params) - 1];
+        $position = $params[0];
         $position = $position === 'end' ? $position : (int) $position;
         if (!$position)
         {
-            echo('Incorrect paragraph position</br>');
-            return;
+            throw new InvalidPositionException();
         }
-        $params = array_slice($params, 0, count($params) - 1);
+        $params = array_slice($params, 1, count($params));
         $text = implode(' ', $params);
         try
         {
@@ -121,6 +121,30 @@ class Editor
 
             $this->document->deleteItem($position);
             $this->document->insertParagraph($text, $position);
+        }
+        catch (InvalidPositionException $exception)
+        {
+            echo('Incorrect paragraph position</br>');
+        }
+    }
+
+    private function insertImage(string $args): void
+    {
+        $params = explode(' ', trim($args));
+        $position = $params[0];
+        $position = $position === 'end' ? $position : (int) $position;
+
+        $width = (int) $params[1];
+        $height = (int) $params[2];
+        $path = $params[3];
+
+        if (!$position || !$width || !$height)
+        {
+            throw new InvalidPositionException();
+        }
+        try
+        {
+            $this->document->insertImage($path, $width, $height, gettype($position) !== 'string' ? $position : null);
         }
         catch (InvalidPositionException $exception)
         {

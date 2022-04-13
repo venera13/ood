@@ -7,31 +7,59 @@ class Image implements ImageInterface
 {
     /** @var string */
     private $path;
-    /** @var string */
+    /** @var int */
     private $width;
-    /** @var string */
+    /** @var int */
     private $height;
+    /** @var bool */
+    private $removed;
 
-    public function __construct(string $path, string $width, string $height)
+    public function __construct(string $path, int $width, int $height, ?bool $removed = false)
     {
         $this->path = $path;
         $this->width = $width;
         $this->height = $height;
+        $this->removed = $removed;
     }
 
+    /**
+     * @return string
+     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    public function getWidth(): string
+    /**
+     * @return int
+     */
+    public function getWidth(): int
     {
         return $this->width;
     }
 
-    public function getHeight(): string
+    /**
+     * @return int
+     */
+    public function getHeight(): int
     {
         return $this->height;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRemoved(): ?bool
+    {
+        return $this->removed;
+    }
+
+    /**
+     * @param bool $removed
+     */
+    public function setRemoved(?bool $removed): void
+    {
+        $this->removed = $removed;
     }
 
     public function resize(int $width, int $height): void

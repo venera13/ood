@@ -6,13 +6,18 @@ namespace Command\Document;
 use Command\Command\ChangeStringCommand;
 use Command\Command\InsertItemCommand;
 use Command\Data\DocumentItem;
+use Command\Data\Image\Image;
 use Command\Data\Paragraph\Paragraph;
 use Command\DocumentExporter\DocumentHtmlExporter;
+use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
+use RuntimeException;
 
 class Document implements DocumentInterface
 {
+    const DIRECTORY_NAME = 'images';
+
     /** @var History */
     private $history;
     /** @var string */
@@ -38,7 +43,12 @@ class Document implements DocumentInterface
 
     public function insertImage(string $path, int $width, int $height, ?int $position = null): void
     {
-        // TODO: Implement insertImage() method.
+        Document::createDirectory(self::DIRECTORY_NAME);
+
+        $file = $this->createFile($path, self::DIRECTORY_NAME);
+
+        $image = new Image($file, $width, $height);
+        $this->history->addAndExecuteCommand(new InsertItemCommand($this->items, new DocumentItem(null, $image), $position));
     }
 
     public function getItemsCount(): int
@@ -97,5 +107,32 @@ class Document implements DocumentInterface
     private function isVerifyPosition(int $position): bool
     {
         return $position < $this->getItemsCount();
+    }
+
+    private static function createDirectory(string $directoryName): void
+    {
+        if (!file_exists($directoryName))
+        {
+            mkdir($directoryName);
+        }
+    }
+
+    private static function createFile(string $file, string $directory): string
+    {
+        $newFile = $directory . '/' . Document::generateFileName();
+        try
+        {
+            copy($file, $newFile);
+            return $newFile;
+        }
+        catch (RuntimeException $exception)
+        {
+            throw new CopyFileException();
+        }
+    }
+
+    private static function generateFileName(): string
+    {
+        return substr(md5((string)time()), 0, 16);
     }
 }

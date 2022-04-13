@@ -1,5 +1,5 @@
-insertParagraph 1 end
-insertParagraph 2 end
-insertParagraph 3 end
+insertParagraph end 1
+insertParagraph end 2
+insertParagraph end 3
 replaceText 1 5
 save test_replace_text

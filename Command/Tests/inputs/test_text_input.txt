@@ -1,2 +1,2 @@
-insertParagraph 1 end
+insertParagraph end 1
 save test_input

@@ -7,9 +7,9 @@ interface ImageInterface
 {
     public function getPath(): string;
 
-    public function getWidth(): string;
+    public function getWidth(): int;
 
-    public function getHeight(): string;
+    public function getHeight(): int;
 
     public function resize(int $width, int $height): void;
 }
