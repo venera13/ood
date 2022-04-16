@@ -1,7 +1,6 @@
 list
 insertParagraph end Hello world
 list
-replaceText 0 Goodbye world
+replaceText ff Goodbye world
 list
 undo
-list

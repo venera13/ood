@@ -45,28 +45,38 @@ class Editor
         {
             $this->menu->exit();
         });
-        $this->addMenuItem('setTitle', 'Changes title. Args: < new title >', 'setTitle');
-        $this->addMenuItem('insertParagraph', 'Add paragraph. Args: < position|end > < text >', 'insertParagraph');
-        //не использовать строковые имена методов
-        $this->addMenuItem('replaceText', 'Replace paragraph. Args: < position > < text>', 'replaceText');
-        $this->addMenuItem('insertImage', 'Insert image. Args: < position|end > < width > < height > < path to image >', 'insertImage');
-        $this->addMenuItem('undo', 'Undo command', 'undo');
-        $this->addMenuItem('redo', 'Redo command', 'redo');
-        $this->addMenuItem('list', 'Show document', 'list');
-        $this->addMenuItem('save', 'Save as html Args: < filePath >', 'save');
-    }
-
-    private function addMenuItem(string $shortcut, string $description, string $command): void
-    {
-        $this->menu->addItem($shortcut, $description, $this->makeCommand($command));
-    }
-
-    public function makeCommand(string $command): callable //убрать публичный метод
-    {
-        return function($args) use ($command)
+        $this->menu->addItem('setTitle', 'Changes title. Args: < new title >', function ($args)
         {
-            return $this->$command($args);
-        };
+            $this->setTitle($args);
+        });
+        $this->menu->addItem('insertParagraph', 'Add paragraph. Args: < position|end > < text >', function ($args)
+        {
+            $this->insertParagraph($args);
+        });
+        $this->menu->addItem('replaceText', 'Replace paragraph. Args: < position > < text>', function ($args)
+        {
+            $this->replaceText($args);
+        });
+        $this->menu->addItem('insertImage', 'Insert image. Args: < position|end > < width > < height > < path to image >', function ($args)
+        {
+            $this->insertImage($args);
+        });
+        $this->menu->addItem('undo', 'Undo command', function ()
+        {
+            $this->undo();
+        });
+        $this->menu->addItem('redo', 'Redo command', function ()
+        {
+            $this->redo();
+        });
+        $this->menu->addItem('list', 'Show document', function ()
+        {
+            $this->list();
+        });
+        $this->menu->addItem('save', 'Save as html Args: < filePath >', function ($args)
+        {
+            $this->save($args);
+        });
     }
 
     private function setTitle(string $title): void
@@ -98,12 +108,13 @@ class Editor
     private function replaceText(string $args): void
     {
         $params = explode(' ', trim($args));
-        $position = (int) $params[0];
-        if (!$position)
+        $position = $params[0];
+        if (!ctype_digit($position))
         {
             echo('Incorrect paragraph position</br>');
             return;
         }
+        $position = (int) $position;
         $params = array_slice($params, 1, count($params));
         $text = implode(' ', $params);
         try
@@ -115,13 +126,13 @@ class Editor
             }
             $item = $this->document->getItem($position);
 
-            if ($item->getText() === null)
+            $paragraph = $item->getText();
+            if ($paragraph === null)
             {
                 throw new InvalidPositionException();
             }
 
-            $this->document->deleteItem($position);
-            $this->document->insertParagraph($text, $position);
+            $paragraph->setText($text);
         }
         catch (InvalidPositionException $exception)
         {

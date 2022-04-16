@@ -102,4 +102,17 @@ class Test extends TestCase
 
         $this->assertEquals(file_get_contents('test_replace_text.html'), $rightString);
     }
+
+    public function testEncodeText(): void
+    {
+        $history = new History();
+        $menu = new Menu();
+        $document = new MockFileContentDocument($history);
+        $editor = new Editor($menu, $document);
+        $editor->start('inputs/test_encode_text_input.txt');
+
+        $rightString = "&lt;&gt;&quot;&apos;&amp;";
+
+        $this->assertEquals(file_get_contents('test_encode_text.html'), $rightString);
+    }
 }
