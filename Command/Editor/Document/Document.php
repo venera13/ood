@@ -119,7 +119,7 @@ class Document implements DocumentInterface
 
     private static function createFile(string $file, string $directory): string
     {
-        $newFile = $directory . '/' . Document::generateFileName();
+        $newFile = $directory . '/' . Document::generateFileName() . pathinfo($file)['extension'];
         try
         {
             copy($file, $newFile);

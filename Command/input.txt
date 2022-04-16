@@ -1,6 +1,17 @@
+setTitle Hi1
+undo
+undo
+setTitle Hello
+insertParagraph end Hello,
+insertParagraph end Friend
+insertParagraph 1 World
 list
-insertParagraph end Hello world
-list
-replaceText ff Goodbye world
+replaceText 1 My
 list
 undo
+list
+redo
+list
+insertImage end 500 200 D:\study\cartoon.jpg
+list
+save hello

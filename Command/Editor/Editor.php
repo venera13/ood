@@ -3,22 +3,27 @@ declare(strict_types=1);
 
 namespace Command\Editor;
 
+use Command\Command\ReplaceTextCommand;
+use Command\Document\Document;
 use Command\Document\DocumentInterface;
 use Command\Exceptions\InvalidCommandException;
 use Command\Exceptions\InvalidPositionException;
+use Command\History\History;
 use Command\Menu\Menu;
 
 class Editor
 {
     /** @var Menu */
     private $menu;
-    /** @var DocumentInterface */
-    private $document;
+    /** @var History */
+    private $history;
 
-    public function __construct(Menu $menu, DocumentInterface $document)
+    public function __construct(Menu $menu, History $history)
     {
         $this->menu = $menu;
-        $this->document = $document;
+        $this->history = $history;
+
+        $this->document = new Document($this->history);
 
         $this->addCommands();
     }
@@ -88,11 +93,13 @@ class Editor
     {
         $params = explode(' ', trim($args));
         $position = $params[0];
-        $position = $position === 'end' ? $position : (int) $position;
-        if (!$position)
+        if ($position !== 'end' && !ctype_digit($position))
         {
-            throw new InvalidPositionException();
+            echo('Incorrect paragraph position</br>');
+            return;
         }
+
+        $position = $position === 'end' ? $position : (int) $position;
         $params = array_slice($params, 1, count($params));
         $text = implode(' ', $params);
         try
@@ -132,7 +139,7 @@ class Editor
                 throw new InvalidPositionException();
             }
 
-            $paragraph->setText($text);
+            $this->history->addAndExecuteCommand(new ReplaceTextCommand($paragraph, $text, $paragraph->getText()));
         }
         catch (InvalidPositionException $exception)
         {
@@ -144,8 +151,13 @@ class Editor
     {
         $params = explode(' ', trim($args));
         $position = $params[0];
-        $position = $position === 'end' ? $position : (int) $position;
+        if ($position !== 'end' && !ctype_digit($position))
+        {
+            echo('Incorrect paragraph position</br>');
+            return;
+        }
 
+        $position = $position === 'end' ? $position : (int) $position;
         $width = (int) $params[1];
         $height = (int) $params[2];
         $path = $params[3];
