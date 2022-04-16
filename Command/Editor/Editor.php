@@ -47,6 +47,7 @@ class Editor
         });
         $this->addMenuItem('setTitle', 'Changes title. Args: < new title >', 'setTitle');
         $this->addMenuItem('insertParagraph', 'Add paragraph. Args: < position|end > < text >', 'insertParagraph');
+        //не использовать строковые имена методов
         $this->addMenuItem('replaceText', 'Replace paragraph. Args: < position > < text>', 'replaceText');
         $this->addMenuItem('insertImage', 'Insert image. Args: < position|end > < width > < height > < path to image >', 'insertImage');
         $this->addMenuItem('undo', 'Undo command', 'undo');
@@ -60,7 +61,7 @@ class Editor
         $this->menu->addItem($shortcut, $description, $this->makeCommand($command));
     }
 
-    public function makeCommand(string $command): callable
+    public function makeCommand(string $command): callable //убрать публичный метод
     {
         return function($args) use ($command)
         {

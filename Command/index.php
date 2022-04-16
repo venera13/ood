@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-include 'Data/Item.php';
-include 'Data/Image/ImageInterface.php';
-include 'Data/Image/Image.php';
-include 'Data/Paragraph/ParagraphInterface.php';
-include 'Data/Paragraph/Paragraph.php';
-include 'Data/DocumentItem.php';
+include 'Editor/Data/Item.php';
+include 'Editor/Data/Image/ImageInterface.php';
+include 'Editor/Data/Image/Image.php';
+include 'Editor/Data/Paragraph/ParagraphInterface.php';
+include 'Editor/Data/Paragraph/Paragraph.php';
+include 'Editor/Data/DocumentItem.php';
 include 'Menu/Menu.php';
 include 'Editor/Editor.php';
-include 'Document/DocumentInterface.php';
-include 'Document/Document.php';
-include 'History/History.php';
-include 'Command/CommandInterface.php';
-include 'Command/ChangeStringCommand.php';
-include 'Command/InsertItemCommand.php';
-include 'DocumentExporter/DocumentExporterInterface.php';
-include 'DocumentExporter/DocumentHtmlExporter.php';
+include 'Editor/Document/DocumentInterface.php';
+include 'Editor/Document/Document.php';
+include 'CommandHistory/History/History.php';
+include 'CommandHistory/CommandInterface.php';
+include 'Editor/Command/ChangeStringCommand.php';
+include 'Editor/Command/InsertItemCommand.php';
+include 'Editor/DocumentExporter/DocumentExporterInterface.php';
+include 'Editor/DocumentExporter/DocumentHtmlExporter.php';
 include 'Exceptions/InvalidPositionException.php';
 include 'Exceptions/InvalidCommandException.php';
 
