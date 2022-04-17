@@ -66,6 +66,10 @@ class Editor
         {
             $this->insertImage($args);
         });
+        $this->menu->addItem('deleteItem', 'Delete item. Args: < position >', function ($args)
+        {
+            $this->deleteItem($args);
+        });
         $this->menu->addItem('undo', 'Undo command', function ()
         {
             $this->undo();
@@ -174,6 +178,19 @@ class Editor
         {
             echo('Incorrect paragraph position</br>');
         }
+    }
+
+    private function deleteItem(string $args): void
+    {
+        $params = explode(' ', trim($args));
+        $position = $params[0];
+        if (count($params) !== 1 || !ctype_digit($position))
+        {
+            echo('Incorrect paragraph position</br>');
+            return;
+        }
+
+        $this->document->deleteItem((int) $position);
     }
 
     private function undo(): void

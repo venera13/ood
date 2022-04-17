@@ -26,6 +26,11 @@ class ChangeStringCommand implements CommandInterface
         $this->swap($this->target, $this->newValue);
     }
 
+    public function destroy(): void
+    {
+
+    }
+
     private function swap(&$a, &$b): void
     {
         [$a, $b] = [$b, $a];

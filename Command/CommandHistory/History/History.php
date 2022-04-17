@@ -46,6 +46,11 @@ class History
     {
         if ($this->nextCommandIndex < count($this->commands))
         {
+            for ($i = $this->nextCommandIndex; $i < count($this->commands); $i++)
+            {
+                $this->commands[$i]->destroy();
+            }
+
             $this->commands = array_splice($this->commands, 0, $this->nextCommandIndex);
         }
 

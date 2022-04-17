@@ -11,15 +11,12 @@ class Image implements ImageInterface
     private $width;
     /** @var int */
     private $height;
-    /** @var bool */
-    private $removed;
 
-    public function __construct(string $path, int $width, int $height, ?bool $removed = false)
+    public function __construct(string $path, int $width, int $height)
     {
         $this->path = $path;
         $this->width = $width;
         $this->height = $height;
-        $this->removed = $removed;
     }
 
     /**
@@ -44,22 +41,6 @@ class Image implements ImageInterface
     public function getHeight(): int
     {
         return $this->height;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRemoved(): ?bool
-    {
-        return $this->removed;
-    }
-
-    /**
-     * @param bool $removed
-     */
-    public function setRemoved(?bool $removed): void
-    {
-        $this->removed = $removed;
     }
 
     public function resize(int $width, int $height): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Command\Command;
 
 use Command\Data\DocumentItem;
+use Command\Editor\Utils\FileUtils;
 
 class InsertItemCommand implements CommandInterface
 {
@@ -37,11 +38,20 @@ class InsertItemCommand implements CommandInterface
     {
         if ($this->position === null)
         {
-            array_splice($this->items, 0, count($this->items) - 1);
+            array_splice($this->items, 0, 1);
         }
         else
         {
             array_splice($this->items, $this->position, 1);
+        }
+    }
+
+    public function destroy(): void
+    {
+        $image = $this->item->getImage();
+        if ($image !== null)
+        {
+            FileUtils::deleteFile($image->getPath());
         }
     }
 }

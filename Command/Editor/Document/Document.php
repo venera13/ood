@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace Command\Document;
 
 use Command\Command\ChangeStringCommand;
+use Command\Command\DeleteItemCommand;
 use Command\Command\InsertItemCommand;
 use Command\Data\DocumentItem;
 use Command\Data\Image\Image;
 use Command\Data\Paragraph\Paragraph;
 use Command\DocumentExporter\DocumentHtmlExporter;
+use Command\Editor\Utils\FileUtils;
 use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
@@ -17,6 +19,7 @@ use RuntimeException;
 class Document implements DocumentInterface
 {
     const DIRECTORY_NAME = 'images';
+    const MAX_IMAGE_SIZE = '10000';
 
     /** @var History */
     private $history;
@@ -43,9 +46,14 @@ class Document implements DocumentInterface
 
     public function insertImage(string $path, int $width, int $height, ?int $position = null): void
     {
-        Document::createDirectory(self::DIRECTORY_NAME);
+        if ($width > self::MAX_IMAGE_SIZE || $height > self::MAX_IMAGE_SIZE)
+        {
+            throw new InvalidPositionException();
+        }
 
-        $file = $this->createFile($path, self::DIRECTORY_NAME);
+        FileUtils::createDirectory(self::DIRECTORY_NAME);
+
+        $file = FileUtils::createFile($path, self::DIRECTORY_NAME);
 
         $image = new Image($file, $width, $height);
         $this->history->addAndExecuteCommand(new InsertItemCommand($this->items, new DocumentItem(null, $image), $position));
@@ -63,8 +71,11 @@ class Document implements DocumentInterface
 
     public function deleteItem(int $index): void
     {
-        unset($this->items[$index]);
-        $this->items = array_values($this->items);
+        if ($index >= $this->getItemsCount())
+        {
+            throw new InvalidPositionException();
+        }
+        $this->history->addAndExecuteCommand(new DeleteItemCommand($this->items, $index));
     }
 
     public function getTitle(): string
@@ -107,32 +118,5 @@ class Document implements DocumentInterface
     private function isVerifyPosition(int $position): bool
     {
         return $position < $this->getItemsCount();
-    }
-
-    private static function createDirectory(string $directoryName): void
-    {
-        if (!file_exists($directoryName))
-        {
-            mkdir($directoryName);
-        }
-    }
-
-    private static function createFile(string $file, string $directory): string
-    {
-        $newFile = $directory . '/' . Document::generateFileName() . pathinfo($file)['extension'];
-        try
-        {
-            copy($file, $newFile);
-            return $newFile;
-        }
-        catch (RuntimeException $exception)
-        {
-            throw new CopyFileException();
-        }
-    }
-
-    private static function generateFileName(): string
-    {
-        return substr(md5((string)time()), 0, 16);
     }
 }

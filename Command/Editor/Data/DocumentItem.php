@@ -12,6 +12,8 @@ class DocumentItem
     private $text;
     /** @var ImageInterface|null */
     private $image;
+    /** @var bool */
+    private $isDeleted = false;
 
     public function __construct(?ParagraphInterface $text, ?ImageInterface $image)
     {
@@ -33,5 +35,21 @@ class DocumentItem
     public function getImage(): ?ImageInterface
     {
         return $this->image;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted(): bool
+    {
+        return $this->isDeleted;
+    }
+
+    /**
+     * @param bool $isDeleted
+     */
+    public function setIsDeleted(bool $isDeleted): void
+    {
+        $this->isDeleted = $isDeleted;
     }
 }

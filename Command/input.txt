@@ -1,17 +1,12 @@
 setTitle Hi1
-undo
-undo
-setTitle Hello
-insertParagraph end Hello,
-insertParagraph end Friend
-insertParagraph 1 World
+insertParagraph end Hello
 list
-replaceText 1 My
-list
-undo
-list
-redo
+deleteItem 0
 list
 insertImage end 500 200 D:\study\cartoon.jpg
+list
+undo
+list
+insertParagraph end Hello!!!!
 list
 save hello

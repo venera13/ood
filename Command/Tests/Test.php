@@ -17,12 +17,16 @@ include '../CommandHistory/History/History.php';
 include '../CommandHistory/CommandInterface.php';
 include '../Editor/Command/ChangeStringCommand.php';
 include '../Editor/Command/InsertItemCommand.php';
+include '../Editor/Command/ReplaceTextCommand.php';
+include '../Editor/Command/DeleteItemCommand.php';
 include '../Editor/DocumentExporter/DocumentExporterInterface.php';
 include '../Editor/DocumentExporter/DocumentHtmlExporter.php';
 include '../Exceptions/InvalidPositionException.php';
 include '../Exceptions/InvalidCommandException.php';
-include 'MockDocument.php';
-include 'MockFileContentDocument.php';
+include 'Editors/MockEditor.php';
+include 'Editors/MockFileContentEditor.php';
+include 'Documents/MockDocument.php';
+include 'Documents/MockFileContentDocument.php';
 
 use Command\Document\Document;
 use Command\Editor\Editor;
@@ -68,8 +72,7 @@ class Test extends TestCase
     {
         $history = new History();
         $menu = new Menu();
-        $document = new MockDocument($history);
-        $editor = new Editor($menu, $document);
+        $editor = new MockEditor($menu, $history);
         $editor->start('inputs/test_history_input.txt');
 
         $rightString = '2';
@@ -81,8 +84,7 @@ class Test extends TestCase
     {
         $history = new History();
         $menu = new Menu();
-        $document = new Document($history);
-        $editor = new Editor($menu, $document);
+        $editor = new Editor($menu, $history);
         $editor->start('inputs/test_text_input.txt');
 
         $rightString = '<!DOCTYPE html><html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body><p>1</p></body></html>';
@@ -94,8 +96,7 @@ class Test extends TestCase
     {
         $history = new History();
         $menu = new Menu();
-        $document = new MockFileContentDocument($history);
-        $editor = new Editor($menu, $document);
+        $editor = new MockFileContentEditor($menu, $history);
         $editor->start('inputs/test_replace_text_input.txt');
 
         $rightString = '153';
@@ -107,12 +108,23 @@ class Test extends TestCase
     {
         $history = new History();
         $menu = new Menu();
-        $document = new MockFileContentDocument($history);
-        $editor = new Editor($menu, $document);
+        $editor = new MockFileContentEditor($menu, $history);
         $editor->start('inputs/test_encode_text_input.txt');
 
         $rightString = "&lt;&gt;&quot;&apos;&amp;";
 
         $this->assertEquals(file_get_contents('test_encode_text.html'), $rightString);
+    }
+
+    public function testDeleteItem(): void
+    {
+        $history = new History();
+        $menu = new Menu();
+        $editor = new MockFileContentEditor($menu, $history);
+        $editor->start('inputs/test_delete_item_input.txt');
+
+        $rightString = "";
+
+        $this->assertEquals(file_get_contents('test_delete_item.html'), $rightString);
     }
 }

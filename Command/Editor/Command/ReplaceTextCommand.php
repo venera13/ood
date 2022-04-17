@@ -30,4 +30,9 @@ class ReplaceTextCommand implements CommandInterface
     {
         $this->paragraph->setText($this->oldText);
     }
+
+    public function destroy(): void
+    {
+
+    }
 }
