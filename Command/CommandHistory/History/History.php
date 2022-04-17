@@ -16,7 +16,7 @@ class History
 
     public function canUndo(): bool
     {
-        return $this->nextCommandIndex !== 0;
+        return $this->nextCommandIndex !== 0 && isset($this->commands[$this->nextCommandIndex - 1]);
     }
 
     public function undo(): void
@@ -71,5 +71,6 @@ class History
         {
             $command->destroy();
         }
+        $this->commands = [];
     }
 }

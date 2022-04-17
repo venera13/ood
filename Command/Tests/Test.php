@@ -140,7 +140,7 @@ class Test extends TestCase
         $editor = new Editor($menu, $history);
         $editor->start('inputs/test_image_input.txt');
 
-        $rightCount = 2;
+        $rightCount = 1;
 
         $this->assertEquals(count(array_diff(scandir('images'), ['.', '..'])), $rightCount);
     }
