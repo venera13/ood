@@ -2,3 +2,4 @@ insertImage end 500 200 inputs\cartoon.jpg
 insertImage end 500 200 inputs\cartoon.jpg
 undo
 save output/test_image
+exit

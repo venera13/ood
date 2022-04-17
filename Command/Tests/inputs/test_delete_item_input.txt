@@ -1,3 +1,4 @@
 insertParagraph end 1
 deleteItem 0
 save output/test_delete_item
+exit

@@ -9,3 +9,4 @@ undo
 redo
 undo
 save output/test_history
+exit

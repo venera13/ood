@@ -30,26 +30,7 @@ class Menu
 
         while ($this->exit === false)
         {
-            $params = explode(' ', ltrim(rtrim(readline())));
-            $command = ltrim(rtrim($params[0]));
-
-            if ($command === 'exit')
-            {
-                $this->exit = true;
-                break;
-            }
-
-            $params = array_slice($params, 1, count($params));
-            $param = $params ? implode(' ', $params) : null;
-
-            try
-            {
-                $this->executeCommand($command, $param);
-            }
-            catch (RuntimeException $exception)
-            {
-                echo $exception->getMessage() . PHP_EOL;
-            }
+            $this->runCommand(readline());
         }
     }
 
@@ -64,6 +45,24 @@ class Menu
     public function exit(): void
     {
         $this->exit = true;
+    }
+
+    private function runCommand(string $command): void
+    {
+        $params = explode(' ', str_replace(array("\r\n", "\r", "\n"), '', $command));
+        $command = ltrim(rtrim($params[0]));
+
+        $params = array_slice($params, 1, count($params));
+        $param = $params ? implode(' ', $params) : null;
+
+        try
+        {
+            $this->executeCommand($command, $param);
+        }
+        catch (RuntimeException $exception)
+        {
+            echo $exception->getMessage() . PHP_EOL;
+        }
     }
 
     private function executeCommand(string $command, ?string $param = null): void

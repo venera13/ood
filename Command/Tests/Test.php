@@ -28,15 +28,15 @@ include '../Exceptions/InvalidCommandException.php';
 include 'Editors/MockEditor.php';
 include 'Editors/MockFileContentEditor.php';
 include 'Editors/MockImageParamsEditor.php';
+include 'Editors/MockHistoryEditor.php';
 include 'Documents/MockDocument.php';
 include 'Documents/MockFileContentDocument.php';
 include 'Documents/MockImageParamsDocument.php';
 
-use Command\Document\Document;
-use Command\Editor\Editor;
 use Command\History\History;
 use Command\Menu\Menu;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 class Test extends TestCase
 {
@@ -53,11 +53,15 @@ class Test extends TestCase
         });
         $menu->showInstructions();
 
-        $this->expectOutputString('help: Help</br>exit: Exit</br>');
+        $this->expectOutputString('help: Help' . PHP_EOL . 'exit: Exit' . PHP_EOL);
     }
 
     public function testMenuExecuteCommand(): void
     {
+        $class = new ReflectionClass('Command\Menu\Menu');
+        $method = $class->getMethod('runCommand');
+        $method->setAccessible(true);
+
         $menu = new Menu();
         $menu->addItem('help', 'Help', function ()
         {
@@ -67,18 +71,27 @@ class Test extends TestCase
         {
             print_r('exit');
         });
-        $menu->run();
-        fgetc(feof('inputs/test_input.txt'));
 
-        $this->expectOutputString('help: Help</br>exit: Exit</br>helpexit');
+        $lines = file('inputs/test_input.txt');
+
+        foreach ($lines as $line)
+        {
+            $method->invoke($menu, $line);
+        }
+
+        $this->expectOutputString('helpexit');
     }
 
     public function testHistory(): void
     {
+        $class = new ReflectionClass('Command\Menu\Menu');
+        $method = $class->getMethod('runCommand');
+        $method->setAccessible(true);
+
         $history = new History();
         $menu = new Menu();
-        $editor = new MockEditor($menu, $history);
-        $editor->start('inputs/test_history_input.txt');
+        $editor = new MockHistoryEditor($menu, $history);
+        $editor->start($menu, $method, 'inputs/test_history_input.txt');
 
         $rightString = '2';
 
@@ -87,10 +100,14 @@ class Test extends TestCase
 
     public function testTextEditor(): void
     {
+        $class = new ReflectionClass('Command\Menu\Menu');
+        $method = $class->getMethod('runCommand');
+        $method->setAccessible(true);
+
         $history = new History();
         $menu = new Menu();
-        $editor = new Editor($menu, $history);
-        $editor->start('inputs/test_text_input.txt');
+        $editor = new MockEditor($menu, $history);
+        $editor->start($menu, $method, 'inputs/test_text_input.txt');
 
         $rightString = '<!DOCTYPE html><html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body><p>1</p></body></html>';
 
@@ -99,10 +116,14 @@ class Test extends TestCase
 
     public function testReplaceText(): void
     {
+        $class = new ReflectionClass('Command\Menu\Menu');
+        $method = $class->getMethod('runCommand');
+        $method->setAccessible(true);
+
         $history = new History();
         $menu = new Menu();
         $editor = new MockFileContentEditor($menu, $history);
-        $editor->start('inputs/test_replace_text_input.txt');
+        $editor->start($menu, $method, 'inputs/test_replace_text_input.txt');
 
         $rightString = '153';
 
@@ -111,10 +132,15 @@ class Test extends TestCase
 
     public function testEncodeText(): void
     {
+        $class = new ReflectionClass('Command\Menu\Menu');
+        $method = $class->getMethod('runCommand');
+        $method->setAccessible(true);
+
         $history = new History();
         $menu = new Menu();
         $editor = new MockFileContentEditor($menu, $history);
-        $editor->start('inputs/test_encode_text_input.txt');
+
+        $editor->start($menu, $method, 'inputs/test_encode_text_input.txt');
 
         $rightString = "&lt;&gt;&quot;&apos;&amp;";
 
@@ -123,10 +149,15 @@ class Test extends TestCase
 
     public function testDeleteItem(): void
     {
+        $class = new ReflectionClass('Command\Menu\Menu');
+        $method = $class->getMethod('runCommand');
+        $method->setAccessible(true);
+
         $history = new History();
         $menu = new Menu();
         $editor = new MockFileContentEditor($menu, $history);
-        $editor->start('inputs/test_delete_item_input.txt');
+
+        $editor->start($menu, $method, 'inputs/test_delete_item_input.txt');
 
         $rightString = "";
 
@@ -135,11 +166,16 @@ class Test extends TestCase
 
     public function testImage(): void
     {
+        $class = new ReflectionClass('Command\Menu\Menu');
+        $method = $class->getMethod('runCommand');
+        $method->setAccessible(true);
+
         $this->clear();
         $history = new History();
         $menu = new Menu();
-        $editor = new Editor($menu, $history);
-        $editor->start('inputs/test_image_input.txt');
+        $editor = new MockEditor($menu, $history);
+
+        $editor->start($menu, $method, 'inputs/test_image_input.txt');
 
         $rightCount = 1;
 
@@ -148,10 +184,15 @@ class Test extends TestCase
 
     public function testResizeImage(): void
     {
+        $class = new ReflectionClass('Command\Menu\Menu');
+        $method = $class->getMethod('runCommand');
+        $method->setAccessible(true);
+
         $history = new History();
         $menu = new Menu();
         $editor = new MockImageParamsEditor($menu, $history);
-        $editor->start('inputs/test_resize_image_input.txt');
+
+        $editor->start($menu, $method, 'inputs/test_resize_image_input.txt');
 
         $rightCount = '1000 400';
 
