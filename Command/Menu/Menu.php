@@ -5,6 +5,7 @@ namespace Command\Menu;
 
 use Command\Data\Item;
 use Command\Exceptions\InvalidCommandException;
+use RuntimeException;
 
 class Menu
 {
@@ -23,20 +24,32 @@ class Menu
         $this->items[] = new Item($shortcut, $description, $command);
     }
 
-    public function run(string $filePath): void
+    public function run(): void
     {
         $this->showInstructions();
 
-        $lines = file($filePath);
-
-        foreach ($lines as $line)
+        while ($this->exit === false)
         {
-            $params = explode(' ', trim($line));
-            $command = $params[0];
+            $params = explode(' ', ltrim(rtrim(readline())));
+            $command = ltrim(rtrim($params[0]));
+
+            if ($command === 'exit')
+            {
+                $this->exit = true;
+                break;
+            }
+
             $params = array_slice($params, 1, count($params));
             $param = $params ? implode(' ', $params) : null;
 
-            $this->executeCommand($command, $param);
+            try
+            {
+                $this->executeCommand($command, $param);
+            }
+            catch (RuntimeException $exception)
+            {
+                echo $exception->getMessage() . PHP_EOL;
+            }
         }
     }
 
@@ -44,7 +57,7 @@ class Menu
     {
         foreach ($this->items as $item)
         {
-            print_r($item->getShortcut() . ': ' . $item->getDescription() . '</br>');
+            echo($item->getShortcut() . ': ' . $item->getDescription() . PHP_EOL);
         }
     }
 

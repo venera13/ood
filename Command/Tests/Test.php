@@ -67,7 +67,8 @@ class Test extends TestCase
         {
             print_r('exit');
         });
-        $menu->run('inputs/test_input.txt');
+        $menu->run();
+        fgetc(feof('inputs/test_input.txt'));
 
         $this->expectOutputString('help: Help</br>exit: Exit</br>helpexit');
     }

@@ -12,6 +12,7 @@ use Command\Data\Image\Image;
 use Command\Data\Paragraph\Paragraph;
 use Command\DocumentExporter\DocumentHtmlExporter;
 use Command\Editor\Utils\FileUtils;
+use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
 use RuntimeException;

@@ -23,9 +23,11 @@ include 'Editor/DocumentExporter/DocumentHtmlExporter.php';
 include 'Editor/Utils/FileUtils.php';
 include 'Exceptions/InvalidPositionException.php';
 include 'Exceptions/InvalidCommandException.php';
+include 'Exceptions/CopyFileException.php';
 
 use Command\Document\Document;
 use Command\Editor\Editor;
+use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidCommandException;
 use Command\History\History;
 use Command\Menu\Menu;
@@ -33,4 +35,4 @@ use Command\Menu\Menu;
 $menu = new Menu();
 $history = new History();
 $editor = new Editor($menu, $history);
-$editor->start('input.txt');
+$editor->start();

@@ -19,6 +19,10 @@ class FileUtils
     public static function createFile(string $file, string $directory): string
     {
         $newFile = $directory . '/' . FileUtils::generateFileName() . '.' . pathinfo($file)['extension'];
+        if (!file_exists($file))
+        {
+            throw new CopyFileException('File not exists');
+        }
         try
         {
             copy($file, $newFile);
@@ -26,7 +30,7 @@ class FileUtils
         }
         catch (RuntimeException $exception)
         {
-            throw new CopyFileException();
+            throw new CopyFileException('File copy error');
         }
     }
 

@@ -5,10 +5,12 @@ namespace Command\Editor;
 
 use Command\Command\ReplaceTextCommand;
 use Command\Document\Document;
+use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidCommandException;
 use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
 use Command\Menu\Menu;
+use RuntimeException;
 
 class Editor
 {
@@ -27,15 +29,15 @@ class Editor
         $this->addCommands();
     }
 
-    public function start(string $filePath): void
+    public function start(): void
     {
         try
         {
-            $this->menu->run($filePath);
+            $this->menu->run();
         }
         catch(InvalidCommandException $exception)
         {
-            echo ($exception->getMessage());
+            echo ($exception->getMessage() . PHP_EOL);
         }
     }
 
@@ -102,7 +104,7 @@ class Editor
         $position = $params[0];
         if ($position !== 'end' && !ctype_digit($position))
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
             return;
         }
 
@@ -115,7 +117,7 @@ class Editor
         }
         catch (InvalidPositionException $exception)
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
         }
     }
 
@@ -125,7 +127,7 @@ class Editor
         $position = $params[0];
         if (!ctype_digit($position))
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
             return;
         }
         $position = (int) $position;
@@ -150,7 +152,7 @@ class Editor
         }
         catch (InvalidPositionException $exception)
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
         }
     }
 
@@ -160,7 +162,7 @@ class Editor
         $position = $params[0];
         if ($position !== 'end' && !ctype_digit($position))
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
             return;
         }
 
@@ -177,9 +179,13 @@ class Editor
         {
             $this->document->insertImage($path, $width, $height, gettype($position) !== 'string' ? $position : null);
         }
+        catch (CopyFileException $exception)
+        {
+            echo($exception->getMessage() . PHP_EOL);
+        }
         catch (InvalidPositionException $exception)
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
         }
     }
 
@@ -189,7 +195,7 @@ class Editor
         $position = $params[0];
         if (!ctype_digit($position))
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
             return;
         }
 
@@ -206,7 +212,7 @@ class Editor
         }
         catch (InvalidPositionException $exception)
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
         }
     }
 
@@ -216,7 +222,7 @@ class Editor
         $position = $params[0];
         if (count($params) !== 1 || !ctype_digit($position))
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
             return;
         }
 
@@ -231,7 +237,7 @@ class Editor
         }
         else
         {
-            print_r("Can't undo</br>");
+            print_r("Can't undo" . PHP_EOL);
         }
     }
 
@@ -243,7 +249,7 @@ class Editor
         }
         else
         {
-            print_r("Can't redo</br>");
+            print_r("Can't redo" . PHP_EOL);
         }
     }
 
@@ -255,15 +261,15 @@ class Editor
             if ($item->getImage())
             {
                 $image = $item->getImage();
-                print_r($i . '. Image: ' . $image->getWidth() . '*' . $image->getHeight() . ' ' . $image->getPath() . '</br>');
+                print_r($i . '. Image: ' . $image->getWidth() . '*' . $image->getHeight() . ' ' . $image->getPath() . PHP_EOL);
             }
             else
             {
                 $paragraph = $item->getText();
-                print_r($i . '. Paragraph: ' . $paragraph->getText() . '</br>');
+                print_r($i . '. Paragraph: ' . $paragraph->getText() . PHP_EOL);
             }
         }
-        print_r('-------------</br>');
+        print_r('-------------' . PHP_EOL);
     }
 
     private function save(string $args): void
@@ -272,7 +278,7 @@ class Editor
         $fileName = $params[0];
         if (count($params) !== 1)
         {
-            echo('Incorrect paragraph position</br>');
+            echo('Incorrect paragraph position' . PHP_EOL);
             return;
         }
 
