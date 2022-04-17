@@ -24,6 +24,7 @@ class InsertItemCommand implements CommandInterface
 
     public function execute(): void
     {
+        $this->item->setIsDeleted(false);
         if ($this->position === null)
         {
             $this->items[] = $this->item;
@@ -36,9 +37,10 @@ class InsertItemCommand implements CommandInterface
 
     public function unexecute(): void
     {
+        $this->item->setIsDeleted(true);
         if ($this->position === null)
         {
-            array_splice($this->items, 0, 1);
+            array_splice($this->items, count($this->items) - 1, 1);
         }
         else
         {
@@ -49,7 +51,7 @@ class InsertItemCommand implements CommandInterface
     public function destroy(): void
     {
         $image = $this->item->getImage();
-        if ($image !== null)
+        if ($this->item->isDeleted() && $image !== null)
         {
             FileUtils::deleteFile($image->getPath());
         }

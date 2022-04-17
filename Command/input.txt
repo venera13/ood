@@ -1,9 +1,13 @@
-insertImage end 500 200 D:\study\cartoon.jpg
+setTitle Hi1
+insertParagraph end Hello
+list
+deleteItem 0
 list
 insertImage end 500 200 D:\study\cartoon.jpg
-list
-resizeImage 1 1000 400
+insertImage end 500 200 D:\study\cartoon.jpg
 list
 undo
+list
+insertParagraph end Hello
 list
 save hello
