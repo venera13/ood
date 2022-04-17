@@ -6,12 +6,12 @@ namespace Command\Document;
 use Command\Command\ChangeStringCommand;
 use Command\Command\DeleteItemCommand;
 use Command\Command\InsertItemCommand;
+use Command\Command\ResizeImageCommand;
 use Command\Data\DocumentItem;
 use Command\Data\Image\Image;
 use Command\Data\Paragraph\Paragraph;
 use Command\DocumentExporter\DocumentHtmlExporter;
 use Command\Editor\Utils\FileUtils;
-use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
 use RuntimeException;
@@ -59,6 +59,29 @@ class Document implements DocumentInterface
         $this->history->addAndExecuteCommand(new InsertItemCommand($this->items, new DocumentItem(null, $image), $position));
     }
 
+    public function resizeImage(int $width, int $height, int $position): void
+    {
+        if ($width > self::MAX_IMAGE_SIZE || $height > self::MAX_IMAGE_SIZE)
+        {
+            throw new InvalidPositionException();
+        }
+
+        try
+        {
+            $image = $this->getItem($position)->getImage();
+        }
+        catch (RuntimeException)
+        {
+            throw new InvalidPositionException();
+        }
+        if ($image === null)
+        {
+            throw new InvalidPositionException();
+        }
+
+        $this->history->addAndExecuteCommand(new ResizeImageCommand($image, $width, $height, $image->getWidth(), $image->getHeight()));
+    }
+
     public function getItemsCount(): int
     {
         return count($this->items);
@@ -66,6 +89,10 @@ class Document implements DocumentInterface
 
     public function getItem(int $index): DocumentItem
     {
+        if (!isset($this->items[$index]))
+        {
+            throw new InvalidPositionException();
+        }
         return $this->items[$index];
     }
 

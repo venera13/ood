@@ -2,4 +2,8 @@ insertImage end 500 200 D:\study\cartoon.jpg
 list
 insertImage end 500 200 D:\study\cartoon.jpg
 list
-save test_image
+resizeImage 1 1000 400
+list
+undo
+list
+save hello

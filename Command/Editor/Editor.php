@@ -5,7 +5,6 @@ namespace Command\Editor;
 
 use Command\Command\ReplaceTextCommand;
 use Command\Document\Document;
-use Command\Document\DocumentInterface;
 use Command\Exceptions\InvalidCommandException;
 use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
@@ -65,6 +64,10 @@ class Editor
         $this->menu->addItem('insertImage', 'Insert image. Args: < position|end > < width > < height > < path to image >', function ($args)
         {
             $this->insertImage($args);
+        });
+        $this->menu->addItem('resizeImage', 'Resize image. Args: < position > < width > < height >', function ($args)
+        {
+            $this->resizeImage($args);
         });
         $this->menu->addItem('deleteItem', 'Delete item. Args: < position >', function ($args)
         {
@@ -180,6 +183,33 @@ class Editor
         }
     }
 
+    private function resizeImage(string $args): void
+    {
+        $params = explode(' ', trim($args));
+        $position = $params[0];
+        if (!ctype_digit($position))
+        {
+            echo('Incorrect paragraph position</br>');
+            return;
+        }
+
+        $width = (int) $params[1];
+        $height = (int) $params[2];
+
+        if (!$width || !$height)
+        {
+            throw new InvalidPositionException();
+        }
+        try
+        {
+            $this->document->resizeImage($width, $height, (int)$position);
+        }
+        catch (InvalidPositionException $exception)
+        {
+            echo('Incorrect paragraph position</br>');
+        }
+    }
+
     private function deleteItem(string $args): void
     {
         $params = explode(' ', trim($args));
@@ -219,8 +249,6 @@ class Editor
 
     private function list(): void
     {
-        print_r('-------------</br>');
-        print_r('Title: ' . $this->document->getTitle() . '</br>');
         for ($i = 0; $i < $this->document->getItemsCount(); $i++)
         {
             $item = $this->document->getItem($i);

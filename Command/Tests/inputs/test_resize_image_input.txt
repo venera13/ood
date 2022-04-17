@@ -1,0 +1,3 @@
+insertImage end 500 200 inputs\cartoon.jpg
+resizeImage 0 1000 400
+save output/test_resize_image

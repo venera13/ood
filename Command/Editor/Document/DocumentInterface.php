@@ -11,6 +11,8 @@ interface DocumentInterface
 
     public function insertImage(string $path, int $width, int $height, ?int $position = null): void;
 
+    public function resizeImage(int $width, int $height, int $position): void;
+
     public function getItemsCount(): int;
 
     public function getItem(int $index): DocumentItem;

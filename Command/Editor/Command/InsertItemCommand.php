@@ -8,7 +8,7 @@ use Command\Editor\Utils\FileUtils;
 
 class InsertItemCommand implements CommandInterface
 {
-    /** @var array */
+    /** @var DocumentItem[] */
     private $items;
     /** @var DocumentItem */
     private $item;

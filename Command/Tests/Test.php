@@ -19,6 +19,7 @@ include '../Editor/Command/ChangeStringCommand.php';
 include '../Editor/Command/InsertItemCommand.php';
 include '../Editor/Command/ReplaceTextCommand.php';
 include '../Editor/Command/DeleteItemCommand.php';
+include '../Editor/Command/ResizeImageCommand.php';
 include '../Editor/DocumentExporter/DocumentExporterInterface.php';
 include '../Editor/DocumentExporter/DocumentHtmlExporter.php';
 include '../Editor/Utils/FileUtils.php';
@@ -26,8 +27,10 @@ include '../Exceptions/InvalidPositionException.php';
 include '../Exceptions/InvalidCommandException.php';
 include 'Editors/MockEditor.php';
 include 'Editors/MockFileContentEditor.php';
+include 'Editors/MockImageParamsEditor.php';
 include 'Documents/MockDocument.php';
 include 'Documents/MockFileContentDocument.php';
+include 'Documents/MockImageParamsDocument.php';
 
 use Command\Document\Document;
 use Command\Editor\Editor;
@@ -78,7 +81,7 @@ class Test extends TestCase
 
         $rightString = '2';
 
-        $this->assertEquals(file_get_contents('test_history.html'), $rightString);
+        $this->assertEquals(file_get_contents('output/test_history.html'), $rightString);
     }
 
     public function testTextEditor(): void
@@ -90,7 +93,7 @@ class Test extends TestCase
 
         $rightString = '<!DOCTYPE html><html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body><p>1</p></body></html>';
 
-        $this->assertEquals(file_get_contents('test_input.html'), $rightString);
+        $this->assertEquals(file_get_contents('output/test_input.html'), $rightString);
     }
 
     public function testReplaceText(): void
@@ -102,7 +105,7 @@ class Test extends TestCase
 
         $rightString = '153';
 
-        $this->assertEquals(file_get_contents('test_replace_text.html'), $rightString);
+        $this->assertEquals(file_get_contents('output/test_replace_text.html'), $rightString);
     }
 
     public function testEncodeText(): void
@@ -114,7 +117,7 @@ class Test extends TestCase
 
         $rightString = "&lt;&gt;&quot;&apos;&amp;";
 
-        $this->assertEquals(file_get_contents('test_encode_text.html'), $rightString);
+        $this->assertEquals(file_get_contents('output/test_encode_text.html'), $rightString);
     }
 
     public function testDeleteItem(): void
@@ -126,7 +129,7 @@ class Test extends TestCase
 
         $rightString = "";
 
-        $this->assertEquals(file_get_contents('test_delete_item.html'), $rightString);
+        $this->assertEquals(file_get_contents('output/test_delete_item.html'), $rightString);
     }
 
     public function testImage(): void
@@ -140,6 +143,18 @@ class Test extends TestCase
         $rightCount = 2;
 
         $this->assertEquals(count(array_diff(scandir('images'), ['.', '..'])), $rightCount);
+    }
+
+    public function testResizeImage(): void
+    {
+        $history = new History();
+        $menu = new Menu();
+        $editor = new MockImageParamsEditor($menu, $history);
+        $editor->start('inputs/test_resize_image_input.txt');
+
+        $rightCount = '1000 400';
+
+        $this->assertEquals(file_get_contents('output/test_resize_image.html'), $rightCount);
     }
 
     private function clear()

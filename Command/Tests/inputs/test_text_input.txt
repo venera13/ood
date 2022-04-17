@@ -1,2 +1,2 @@
 insertParagraph end 1
-save test_input
+save output/test_input

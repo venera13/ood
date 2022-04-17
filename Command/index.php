@@ -16,6 +16,7 @@ include 'CommandHistory/CommandInterface.php';
 include 'Editor/Command/ChangeStringCommand.php';
 include 'Editor/Command/InsertItemCommand.php';
 include 'Editor/Command/ReplaceTextCommand.php';
+include 'Editor/Command/ResizeImageCommand.php';
 include 'Editor/Command/DeleteItemCommand.php';
 include 'Editor/DocumentExporter/DocumentExporterInterface.php';
 include 'Editor/DocumentExporter/DocumentHtmlExporter.php';

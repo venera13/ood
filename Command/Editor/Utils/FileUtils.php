@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Command\Editor\Utils;
 
-use Command\Document\Document;
 use Command\Exceptions\CopyFileException;
 use RuntimeException;
 
