@@ -43,6 +43,6 @@ class FileUtils
 
     private static function generateFileName(): string
     {
-        return substr(md5((string)time()), 0, 16);
+        return substr(md5((string)microtime()), 0, 16);
     }
 }

@@ -238,8 +238,16 @@ class Editor
         print_r('-------------</br>');
     }
 
-    private function save(string $fileName): void
+    private function save(string $args): void
     {
+        $params = explode(' ', trim($args));
+        $fileName = $params[0];
+        if (count($params) !== 1)
+        {
+            echo('Incorrect paragraph position</br>');
+            return;
+        }
+
         $this->document->save($fileName);
     }
 }

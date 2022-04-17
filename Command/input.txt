@@ -1,12 +1,5 @@
-setTitle Hi1
-insertParagraph end Hello
-list
-deleteItem 0
+insertImage end 500 200 D:\study\cartoon.jpg
 list
 insertImage end 500 200 D:\study\cartoon.jpg
 list
-undo
-list
-insertParagraph end Hello!!!!
-list
-save hello
+save test_image

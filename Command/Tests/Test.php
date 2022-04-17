@@ -21,6 +21,7 @@ include '../Editor/Command/ReplaceTextCommand.php';
 include '../Editor/Command/DeleteItemCommand.php';
 include '../Editor/DocumentExporter/DocumentExporterInterface.php';
 include '../Editor/DocumentExporter/DocumentHtmlExporter.php';
+include '../Editor/Utils/FileUtils.php';
 include '../Exceptions/InvalidPositionException.php';
 include '../Exceptions/InvalidCommandException.php';
 include 'Editors/MockEditor.php';
@@ -126,5 +127,29 @@ class Test extends TestCase
         $rightString = "";
 
         $this->assertEquals(file_get_contents('test_delete_item.html'), $rightString);
+    }
+
+    public function testImage(): void
+    {
+        $this->clear();
+        $history = new History();
+        $menu = new Menu();
+        $editor = new Editor($menu, $history);
+        $editor->start('inputs/test_image_input.txt');
+
+        $rightCount = 2;
+
+        $this->assertEquals(count(array_diff(scandir('images'), ['.', '..'])), $rightCount);
+    }
+
+    private function clear()
+    {
+        if (file_exists('images/'))
+        {
+            foreach (glob('images/*') as $file)
+            {
+                unlink($file);
+            }
+        }
     }
 }
