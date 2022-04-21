@@ -147,6 +147,10 @@ class Document implements DocumentInterface
 
     private function isVerifyPosition(int $position): bool
     {
+        if ($position === 0 && $this->getItemsCount() === 0)
+        {
+            return true;
+        }
         return $position < $this->getItemsCount();
     }
 }
