@@ -141,8 +141,6 @@ class Document implements DocumentInterface
         $htmlExporter = new DocumentHtmlExporter($this);
         $fileContent = $htmlExporter->generate();
         file_put_contents($fileName . '.html', $fileContent);
-
-        $this->history->clear();
     }
 
     private function isVerifyPosition(int $position): bool
