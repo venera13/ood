@@ -64,4 +64,12 @@ class History
             $this->nextCommandIndex = self::MAX_HISTORY_DEPTH - 1;
         }
     }
+
+    public function destroy(): void
+    {
+        foreach ($this->commands as $command)
+        {
+            $command->destroy();
+        }
+    }
 }

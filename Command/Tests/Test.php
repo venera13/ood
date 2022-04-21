@@ -138,11 +138,11 @@ class Test extends TestCase
 
         $history = new History();
         $menu = new Menu();
-        $editor = new MockFileContentEditor($menu, $history);
+        $editor = new MockEditor($menu, $history);
 
         $editor->start($menu, $method, 'inputs/test_encode_text_input.txt');
 
-        $rightString = "&lt;&gt;&quot;&apos;&amp;";
+        $rightString = file_get_contents('right_outputs/encode_text.html');
 
         $this->assertEquals(file_get_contents('output/test_encode_text.html'), $rightString);
     }
@@ -184,6 +184,7 @@ class Test extends TestCase
 
     public function testResizeImage(): void
     {
+        $this->clear();
         $class = new ReflectionClass('Command\Menu\Menu');
         $method = $class->getMethod('runCommand');
         $method->setAccessible(true);

@@ -63,6 +63,6 @@ class DocumentHtmlExporter implements DocumentExporterInterface
 
     private function addParagraph(ParagraphInterface $paragraph): void
     {
-        $this->fileContent .= '<p>' . $paragraph->getText() . '</p>';
+        $this->fileContent .= '<p>' . htmlspecialchars($paragraph->getText(), ENT_QUOTES | ENT_HTML5) . '</p>';
     }
 }

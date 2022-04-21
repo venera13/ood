@@ -15,6 +15,6 @@ class Paragraph implements ParagraphInterface
 
     public function setText(string $text): void
     {
-        $this->text = htmlspecialchars($text, ENT_QUOTES | ENT_HTML5);
+        $this->text = $text;
     }
 }

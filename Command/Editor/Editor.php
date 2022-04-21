@@ -16,6 +16,8 @@ class Editor
 {
     /** @var Menu */
     private $menu;
+    /** @var Document */
+    private $document;
     /** @var History */
     private $history;
 
