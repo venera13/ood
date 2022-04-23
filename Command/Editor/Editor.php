@@ -3,21 +3,17 @@ declare(strict_types=1);
 
 namespace Command\Editor;
 
-use Command\Command\ReplaceTextCommand;
 use Command\Document\Document;
 use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidCommandException;
 use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
 use Command\Menu\Menu;
-use RuntimeException;
 
 class Editor
 {
     /** @var Menu */
     private $menu;
-    /** @var Document */
-    private $document;
     /** @var History */
     private $history;
 
@@ -150,7 +146,7 @@ class Editor
                 throw new InvalidPositionException();
             }
 
-            $this->history->addAndExecuteCommand(new ReplaceTextCommand($paragraph, $text, $paragraph->getText()));
+            $paragraph->replaceText($this->history, $text);
         }
         catch (InvalidPositionException $exception)
         {

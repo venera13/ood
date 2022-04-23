@@ -10,9 +10,8 @@ use Command\Command\ResizeImageCommand;
 use Command\Data\DocumentItem;
 use Command\Data\Image\Image;
 use Command\Data\Paragraph\Paragraph;
-use Command\DocumentExporter\DocumentHtmlExporter;
+use Command\DocumentExporter\DocumentItemsToHTMLConverter;
 use Command\Editor\Utils\FileUtils;
-use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidPositionException;
 use Command\History\History;
 use RuntimeException;
@@ -138,8 +137,8 @@ class Document implements DocumentInterface
 
     public function save(string $fileName): void
     {
-        $htmlExporter = new DocumentHtmlExporter($this);
-        $fileContent = $htmlExporter->generate();
+        $htmlExporter = new DocumentItemsToHTMLConverter();
+        $fileContent = $htmlExporter->convert($this->getTitle(), $this->items);
         file_put_contents($fileName . '.html', $fileContent);
 
         $this->history->destroy();

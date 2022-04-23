@@ -58,8 +58,9 @@ class History
         $this->commands[] = $command;
         ++$this->nextCommandIndex;
 
-        if (count($this->commands) == self::MAX_HISTORY_DEPTH)
+        if (count($this->commands) === self::MAX_HISTORY_DEPTH)
         {
+            $this->commands[0]->destroy();
             $this->commands = array_splice($this->commands, 1, self::MAX_HISTORY_DEPTH - 1);
             $this->nextCommandIndex = self::MAX_HISTORY_DEPTH - 1;
         }

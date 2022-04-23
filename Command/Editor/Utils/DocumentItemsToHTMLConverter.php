@@ -3,43 +3,42 @@ declare(strict_types=1);
 
 namespace Command\DocumentExporter;
 
+use Command\Data\DocumentItem;
 use Command\Data\Image\ImageInterface;
 use Command\Data\Paragraph\ParagraphInterface;
 use Command\Document\DocumentInterface;
 
-class DocumentHtmlExporter implements DocumentExporterInterface
+class DocumentItemsToHTMLConverter
 {
-    /** @var DocumentInterface */
-    private $document;
     /** @var string */
     private $fileContent = '';
 
-    public function __construct(DocumentInterface $document)
+    /**
+     * @param string $title
+     * @param DocumentItem[] $items
+     * @return string
+     */
+    public function convert(string $title, array $items): string
     {
-        $this->document = $document;
-    }
-
-    public function generate(): string
-    {
-        $this->addFileTop();
-        $this->addFileBody();
-        $this->addFileBottom();
+        $this->generateHTMLTop($title);
+        $this->generateHTMLBody($items);
+        $this->generateHTMLBottom();
 
         return $this->fileContent;
     }
 
-    private function addFileTop(): void
+    private function generateHTMLTop(string $title): void
     {
         $this->fileContent = '<!DOCTYPE html><html><head><title>'
-            . $this->document->getTitle()
+            . $title
             . '</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>';
     }
 
-    private function addFileBody(): void
+    private function generateHTMLBody(array $items): void
     {
-        for ($i = 0; $i < $this->document->getItemsCount(); $i++)
+        for ($i = 0; $i < count($items); $i++)
         {
-            $item = $this->document->getItem($i);
+            $item = $items[$i];
             if ($item->getImage())
             {
                 $this->addImage($item->getImage());
@@ -51,7 +50,7 @@ class DocumentHtmlExporter implements DocumentExporterInterface
         }
     }
 
-    private function addFileBottom(): void
+    private function generateHTMLBottom(): void
     {
         $this->fileContent .= '</body></html>';
     }
