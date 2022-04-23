@@ -18,7 +18,7 @@ include 'Editor/Command/InsertItemCommand.php';
 include 'Editor/Command/ReplaceTextCommand.php';
 include 'Editor/Command/ResizeImageCommand.php';
 include 'Editor/Command/DeleteItemCommand.php';
-include 'Editor/DocumentExporter/DocumentItemsToHTMLConverter.php';
+include 'Editor/Utils/DocumentItemsToHTMLConverter.php';
 include 'Editor/Utils/FileUtils.php';
 include 'Exceptions/InvalidPositionException.php';
 include 'Exceptions/InvalidCommandException.php';
