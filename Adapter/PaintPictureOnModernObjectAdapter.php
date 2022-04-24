@@ -7,7 +7,7 @@ use Adapter\GraphicsLib\CanvasInterface;
 use Adapter\ModernGraphicsLib\ModernGraphicsRenderer;
 use Adapter\ModernGraphicsLib\Point;
 
-class PaintPictureOnModernAdapter implements CanvasInterface
+class PaintPictureOnModernObjectAdapter implements CanvasInterface
 {
     /** @var ModernGraphicsRenderer */
     private $modernGraphicsRenderer;
@@ -28,7 +28,6 @@ class PaintPictureOnModernAdapter implements CanvasInterface
 
     public function lineTo(int $x, int $y): void
     {
-        print_r('123');
         $this->modernGraphicsRenderer->drawLine($this->start, new Point($x, $y));
     }
 }

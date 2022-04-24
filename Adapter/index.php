@@ -11,7 +11,8 @@ include 'ShapeDrawingLib/CanvasPainter.php';
 include 'ShapeDrawingLib/Point.php';
 include 'ShapeDrawingLib/Rectangle.php';
 include 'ShapeDrawingLib/Triangle.php';
-include 'PaintPictureOnModernAdapter.php';
+include 'PaintPictureOnModernObjectAdapter.php';
+include 'PaintPictureOnModernClassAdapter.php';
 
 use Adapter\GraphicsLib\Canvas;
 use Adapter\ModernGraphicsLib\Exceptions\LogicException;
@@ -20,7 +21,8 @@ use Adapter\ShapeDrawingLib\CanvasPainter;
 use Adapter\ShapeDrawingLib\Point;
 use Adapter\ShapeDrawingLib\Rectangle;
 use Adapter\ShapeDrawingLib\Triangle;
-use Adapter\PaintPictureOnModernAdapter;
+use Adapter\PaintPictureOnModernObjectAdapter;
+use Adapter\PaintPictureOnModernClassAdapter;
 
 function paintPicture(CanvasPainter $painter): void
 {
@@ -43,8 +45,23 @@ function paintPictureOnModernGraphicsRenderer(): void
     try
     {
         $renderer = new ModernGraphicsRenderer();
-        $paintAdapter = new PaintPictureOnModernAdapter($renderer);
+        $paintAdapter = new PaintPictureOnModernObjectAdapter($renderer);
         $painter = new CanvasPainter($paintAdapter);
+        paintPicture($painter);
+    }
+    catch (LogicException $exception)
+    {
+        echo $exception->getMessage() . '</br>';
+        return;
+    }
+}
+
+function paintPictureOnModernGraphicsRendererClassAdapter(): void
+{
+    try
+    {
+        $printAdapter = new PaintPictureOnModernClassAdapter();
+        $painter = new CanvasPainter($printAdapter);
         paintPicture($painter);
     }
     catch (LogicException $exception)
@@ -56,3 +73,4 @@ function paintPictureOnModernGraphicsRenderer(): void
 
 paintPictureOnCanvas();
 paintPictureOnModernGraphicsRenderer();
+paintPictureOnModernGraphicsRendererClassAdapter();
