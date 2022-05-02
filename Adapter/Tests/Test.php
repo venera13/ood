@@ -6,6 +6,7 @@ namespace Adapter\Tests;
 include '../GraphicsLib/CanvasInterface.php';
 include '../GraphicsLib/Canvas.php';
 include '../ModernGraphicsLib/Point.php';
+include '../ModernGraphicsLib/RGBAColor.php';
 include '../ModernGraphicsLib/ModernGraphicsRenderer.php';
 include '../ModernGraphicsLib/Exceptions/LogicException.php';
 include '../ShapeDrawingLib/CanvasDrawableInterface.php';
@@ -13,12 +14,13 @@ include '../ShapeDrawingLib/CanvasPainter.php';
 include '../ShapeDrawingLib/Point.php';
 include '../ShapeDrawingLib/Rectangle.php';
 include '../ShapeDrawingLib/Triangle.php';
-include '../PaintPictureOnModernObjectAdapter.php';
-include '../PaintPictureOnModernClassAdapter.php';
+include '../ModernGraphicsLibAdapter/PaintPictureOnModernObjectAdapter.php';
+include '../ModernGraphicsLibAdapter/PaintPictureOnModernClassAdapter.php';
+include '../ModernGraphicsLibAdapter/Utils/ColorUtil.php';
 include 'MockModernGraphicsRenderer.php';
 
-use Adapter\PaintPictureOnModernClassAdapter;
-use Adapter\PaintPictureOnModernObjectAdapter;
+use Adapter\ModernGraphicsLibAdapter\PaintPictureOnModernClassAdapter;
+use Adapter\ModernGraphicsLibAdapter\PaintPictureOnModernObjectAdapter;
 use PHPUnit\Framework\TestCase;
 
 class Test extends TestCase
@@ -27,18 +29,20 @@ class Test extends TestCase
     {
         $renderer = new MockModernGraphicsRenderer();
         $paintAdapter = new PaintPictureOnModernObjectAdapter($renderer);
+        $paintAdapter->setColor(0x000000);
         $paintAdapter->moveTo(1, 2);
         $paintAdapter->lineTo(3, 4);
 
-        $this->expectOutputString('<draw></br>1231234</draw></br>');
+        $this->expectOutputString('<draw></br>1234</draw></br>');
     }
 
     public function testClassAdapter(): void
     {
         $printAdapter = new PaintPictureOnModernClassAdapter();
+        $printAdapter->setColor(0xffffff);
         $printAdapter->moveTo(1, 2);
         $printAdapter->lineTo(3, 4);
 
-        $this->expectOutputString('<draw></br>Line fromX="1 fromY=2 toX=3 toY=4</br></draw></br>');
+        $this->expectOutputString('<draw></br>0  Line fromX="1 fromY=2 toX=3 toY=4 <\color r="1" g="1" b="1" a="1>"</br></draw></br>');
     }
 }

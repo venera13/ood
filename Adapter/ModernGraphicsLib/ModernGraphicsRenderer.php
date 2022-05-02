@@ -27,14 +27,19 @@ class ModernGraphicsRenderer
         $this->drawing = true;
     }
 
-    public function drawLine(Point $start, Point $end)
+    public function drawLine(Point $start, Point $end, RGBAColor $color)
     {
         if (!$this->drawing)
         {
             throw new LogicException('DrawLine is allowed between BeginDraw()/EndDraw() only');
         }
 
-        echo 'Line fromX="' . $start->getX() . ' fromY=' . $start->getY() . ' toX=' . $end->getX() . ' toY=' . $end->getY() . '</br>';
+        echo 'Line fromX="' . $start->getX()
+            . ' fromY=' . $start->getY()
+            . ' toX=' . $end->getX()
+            . ' toY=' . $end->getY()
+            . ' <\color r="' . $color->getR() . '" g="'. $color->getG() . '" b="'. $color->getB() . '" a="'. $color->getA() . '>"'
+            . '</br>';
     }
 
     private function endDraw(): void

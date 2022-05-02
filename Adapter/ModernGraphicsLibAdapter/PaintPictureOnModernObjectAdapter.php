@@ -1,11 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Adapter;
+namespace Adapter\ModernGraphicsLibAdapter;
 
 use Adapter\GraphicsLib\CanvasInterface;
 use Adapter\ModernGraphicsLib\ModernGraphicsRenderer;
 use Adapter\ModernGraphicsLib\Point;
+use Adapter\ModernGraphicsLib\RGBAColor;
+use Adapter\ModernGraphicsLibAdapter\Utils\ColorUtil;
 
 class PaintPictureOnModernObjectAdapter implements CanvasInterface
 {
@@ -13,12 +15,20 @@ class PaintPictureOnModernObjectAdapter implements CanvasInterface
     private $modernGraphicsRenderer;
     /** @var Point */
     private $start;
+    /** @var RGBAColor */
+    private $color;
 
     public function __construct(ModernGraphicsRenderer $modernGraphicsRenderer)
     {
         $this->modernGraphicsRenderer = $modernGraphicsRenderer;
 
         $this->modernGraphicsRenderer->beginDraw();
+    }
+
+    public function setColor(int $rgbColor): void
+    {
+        [$r, $g, $b] = ColorUtil::hex2RGB($rgbColor);
+        $this->color = new RGBAColor($r/255, $g/255, $b/255, 1);
     }
 
     public function moveTo(int $x, int $y): void
@@ -28,6 +38,6 @@ class PaintPictureOnModernObjectAdapter implements CanvasInterface
 
     public function lineTo(int $x, int $y): void
     {
-        $this->modernGraphicsRenderer->drawLine($this->start, new Point($x, $y));
+        $this->modernGraphicsRenderer->drawLine($this->start, new Point($x, $y), $this->color);
     }
 }

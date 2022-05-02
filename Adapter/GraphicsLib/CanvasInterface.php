@@ -6,6 +6,11 @@ namespace Adapter\GraphicsLib;
 interface CanvasInterface
 {
     /**
+     * @param int $rgbColor
+     */
+    public function setColor(int $rgbColor): void;
+
+    /**
      * @param int $x
      * @param int $y
      */
