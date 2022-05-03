@@ -15,15 +15,15 @@ interface GroupInterface extends ShapeInterface
 
     /**
      * @param int $index
-     * @return Shape
+     * @return ShapeInterface
      */
-    public function getShapesAtIndex(int $index): Shape;
+    public function getShapesAtIndex(int $index): ShapeInterface;
 
     /**
-     * @param Shape $shape
-     * @param int $index
+     * @param ShapeInterface $shape
+     * @param int|null $index
      */
-    public function insertShape(Shape $shape, int $index): void;
+    public function insertShape(ShapeInterface $shape, ?int $index = null): void;
 
     /**
      * @param int $index

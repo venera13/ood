@@ -5,29 +5,29 @@ namespace Composite\Domain\Point;
 
 class Point
 {
-    /** @var int */
+    /** @var float */
     private $x;
-    /** @var int */
+    /** @var float */
     private $y;
 
-    public function __construct(int $x, int $y)
+    public function __construct(float $x, float $y)
     {
         $this->x = $x;
         $this->y = $y;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getX(): int
+    public function getX(): float
     {
         return $this->x;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getY(): int
+    public function getY(): float
     {
         return $this->y;
     }

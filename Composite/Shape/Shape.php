@@ -6,13 +6,12 @@ namespace Composite\Shape;
 use Composite\Group\GroupInterface;
 use Composite\Style\FillStyle;
 use Composite\Style\LineStyle;
-use Composite\Style\StyleInterface;
 
 abstract class Shape implements ShapeInterface
 {
-    /** @var LineStyle */
+    /** @var LineStyle|null */
     private $lineStyle;
-    /** @var FillStyle */
+    /** @var FillStyle|null */
     private $fillStyle;
 
     public function setLineStyle(LineStyle $style): void

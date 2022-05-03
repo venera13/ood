@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace Composite\Group;
 
 use Composite\Canvas\CanvasInterface;
+use Composite\Domain\Point\Point;
+use Composite\Exceptions\InvalidArgumentsException;
 use Composite\Shape\Domain\Rect;
-use Composite\Shape\Shape;
 use Composite\Shape\ShapeInterface;
 use Composite\Style\FillStyle;
 use Composite\Style\LineStyle;
@@ -13,65 +14,173 @@ use Composite\Style\LineStyle;
 class Group implements GroupInterface
 {
     /** @var ShapeInterface[] */
-    private $shapes;
+    private $shapes = [];
+    /** @var LineStyle|null */
+    private $lineStyle;
+    /** @var FillStyle|null */
+    private $fillStyle;
+
+    public function __construct()
+    {
+        $this->lineStyle = null;
+        $this->fillStyle = null;
+        foreach ($this->shapes as $shape)
+        {
+            if ($this->lineStyle === null)
+            {
+                $this->lineStyle = $shape->getLineStyle();
+            }
+            else
+            {
+                $this->lineStyle = $this->lineStyle->getColor() == $shape->getLineStyle()->getColor() ? $shape->getLineStyle() : null;
+            }
+
+            if ($this->lineStyle === null)
+            {
+                $this->lineStyle = $shape->getFillStyle();
+            }
+            else
+            {
+                $this->lineStyle = $this->lineStyle->getColor() == $shape->getFillStyle()->getColor() ? $shape->getFillStyle() : null;
+            }
+        }
+    }
 
     public function getShapesCount(): int
     {
-        // TODO: Implement getShapesCount() method.
+        return count($this->shapes);
     }
 
-    public function getShapesAtIndex(int $index): Shape
+    public function getShapesAtIndex(int $index): ShapeInterface
     {
-        // TODO: Implement getShapesAtIndex() method.
+        if ($index >= $this->getShapesCount())
+        {
+            throw new InvalidArgumentsException('Invalid index');
+        }
+
+        return $this->shapes[$index];
     }
 
-    public function insertShape(Shape $shape, int $index): void
+    public function insertShape(ShapeInterface $shape, ?int $index = null): void
     {
-        // TODO: Implement insertShape() method.
+        if ($index !== null && $index >= $this->getShapesCount())
+        {
+            throw new InvalidArgumentsException('Invalid index');
+        }
+        if ($index === null)
+        {
+            $this->shapes[] = $shape;
+        }
+        else
+        {
+            array_splice($this->shapes, $index, 0, $shape);
+        }
     }
 
     public function removeShapeAtIndex(int $index): void
     {
-        // TODO: Implement removeShapeAtIndex() method.
+        if ($index >= $this->getShapesCount())
+        {
+            throw new InvalidArgumentsException('Invalid index');
+        }
+        unset($this->shapes[$index]);
+        $this->shapes = array_values($this->shapes);
     }
 
     public function draw(CanvasInterface $canvas): void
     {
-        // TODO: Implement draw() method.
+        foreach ($this->shapes as $shape)
+        {
+            $shape->draw($canvas);
+        }
     }
 
     public function getFrame(): Rect
     {
-        // TODO: Implement getFrame() method.
+        $minX = null;
+        $minY = null;
+        $maxX = null;
+        $maxY = null;
+
+        foreach ($this->shapes as $shape)
+        {
+            $shapeFrame = $shape->getFrame();
+            if ($minX === null && $minY === null)
+            {
+                $minX = $shapeFrame->getLeftTop()->getX();
+                $minY = $shapeFrame->getLeftTop()->getY();
+                $maxX = $shapeFrame->getLeftTop()->getX() + $shapeFrame->getWidth();
+                $maxY = $shapeFrame->getLeftTop()->getY() + $shapeFrame->getHeight();
+                continue;
+            }
+
+            $minX = min($minX, $shapeFrame->getLeftTop()->getX());
+            $minY = min($minY, $shapeFrame->getLeftTop()->getY());
+            $maxX = max($maxX, $shapeFrame->getLeftTop()->getX() + $shapeFrame->getWidth());
+            $maxY = max($maxY, $shapeFrame->getLeftTop()->getY() + $shapeFrame->getHeight());
+        }
+
+        return new Rect(new Point($minX, $minY), $maxX - $minX, $maxY - $minY);
     }
 
     public function setFrame(Rect $rect): void
     {
-        // TODO: Implement setFrame() method.
+        $currentFrame = $this->getFrame();
+
+        foreach ($this->shapes as $shape)
+        {
+            $shapeFrame = $shape->getFrame();
+            $newShapeLeftTop = $this->getNewFramePoint($rect, $currentFrame, $shapeFrame->getLeftTop());
+            $newShapeWidth = $shapeFrame->getWidth() / $currentFrame->getWidth() * $rect->getWidth();
+            $newShapeHeight = $shapeFrame->getHeight() / $currentFrame->getHeight() * $rect->getHeight();
+
+            $newShapeFrame = new Rect($newShapeLeftTop, $newShapeWidth, $newShapeHeight);
+            $shape->setFrame($newShapeFrame);
+        }
     }
 
     public function setLineStyle(LineStyle $style): void
     {
-        // TODO: Implement setLineStyle() method.
+        foreach ($this->shapes as $shape)
+        {
+            $shape->setLineStyle($style);
+        }
     }
 
     public function getLineStyle(): ?LineStyle
     {
-        // TODO: Implement getLineStyle() method.
+        return $this->lineStyle;
     }
 
     public function setFillStyle(FillStyle $style): void
     {
-        // TODO: Implement setFillStyle() method.
+        foreach ($this->shapes as $shape)
+        {
+            $shape->setFillStyle($style);
+        }
     }
 
     public function getFillStyle(): ?FillStyle
     {
-        // TODO: Implement getFillStyle() method.
+        return $this->fillStyle;
     }
 
     public function getGroup(): ?GroupInterface
     {
-        // TODO: Implement getGroup() method.
+        return $this;
+    }
+
+    /**
+     * @param Rect $rect
+     * @param Rect $currentFrame
+     * @param Point $point
+     * @return Point
+     */
+    private function getNewFramePoint(Rect $rect, Rect $currentFrame, Point $point): Point
+    {
+        $x = $rect->getLeftTop()->getX() + ($point->getX() - $currentFrame->getLeftTop()->getX()) / $currentFrame->getWidth() * $rect->getWidth();
+        $y = $rect->getLeftTop()->getY() + ($point->getY() - $currentFrame->getLeftTop()->getY()) / $currentFrame->getHeight() * $rect->getHeight();
+
+        return new Point($x, $y);
     }
 }

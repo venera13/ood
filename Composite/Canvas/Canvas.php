@@ -34,13 +34,13 @@ class Canvas implements CanvasInterface
     public function drawLine(Point $from, Point $to, ?int $thick = 1): void
     {
         imagesetthickness($this->image, $thick);
-        imageline($this->image, $from->getX(), $from->getY(), $to->getX(), $to->getY(), $this->lineColor);
+        imageline($this->image, (int)$from->getX(), (int)$from->getY(), (int)$to->getX(), (int)$to->getY(), $this->lineColor);
     }
 
-    public function drawEllipse(Point $center, int $width, int $height, ?int $thick = 1): void
+    public function drawEllipse(Point $center, float $width, float $height, ?int $thick = 1): void
     {
         imagesetthickness($this->image, $thick);
-        imageellipse($this->image, $center->getX(), $center->getY(), $width, $height, $this->lineColor);
+        imageellipse($this->image, (int)$center->getX(), (int)$center->getY(), (int)$width, (int)$height, $this->lineColor);
     }
 
     public function fillPolygon(array $vertexes): void
@@ -54,9 +54,9 @@ class Canvas implements CanvasInterface
         imagefilledpolygon($this->image, $points, count($vertexes), $this->fillColor);
     }
 
-    public function fillEllipse(Point $center, int $width, int $height): void
+    public function fillEllipse(Point $center, float $width, float $height): void
     {
-        imagefilledellipse($this->image, $center->getX(), $center->getY(), $width, $height, $this->fillColor);
+        imagefilledellipse($this->image, (int)$center->getX(), (int)$center->getY(), (int)$width, (int)$height, $this->fillColor);
     }
 
     public function drawImage(): void

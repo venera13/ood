@@ -9,12 +9,12 @@ class Rect
 {
     /** @var Point */
     private $leftTop;
-    /** @var int */
+    /** @var float */
     private $width;
-    /** @var int */
+    /** @var float */
     private $height;
 
-    public function __construct(Point $leftTop, int $width, int $height)
+    public function __construct(Point $leftTop, float $width, float $height)
     {
         $this->leftTop = $leftTop;
         $this->width = $width;
@@ -30,17 +30,17 @@ class Rect
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getWidth(): int
+    public function getWidth(): float
     {
         return $this->width;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getHeight(): int
+    public function getHeight(): float
     {
         return $this->height;
     }

@@ -47,6 +47,9 @@ class Rectangle extends Shape
 
     public function setFrame(Rect $rect): void
     {
+        print_r($rect->getLeftTop()->getX() . ' ' . $rect->getLeftTop()->getY() . '<br />');
+        print_r($rect->getWidth() . '<br />');
+        print_r($rect->getHeight() . '<br />');
         $this->leftTop = $rect->getLeftTop();
         $this->rightBottom = new Point($rect->getLeftTop()->getX() + $rect->getWidth(), $rect->getLeftTop()->getY() + $rect->getHeight());
     }

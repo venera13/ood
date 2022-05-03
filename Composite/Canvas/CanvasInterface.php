@@ -31,16 +31,16 @@ interface CanvasInterface
 
     /**
      * @param Point $center
-     * @param int $width
-     * @param int $height
+     * @param float $width
+     * @param float $height
      * @param int|null $thick
      */
-    public function drawEllipse(Point $center, int $width, int $height, ?int $thick = 1): void;
+    public function drawEllipse(Point $center, float $width, float $height, ?int $thick = 1): void;
 
     /**
      * @param Point $center
-     * @param int $width
-     * @param int $height
+     * @param float $width
+     * @param float $height
      */
-    public function fillEllipse(Point $center, int $width, int $height): void;
+    public function fillEllipse(Point $center, float $width, float $height): void;
 }

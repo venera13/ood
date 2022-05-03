@@ -53,12 +53,12 @@ class Triangle extends Shape
     public function setFrame(Rect $rect): void
     {
         $currentFrame = $this->getFrame();
-        $this->vertex1 = $this->updateVertex($rect, $currentFrame, $this->vertex1);
-        $this->vertex2 = $this->updateVertex($rect, $currentFrame, $this->vertex2);
-        $this->vertex3 = $this->updateVertex($rect, $currentFrame, $this->vertex3);
+        $this->vertex1 = $this->getNewVertex($rect, $currentFrame, $this->vertex1);
+        $this->vertex2 = $this->getNewVertex($rect, $currentFrame, $this->vertex2);
+        $this->vertex3 = $this->getNewVertex($rect, $currentFrame, $this->vertex3);
     }
 
-    private function updateVertex(Rect $rect, Rect $currentFrame, Point $point): Point
+    private function getNewVertex(Rect $rect, Rect $currentFrame, Point $point): Point
     {
         $x = $rect->getLeftTop()->getX() + ($point->getX() - $currentFrame->getLeftTop()->getX()) / $currentFrame->getWidth() * $rect->getWidth();
         $y = $rect->getLeftTop()->getY() + ($point->getY() - $currentFrame->getLeftTop()->getY()) / $currentFrame->getHeight() * $rect->getHeight();
