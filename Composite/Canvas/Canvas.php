@@ -31,13 +31,15 @@ class Canvas implements CanvasInterface
         $this->fillColor = imagecolorallocate($this->image, (int)$color->getR(), (int)$color->getG(), (int)$color->getB());
     }
 
-    public function drawLine(Point $from, Point $to): void
+    public function drawLine(Point $from, Point $to, ?int $thick = 1): void
     {
+        imagesetthickness($this->image, $thick);
         imageline($this->image, $from->getX(), $from->getY(), $to->getX(), $to->getY(), $this->lineColor);
     }
 
-    public function drawEllipse(Point $center, int $width, int $height): void
+    public function drawEllipse(Point $center, int $width, int $height, ?int $thick = 1): void
     {
+        imagesetthickness($this->image, $thick);
         imageellipse($this->image, $center->getX(), $center->getY(), $width, $height, $this->lineColor);
     }
 

@@ -6,6 +6,8 @@ namespace Composite\Shape;
 use Composite\Canvas\CanvasInterface;
 use Composite\Group\GroupInterface;
 use Composite\Shape\Domain\Rect;
+use Composite\Style\FillStyle;
+use Composite\Style\LineStyle;
 use Composite\Style\StyleInterface;
 
 interface ShapeInterface
@@ -26,24 +28,24 @@ interface ShapeInterface
     public function setFrame(Rect $rect): void;
 
     /**
-     * @param StyleInterface $style
+     * @param LineStyle $style
      */
-    public function setLineStyle(StyleInterface $style): void;
+    public function setLineStyle(LineStyle $style): void;
 
     /**
-     * @return StyleInterface|null
+     * @return LineStyle|null
      */
-    public function getLineStyle(): ?StyleInterface;
+    public function getLineStyle(): ?LineStyle;
 
     /**
-     * @param StyleInterface $style
+     * @param FillStyle $style
      */
-    public function setFillStyle(StyleInterface $style): void;
+    public function setFillStyle(FillStyle $style): void;
 
     /**
-     * @return StyleInterface|null
+     * @return FillStyle|null
      */
-    public function getFillStyle(): ?StyleInterface;
+    public function getFillStyle(): ?FillStyle;
 
     /**
      * @return GroupInterface|null

@@ -25,18 +25,18 @@ class Triangle extends Shape
 
     public function draw(CanvasInterface $canvas): void
     {
-        if ($this->getLineStyle() && $this->getLineStyle()->isEnabled())
-        {
-            $canvas->setLineColor($this->getLineStyle()->getColor());
-            $canvas->drawLine($this->vertex1, $this->vertex2);
-            $canvas->drawLine($this->vertex1, $this->vertex3);
-            $canvas->drawLine($this->vertex2, $this->vertex3);
-        }
-
         if ($this->getFillStyle() && $this->getFillStyle()->isEnabled())
         {
             $canvas->setFillColor($this->getFillStyle()->getColor());
             $canvas->fillPolygon([$this->vertex1, $this->vertex2, $this->vertex3]);
+        }
+
+        if ($this->getLineStyle() && $this->getLineStyle()->isEnabled())
+        {
+            $canvas->setLineColor($this->getLineStyle()->getColor());
+            $canvas->drawLine($this->vertex1, $this->vertex2, $this->getLineStyle()->getThick());
+            $canvas->drawLine($this->vertex1, $this->vertex3, $this->getLineStyle()->getThick());
+            $canvas->drawLine($this->vertex2, $this->vertex3, $this->getLineStyle()->getThick());
         }
     }
 

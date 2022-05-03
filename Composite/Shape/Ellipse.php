@@ -25,16 +25,16 @@ class Ellipse extends Shape
 
     public function draw(CanvasInterface $canvas): void
     {
-        if ($this->getLineStyle() && $this->getLineStyle()->isEnabled())
-        {
-            $canvas->setLineColor($this->getLineStyle()->getColor());
-            $canvas->drawEllipse($this->center, $this->horizontalRadius * 2, $this->verticalRadius * 2);
-        }
-
         if ($this->getFillStyle() && $this->getFillStyle()->isEnabled())
         {
             $canvas->setFillColor($this->getFillStyle()->getColor());
             $canvas->fillEllipse($this->center, $this->horizontalRadius * 2, $this->verticalRadius * 2);
+        }
+
+        if ($this->getLineStyle() && $this->getLineStyle()->isEnabled())
+        {
+            $canvas->setLineColor($this->getLineStyle()->getColor());
+            $canvas->drawEllipse($this->center, $this->horizontalRadius * 2, $this->verticalRadius * 2, $this->getLineStyle()->getThick());
         }
     }
 

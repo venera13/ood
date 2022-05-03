@@ -22,21 +22,21 @@ class Rectangle extends Shape
 
     public function draw(CanvasInterface $canvas): void
     {
-        if ($this->getLineStyle() && $this->getLineStyle()->isEnabled())
-        {
-            $canvas->setLineColor($this->getLineStyle()->getColor());
-            $canvas->drawLine($this->leftTop, new Point($this->rightBottom->getX(), $this->leftTop->getY()));
-            $canvas->drawLine($this->leftTop, new Point($this->leftTop->getX(), $this->rightBottom->getY()));
-            $canvas->drawLine(new Point($this->rightBottom->getX(), $this->leftTop->getY()), $this->rightBottom);
-            $canvas->drawLine(new Point($this->leftTop->getX(), $this->rightBottom->getY()), $this->rightBottom);
-        }
-
         if ($this->getFillStyle() && $this->getFillStyle()->isEnabled())
         {
             $canvas->setFillColor($this->getFillStyle()->getColor());
             $rightTop = new Point($this->rightBottom->getX(), $this->leftTop->getY());
             $leftBottom = new Point($this->leftTop->getX(), $this->rightBottom->getY());
             $canvas->fillPolygon([$this->leftTop, $rightTop, $this->rightBottom, $leftBottom]);
+        }
+
+        if ($this->getLineStyle() && $this->getLineStyle()->isEnabled())
+        {
+            $canvas->setLineColor($this->getLineStyle()->getColor());
+            $canvas->drawLine($this->leftTop, new Point($this->rightBottom->getX(), $this->leftTop->getY()), $this->getLineStyle()->getThick());
+            $canvas->drawLine($this->leftTop, new Point($this->leftTop->getX(), $this->rightBottom->getY()), $this->getLineStyle()->getThick());
+            $canvas->drawLine(new Point($this->rightBottom->getX(), $this->leftTop->getY()), $this->rightBottom, $this->getLineStyle()->getThick());
+            $canvas->drawLine(new Point($this->leftTop->getX(), $this->rightBottom->getY()), $this->rightBottom, $this->getLineStyle()->getThick());
         }
     }
 

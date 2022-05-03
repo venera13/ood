@@ -20,8 +20,9 @@ interface CanvasInterface
     /**
      * @param Point $from
      * @param Point $to
+     * @param int|null $thick
      */
-    public function drawLine(Point $from, Point $to): void;
+    public function drawLine(Point $from, Point $to, ?int $thick = 1): void;
 
     /**
      * @param Point[] $vertexes
@@ -32,8 +33,9 @@ interface CanvasInterface
      * @param Point $center
      * @param int $width
      * @param int $height
+     * @param int|null $thick
      */
-    public function drawEllipse(Point $center, int $width, int $height): void;
+    public function drawEllipse(Point $center, int $width, int $height, ?int $thick = 1): void;
 
     /**
      * @param Point $center

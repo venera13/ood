@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Composite\Group;
 
+use Composite\Canvas\CanvasInterface;
 use Composite\Shape\Domain\Rect;
 use Composite\Shape\Shape;
 use Composite\Shape\ShapeInterface;
-use Composite\Style\StyleInterface;
+use Composite\Style\FillStyle;
+use Composite\Style\LineStyle;
 
 class Group implements GroupInterface
 {
@@ -33,6 +35,11 @@ class Group implements GroupInterface
         // TODO: Implement removeShapeAtIndex() method.
     }
 
+    public function draw(CanvasInterface $canvas): void
+    {
+        // TODO: Implement draw() method.
+    }
+
     public function getFrame(): Rect
     {
         // TODO: Implement getFrame() method.
@@ -43,27 +50,27 @@ class Group implements GroupInterface
         // TODO: Implement setFrame() method.
     }
 
-    public function setLineStyle(StyleInterface $style): void
+    public function setLineStyle(LineStyle $style): void
     {
         // TODO: Implement setLineStyle() method.
     }
 
-    public function getLineStyle(): ?StyleInterface
+    public function getLineStyle(): ?LineStyle
     {
         // TODO: Implement getLineStyle() method.
     }
 
-    public function setFillStyle(StyleInterface $style): void
+    public function setFillStyle(FillStyle $style): void
     {
         // TODO: Implement setFillStyle() method.
     }
 
-    public function getFillStyle(): ?StyleInterface
+    public function getFillStyle(): ?FillStyle
     {
         // TODO: Implement getFillStyle() method.
     }
 
-    public function getGroup(): GroupInterface
+    public function getGroup(): ?GroupInterface
     {
         // TODO: Implement getGroup() method.
     }
