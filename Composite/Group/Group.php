@@ -1,0 +1,70 @@
+<?php
+declare(strict_types=1);
+
+namespace Composite\Group;
+
+use Composite\Shape\Domain\Rect;
+use Composite\Shape\Shape;
+use Composite\Shape\ShapeInterface;
+use Composite\Style\StyleInterface;
+
+class Group implements GroupInterface
+{
+    /** @var ShapeInterface[] */
+    private $shapes;
+
+    public function getShapesCount(): int
+    {
+        // TODO: Implement getShapesCount() method.
+    }
+
+    public function getShapesAtIndex(int $index): Shape
+    {
+        // TODO: Implement getShapesAtIndex() method.
+    }
+
+    public function insertShape(Shape $shape, int $index): void
+    {
+        // TODO: Implement insertShape() method.
+    }
+
+    public function removeShapeAtIndex(int $index): void
+    {
+        // TODO: Implement removeShapeAtIndex() method.
+    }
+
+    public function getFrame(): Rect
+    {
+        // TODO: Implement getFrame() method.
+    }
+
+    public function setFrame(Rect $rect): void
+    {
+        // TODO: Implement setFrame() method.
+    }
+
+    public function setLineStyle(StyleInterface $style): void
+    {
+        // TODO: Implement setLineStyle() method.
+    }
+
+    public function getLineStyle(): ?StyleInterface
+    {
+        // TODO: Implement getLineStyle() method.
+    }
+
+    public function setFillStyle(StyleInterface $style): void
+    {
+        // TODO: Implement setFillStyle() method.
+    }
+
+    public function getFillStyle(): ?StyleInterface
+    {
+        // TODO: Implement getFillStyle() method.
+    }
+
+    public function getGroup(): GroupInterface
+    {
+        // TODO: Implement getGroup() method.
+    }
+}
