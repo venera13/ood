@@ -43,6 +43,6 @@ class Test extends TestCase
         $printAdapter->moveTo(1, 2);
         $printAdapter->lineTo(3, 4);
 
-        $this->expectOutputString('<draw></br>0  Line fromX="1 fromY=2 toX=3 toY=4 <\color r="1" g="1" b="1" a="1>"</br></draw></br>');
+        $this->expectOutputString('<draw></br>Line fromX="1 fromY=2 toX=3 toY=4 <\color r="1" g="1" b="1" a="1>"</br></draw></br>');
     }
 }
