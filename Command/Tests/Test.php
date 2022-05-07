@@ -25,13 +25,11 @@ include '../Editor/Utils/FileUtils.php';
 include '../Exceptions/InvalidPositionException.php';
 include '../Exceptions/InvalidCommandException.php';
 include 'Editors/MockEditor.php';
-include 'Editors/MockFileContentEditor.php';
-include 'Editors/MockImageParamsEditor.php';
-include 'Editors/MockHistoryEditor.php';
 include 'Documents/MockDocument.php';
 include 'Documents/MockFileContentDocument.php';
 include 'Documents/MockImageParamsDocument.php';
 
+use Command\Document\Document;
 use Command\History\History;
 use Command\Menu\Menu;
 use PHPUnit\Framework\TestCase;
@@ -89,8 +87,9 @@ class Test extends TestCase
 
         $history = new History();
         $menu = new Menu();
-        $editor = new MockHistoryEditor($menu, $history);
-        $editor->start($menu, $method, 'inputs/test_history_input.txt');
+        $document = new MockDocument($history);
+        $editor = new MockEditor($menu, $document);
+        $editor->start($menu, $method,'inputs/test_history_input.txt');
 
         $rightString = '2';
 
@@ -105,7 +104,8 @@ class Test extends TestCase
 
         $history = new History();
         $menu = new Menu();
-        $editor = new MockEditor($menu, $history);
+        $document = new Document($history);
+        $editor = new MockEditor($menu, $document);
         $editor->start($menu, $method, 'inputs/test_text_input.txt');
 
         $rightString = '<!DOCTYPE html><html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body><p>1</p></body></html>';
@@ -121,7 +121,8 @@ class Test extends TestCase
 
         $history = new History();
         $menu = new Menu();
-        $editor = new MockFileContentEditor($menu, $history);
+        $document = new MockFileContentDocument($history);
+        $editor = new MockEditor($menu, $document);
         $editor->start($menu, $method, 'inputs/test_replace_text_input.txt');
 
         $rightString = '153';
@@ -137,7 +138,8 @@ class Test extends TestCase
 
         $history = new History();
         $menu = new Menu();
-        $editor = new MockEditor($menu, $history);
+        $document = new Document($history);
+        $editor = new MockEditor($menu, $document);
 
         $editor->start($menu, $method, 'inputs/test_encode_text_input.txt');
 
@@ -154,7 +156,8 @@ class Test extends TestCase
 
         $history = new History();
         $menu = new Menu();
-        $editor = new MockFileContentEditor($menu, $history);
+        $document = new MockFileContentDocument($history);
+        $editor = new MockEditor($menu, $document);
 
         $editor->start($menu, $method, 'inputs/test_delete_item_input.txt');
 
@@ -172,7 +175,8 @@ class Test extends TestCase
         $this->clear();
         $history = new History();
         $menu = new Menu();
-        $editor = new MockEditor($menu, $history);
+        $document = new Document($history);
+        $editor = new MockEditor($menu, $document);
 
         $editor->start($menu, $method, 'inputs/test_image_input.txt');
 
@@ -190,7 +194,8 @@ class Test extends TestCase
 
         $history = new History();
         $menu = new Menu();
-        $editor = new MockImageParamsEditor($menu, $history);
+        $document = new MockImageParamsDocument($history);
+        $editor = new MockEditor($menu, $document);
 
         $editor->start($menu, $method, 'inputs/test_resize_image_input.txt');
 

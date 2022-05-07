@@ -62,8 +62,8 @@ function paintPictureOnModernGraphicsRendererClassAdapter(): void
 {
     try
     {
-        $printAdapter = new PaintPictureOnModernClassAdapter();
-        $painter = new CanvasPainter($printAdapter);
+        $paintAdapter = new PaintPictureOnModernClassAdapter();
+        $painter = new CanvasPainter($paintAdapter);
         paintPicture($painter);
     }
     catch (LogicException $exception)

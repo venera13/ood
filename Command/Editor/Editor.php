@@ -3,26 +3,23 @@ declare(strict_types=1);
 
 namespace Command\Editor;
 
-use Command\Document\Document;
+use Command\Document\DocumentInterface;
 use Command\Exceptions\CopyFileException;
 use Command\Exceptions\InvalidCommandException;
 use Command\Exceptions\InvalidPositionException;
-use Command\History\History;
 use Command\Menu\Menu;
 
 class Editor
 {
     /** @var Menu */
     private $menu;
-    /** @var History */
-    private $history;
+    /** @var DocumentInterface */
+    private $document;
 
-    public function __construct(Menu $menu, History $history)
+    public function __construct(Menu $menu, DocumentInterface $document)
     {
         $this->menu = $menu;
-        $this->history = $history;
-
-        $this->document = new Document($this->history);
+        $this->document = $document;
 
         $this->addCommands();
     }
@@ -146,7 +143,7 @@ class Editor
                 throw new InvalidPositionException();
             }
 
-            $paragraph->replaceText($this->history, $text);
+            $paragraph->setText($text);
         }
         catch (InvalidPositionException $exception)
         {

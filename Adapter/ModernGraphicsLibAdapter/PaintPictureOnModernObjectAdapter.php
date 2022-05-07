@@ -22,7 +22,7 @@ class PaintPictureOnModernObjectAdapter implements CanvasInterface
     {
         $this->modernGraphicsRenderer = $modernGraphicsRenderer;
 
-        $this->modernGraphicsRenderer->beginDraw();
+        $this->modernGraphicsRenderer->beginDraw(); //не вызывать в конструкторе
     }
 
     public function setColor(int $rgbColor): void
@@ -39,5 +39,6 @@ class PaintPictureOnModernObjectAdapter implements CanvasInterface
     public function lineTo(int $x, int $y): void
     {
         $this->modernGraphicsRenderer->drawLine($this->start, new Point($x, $y), $this->color);
+        //обновлять стартовую точку
     }
 }

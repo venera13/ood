@@ -27,8 +27,10 @@ include 'Exceptions/CopyFileException.php';
 use Command\Editor\Editor;
 use Command\History\History;
 use Command\Menu\Menu;
+use Command\Document\Document;
 
 $menu = new Menu();
 $history = new History();
-$editor = new Editor($menu, $history);
+$document = new Document($history);
+$editor = new Editor($menu, $document);
 $editor->start();

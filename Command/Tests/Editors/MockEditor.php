@@ -11,11 +11,6 @@ use ReflectionMethod;
 
 class MockEditor extends Editor
 {
-    public function __construct(Menu $menu, History $history)
-    {
-        parent::__construct($menu, $history);
-    }
-
     public function start(?Menu $menu = null, ?ReflectionMethod $method = null, ?string $fileName = null): void
     {
         try

@@ -3,13 +3,20 @@ declare(strict_types=1);
 
 namespace Command\Data\Paragraph;
 
-use Command\Command\ReplaceTextCommand;
+use Command\Command\ChangeStringCommand;
 use Command\History\History;
 
 class Paragraph implements ParagraphInterface
 {
     /** @var string */
-    private $text;
+    private $text = '';
+    /** @var History */
+    private $history;
+
+    public function __construct(History $history)
+    {
+        $this->history = $history;
+    }
 
     public function getText(): string
     {
@@ -18,11 +25,6 @@ class Paragraph implements ParagraphInterface
 
     public function setText(string $text): void
     {
-        $this->text = $text;
-    }
-
-    public function replaceText(History $history, string $text)
-    {
-        $history->addAndExecuteCommand(new ReplaceTextCommand($this, $text, $this->getText()));
+        $this->history->addAndExecuteCommand(new ChangeStringCommand($this->text, $text));
     }
 }

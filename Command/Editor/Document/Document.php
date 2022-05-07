@@ -39,7 +39,7 @@ class Document implements DocumentInterface
         {
             throw new InvalidPositionException();
         }
-        $paragraph = new Paragraph();
+        $paragraph = new Paragraph($this->history);
         $paragraph->setText($text);
         $this->history->addAndExecuteCommand(new InsertItemCommand($this->items, new DocumentItem($paragraph, null), $position));
     }
