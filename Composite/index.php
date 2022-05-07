@@ -59,7 +59,6 @@ $frame = $group->getFrame();
 $newRect = new Rect(new Point(400, 500), 800, 700);
 $group->setFrame($newRect);
 
-
 $groupLineStyle = new LineStyle();
 $groupLineStyle->enable(true);
 $groupLineStyle->setColor(new RGBAColor(255, 0, 0, 1));

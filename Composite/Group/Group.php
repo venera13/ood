@@ -27,29 +27,6 @@ class Group implements GroupInterface
     {
         $this->lineStyle = new CompositeLineStyle($this);
         $this->fillStyle = new CompositeFillStyle($this);
-
-//        $this->fillStyle = null;
-//        foreach ($this->shapes as $shape)
-//        {
-//            if ($this->lineStyle === null)
-//            {
-//                $this->lineStyle = $shape->getLineStyle();
-//            }
-//            else
-//            {
-//                $this->lineStyle = $shape->getLineStyle()->getColor() === null || $this->lineStyle->getColor() == $shape->getLineStyle()->getColor() ? $shape->getLineStyle() : null;
-//            }
-//
-//            if ($this->fillStyle === null && $shape->getFillStyle() !== null)
-//            {
-//                $this->fillStyle = $shape->getFillStyle();
-//            }
-//            else
-//            {
-//                print_r($shape->getFillStyle());
-//                $this->fillStyle = $shape->getFillStyle() === null || $this->fillStyle->getColor() == $shape->getFillStyle()->getColor() ? $shape->getFillStyle() : null;
-//            }
-//        }
     }
 
     public function getShapesCount(): int
