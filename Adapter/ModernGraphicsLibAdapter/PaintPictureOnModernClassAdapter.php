@@ -15,10 +15,15 @@ class PaintPictureOnModernClassAdapter extends ModernGraphicsRenderer implements
     private $start;
     /** @var RGBAColor */
     private $color;
+    /** @var bool */
+    private $drawing = false;
 
-    public function __construct()
+    public function __destruct()
     {
-        $this->beginDraw();
+        if ($this->drawing)
+        {
+            $this->endDraw();
+        }
     }
 
     public function setColor(int $rgbColor): void
@@ -34,6 +39,13 @@ class PaintPictureOnModernClassAdapter extends ModernGraphicsRenderer implements
 
     public function lineTo(int $x, int $y): void
     {
-        $this->drawLine($this->start, new Point($x, $y), $this->color);
+        if (!$this->drawing)
+        {
+            $this->drawing = true;
+            $this->beginDraw();
+        }
+        $point = new Point($x, $y);
+        $this->drawLine($this->start, $point, $this->color);
+        $this->start = $point;
     }
 }

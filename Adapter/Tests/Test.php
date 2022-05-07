@@ -33,7 +33,7 @@ class Test extends TestCase
         $paintAdapter->moveTo(1, 2);
         $paintAdapter->lineTo(3, 4);
 
-        $this->expectOutputString('<draw></br>1234</draw></br>');
+        $this->expectOutputString('1234');
     }
 
     public function testClassAdapter(): void

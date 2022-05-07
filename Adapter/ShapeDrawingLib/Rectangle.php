@@ -30,14 +30,8 @@ class Rectangle implements CanvasDrawableInterface
 
         $canvas->moveTo($this->leftTop->getX() + $this->width, $this->leftTop->getY());
         $canvas->lineTo($this->leftTop->getX(), $this->leftTop->getY());
-
-        $canvas->moveTo($this->leftTop->getX() + $this->width, $this->leftTop->getY() + $this->height);
         $canvas->lineTo($this->leftTop->getX() + $this->width, $this->leftTop->getY());
-
-        $canvas->moveTo($this->leftTop->getX(), $this->leftTop->getY() + $this->height);
         $canvas->lineTo($this->leftTop->getX() + $this->width, $this->leftTop->getY() + $this->height);
-
-        $canvas->moveTo($this->leftTop->getX(), $this->leftTop->getY());
         $canvas->lineTo($this->leftTop->getX(), $this->leftTop->getY() + $this->height);
     }
 }

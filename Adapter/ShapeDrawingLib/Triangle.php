@@ -30,11 +30,7 @@ class Triangle implements CanvasDrawableInterface
 
         $canvas->moveTo($this->p2->getX(), $this->p2->getY());
         $canvas->lineTo($this->p1->getX(), $this->p1->getY());
-
-        $canvas->moveTo($this->p3->getX(), $this->p3->getY());
         $canvas->lineTo($this->p2->getX(), $this->p2->getY());
-
-        $canvas->moveTo($this->p1->getX(), $this->p1->getY());
         $canvas->lineTo($this->p3->getX(), $this->p3->getY());
     }
 }

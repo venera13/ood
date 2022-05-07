@@ -12,7 +12,10 @@ class ModernGraphicsRenderer
 
     public function __destruct()
     {
-        $this->endDraw();
+        if ($this->drawing)
+        {
+            $this->endDraw();
+        }
     }
 
     public function beginDraw(): void
@@ -42,7 +45,7 @@ class ModernGraphicsRenderer
             . '</br>';
     }
 
-    private function endDraw(): void
+    public function endDraw(): void
     {
         if (!$this->drawing)
         {

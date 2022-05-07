@@ -48,6 +48,7 @@ function paintPictureOnModernGraphicsRenderer(): void
     {
         $renderer = new ModernGraphicsRenderer();
         $paintAdapter = new PaintPictureOnModernObjectAdapter($renderer);
+        $paintAdapter->beginDraw();
         $painter = new CanvasPainter($paintAdapter);
         paintPicture($painter);
     }
