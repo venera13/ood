@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Composite\Group;
 
-use Composite\Shape\Shape;
 use Composite\Shape\ShapeInterface;
 
 interface GroupInterface extends ShapeInterface

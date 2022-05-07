@@ -16,6 +16,8 @@ include 'Style/Domain/RGBAColor.php';
 include 'Style/StyleInterface.php';
 include 'Style/FillStyle.php';
 include 'Style/LineStyle.php';
+include 'CompositeStyle/CompositeLineStyle.php';
+include 'CompositeStyle/CompositeFillStyle.php';
 include 'Exceptions/InvalidArgumentsException.php';
 
 use Composite\Shape\Rectangle;
@@ -53,19 +55,22 @@ $group->insertShape($roof);
 $group->insertShape($window);
 
 $frame = $group->getFrame();
-//print_r($frame->getLeftTop()->getX() . ' ' . $frame->getLeftTop()->getY() . '<br />');
-//print_r($frame->getWidth() . '<br />');
-//print_r($frame->getHeight() . '<br />');
 
-$newRect = new Rect(new Point(400, 800), 800, 700);
+$newRect = new Rect(new Point(400, 500), 800, 700);
 $group->setFrame($newRect);
 
-//$frame = $group->getFrame();
-//print_r($frame->getLeftTop()->getX() . ' ' . $frame->getLeftTop()->getY() . '<br />');
-//print_r($frame->getWidth() . '<br />');
-//print_r($frame->getHeight() . '<br />');
 
-//$wall->draw($canvas);
-//$roof->draw($canvas);
-//$window->draw($canvas);
-//$canvas->drawImage();
+$groupLineStyle = new LineStyle();
+$groupLineStyle->enable(true);
+$groupLineStyle->setColor(new RGBAColor(255, 0, 0, 1));
+$group->setLineStyle($groupLineStyle);
+
+$groupFillStyle = new FillStyle();
+$groupFillStyle->enable(true);
+$groupFillStyle->setColor(new RGBAColor(0, 0, 255, 1));
+$group->setFillStyle($groupFillStyle);
+
+$wall->draw($canvas);
+$roof->draw($canvas);
+$window->draw($canvas);
+$canvas->drawImage();

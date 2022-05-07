@@ -4,10 +4,13 @@ declare(strict_types=1);
 namespace Composite\Group;
 
 use Composite\Canvas\CanvasInterface;
+use Composite\CompositeStyle\CompositeFillStyle;
+use Composite\CompositeStyle\CompositeLineStyle;
 use Composite\Domain\Point\Point;
 use Composite\Exceptions\InvalidArgumentsException;
 use Composite\Shape\Domain\Rect;
 use Composite\Shape\ShapeInterface;
+use Composite\Style\Domain\RGBAColor;
 use Composite\Style\FillStyle;
 use Composite\Style\LineStyle;
 
@@ -15,35 +18,38 @@ class Group implements GroupInterface
 {
     /** @var ShapeInterface[] */
     private $shapes = [];
-    /** @var LineStyle|null */
+    /** @var CompositeLineStyle */
     private $lineStyle;
     /** @var FillStyle|null */
     private $fillStyle;
 
     public function __construct()
     {
-        $this->lineStyle = null;
-        $this->fillStyle = null;
-        foreach ($this->shapes as $shape)
-        {
-            if ($this->lineStyle === null)
-            {
-                $this->lineStyle = $shape->getLineStyle();
-            }
-            else
-            {
-                $this->lineStyle = $this->lineStyle->getColor() == $shape->getLineStyle()->getColor() ? $shape->getLineStyle() : null;
-            }
+        $this->lineStyle = new CompositeLineStyle($this);
+        $this->fillStyle = new CompositeFillStyle($this);
 
-            if ($this->lineStyle === null)
-            {
-                $this->lineStyle = $shape->getFillStyle();
-            }
-            else
-            {
-                $this->lineStyle = $this->lineStyle->getColor() == $shape->getFillStyle()->getColor() ? $shape->getFillStyle() : null;
-            }
-        }
+//        $this->fillStyle = null;
+//        foreach ($this->shapes as $shape)
+//        {
+//            if ($this->lineStyle === null)
+//            {
+//                $this->lineStyle = $shape->getLineStyle();
+//            }
+//            else
+//            {
+//                $this->lineStyle = $shape->getLineStyle()->getColor() === null || $this->lineStyle->getColor() == $shape->getLineStyle()->getColor() ? $shape->getLineStyle() : null;
+//            }
+//
+//            if ($this->fillStyle === null && $shape->getFillStyle() !== null)
+//            {
+//                $this->fillStyle = $shape->getFillStyle();
+//            }
+//            else
+//            {
+//                print_r($shape->getFillStyle());
+//                $this->fillStyle = $shape->getFillStyle() === null || $this->fillStyle->getColor() == $shape->getFillStyle()->getColor() ? $shape->getFillStyle() : null;
+//            }
+//        }
     }
 
     public function getShapesCount(): int
@@ -125,14 +131,15 @@ class Group implements GroupInterface
 
     public function setFrame(Rect $rect): void
     {
-        $currentFrame = $this->getFrame();
+        $currentGroupFrame = $this->getFrame();
 
         foreach ($this->shapes as $shape)
         {
             $shapeFrame = $shape->getFrame();
-            $newShapeLeftTop = $this->getNewFramePoint($rect, $currentFrame, $shapeFrame->getLeftTop());
-            $newShapeWidth = $shapeFrame->getWidth() / $currentFrame->getWidth() * $rect->getWidth();
-            $newShapeHeight = $shapeFrame->getHeight() / $currentFrame->getHeight() * $rect->getHeight();
+            $newShapeLeftTop = $this->getNewFramePoint($rect, $currentGroupFrame, $shapeFrame->getLeftTop());
+
+            $newShapeWidth = $shapeFrame->getWidth() / $currentGroupFrame->getWidth() * $rect->getWidth();
+            $newShapeHeight = $shapeFrame->getHeight() / $currentGroupFrame->getHeight() * $rect->getHeight();
 
             $newShapeFrame = new Rect($newShapeLeftTop, $newShapeWidth, $newShapeHeight);
             $shape->setFrame($newShapeFrame);
@@ -141,28 +148,22 @@ class Group implements GroupInterface
 
     public function setLineStyle(LineStyle $style): void
     {
-        foreach ($this->shapes as $shape)
-        {
-            $shape->setLineStyle($style);
-        }
+        $this->lineStyle->setColor($style->getColor());
     }
 
     public function getLineStyle(): ?LineStyle
     {
-        return $this->lineStyle;
+        return $this->lineStyle->getStyle();
     }
 
     public function setFillStyle(FillStyle $style): void
     {
-        foreach ($this->shapes as $shape)
-        {
-            $shape->setFillStyle($style);
-        }
+        $this->fillStyle->setColor($style->getColor());
     }
 
     public function getFillStyle(): ?FillStyle
     {
-        return $this->fillStyle;
+        return $this->fillStyle->getStyle();
     }
 
     public function getGroup(): ?GroupInterface
