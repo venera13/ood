@@ -23,11 +23,6 @@ class PaintPictureOnModernObjectAdapter implements CanvasInterface
         $this->modernGraphicsRenderer = $modernGraphicsRenderer;
     }
 
-    public function beginDraw(): void
-    {
-        $this->modernGraphicsRenderer->beginDraw();
-    }
-
     public function setColor(int $rgbColor): void
     {
         [$r, $g, $b] = ColorUtil::hex2RGB($rgbColor);

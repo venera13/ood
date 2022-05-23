@@ -10,7 +10,6 @@ use Composite\Domain\Point\Point;
 use Composite\Exceptions\InvalidArgumentsException;
 use Composite\Shape\Domain\Rect;
 use Composite\Shape\ShapeInterface;
-use Composite\Style\Domain\RGBAColor;
 use Composite\Style\FillStyle;
 use Composite\Style\LineStyle;
 

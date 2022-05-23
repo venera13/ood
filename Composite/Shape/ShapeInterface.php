@@ -8,7 +8,6 @@ use Composite\Group\GroupInterface;
 use Composite\Shape\Domain\Rect;
 use Composite\Style\FillStyle;
 use Composite\Style\LineStyle;
-use Composite\Style\StyleInterface;
 
 interface ShapeInterface
 {

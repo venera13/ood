@@ -7,5 +7,5 @@ interface ParagraphInterface
 {
     public function getText(): string;
 
-    public function setText(string $text): void;
+    public function setText(callable $command): void;
 }
