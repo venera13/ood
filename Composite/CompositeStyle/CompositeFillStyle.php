@@ -6,7 +6,6 @@ namespace Composite\CompositeStyle;
 use Composite\Group\GroupInterface;
 use Composite\Style\Domain\RGBAColor;
 use Composite\Style\FillStyle;
-use Composite\Style\LineStyle;
 
 class CompositeFillStyle
 {
