@@ -10,14 +10,14 @@ include 'Shape/Shape.php';
 include 'Shape/Ellipse.php';
 include 'Shape/Rectangle.php';
 include 'Shape/Triangle.php';
-include 'Group/GroupInterface.php';
-include 'Group/Group.php';
+include 'Shape/GroupInterface.php';
+include 'Shape/Group.php';
 include 'Style/Domain/RGBAColor.php';
 include 'Style/StyleInterface.php';
 include 'Style/FillStyle.php';
 include 'Style/LineStyle.php';
-include 'CompositeStyle/CompositeLineStyle.php';
-include 'CompositeStyle/CompositeFillStyle.php';
+include 'Style/CompositeLineStyle.php';
+include 'Style/CompositeFillStyle.php';
 include 'Exceptions/InvalidArgumentsException.php';
 
 use Composite\Shape\Rectangle;

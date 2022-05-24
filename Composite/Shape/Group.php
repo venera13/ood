@@ -10,8 +10,10 @@ use Composite\Domain\Point\Point;
 use Composite\Exceptions\InvalidArgumentsException;
 use Composite\Shape\Domain\Rect;
 use Composite\Shape\ShapeInterface;
+use Composite\Shape\Style\LineStyleEnumerator;
 use Composite\Style\FillStyle;
 use Composite\Style\LineStyle;
+use Composite\Style\StyleInterface;
 
 class Group implements GroupInterface
 {
@@ -24,8 +26,22 @@ class Group implements GroupInterface
 
     public function __construct()
     {
-        $this->lineStyle = new CompositeLineStyle($this);
-        $this->fillStyle = new CompositeFillStyle($this);
+        $lineStyleEnumerator = function(callable $callback)
+        {
+            foreach ($this->shapes as $shape)
+            {
+                $callback($shape->getLineStyle());
+            }
+        };
+        $fillStyleEnumerator = function(callable $callback)
+        {
+            foreach ($this->shapes as $shape)
+            {
+                $callback($shape->getFillStyle());
+            }
+        };
+        $this->lineStyle = new CompositeLineStyle($lineStyleEnumerator);
+        $this->fillStyle = new CompositeFillStyle($fillStyleEnumerator);
     }
 
     public function getShapesCount(): int
@@ -127,9 +143,9 @@ class Group implements GroupInterface
         $this->lineStyle->setColor($style->getColor());
     }
 
-    public function getLineStyle(): ?LineStyle
+    public function getLineStyle(): ?StyleInterface
     {
-        return $this->lineStyle->getStyle();
+        return $this->lineStyle;
     }
 
     public function setFillStyle(FillStyle $style): void
@@ -137,9 +153,9 @@ class Group implements GroupInterface
         $this->fillStyle->setColor($style->getColor());
     }
 
-    public function getFillStyle(): ?FillStyle
+    public function getFillStyle(): ?StyleInterface
     {
-        return $this->fillStyle->getStyle();
+        return $this->fillStyle;
     }
 
     public function getGroup(): ?GroupInterface

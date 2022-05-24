@@ -29,7 +29,7 @@ class LineStyle implements StyleInterface
         $this->color = $color;
     }
 
-    public function getColor(): RGBAColor
+    public function getColor(): ?RGBAColor
     {
         return $this->color;
     }

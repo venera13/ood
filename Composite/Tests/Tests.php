@@ -12,14 +12,14 @@ include '../Shape/Shape.php';
 include '../Shape/Ellipse.php';
 include '../Shape/Rectangle.php';
 include '../Shape/Triangle.php';
-include '../Group/GroupInterface.php';
-include '../Group/Group.php';
+include '../Shape/GroupInterface.php';
+include '../Shape/Group.php';
 include '../Style/Domain/RGBAColor.php';
 include '../Style/StyleInterface.php';
 include '../Style/FillStyle.php';
 include '../Style/LineStyle.php';
-include '../CompositeStyle/CompositeLineStyle.php';
-include '../CompositeStyle/CompositeFillStyle.php';
+include '../Style/CompositeLineStyle.php';
+include '../Style/CompositeFillStyle.php';
 include '../Exceptions/InvalidArgumentsException.php';
 
 use Composite\Domain\Point\Point;
@@ -102,7 +102,7 @@ class Tests extends TestCase
         $group->insertShape($shape);
         $group->insertShape($shape2);
 
-        $this->assertEquals(true, $group->getFillStyle() === null);
+        $this->assertEquals(true, $group->getFillStyle()->getColor() === null);
     }
 
     public function testGroupRightFillColor(): void
@@ -125,7 +125,7 @@ class Tests extends TestCase
         $rightFillStyle->enable(true);
         $rightFillStyle->setColor(new RGBAColor(156, 78, 78, 1));
 
-        $this->assertEquals(true, $group->getFillStyle() == $rightFillStyle);
+        $this->assertEquals(true, $group->getFillStyle()->getColor() == $rightFillStyle->getColor());
     }
 
     public function testGroupLineColor(): void
@@ -144,7 +144,7 @@ class Tests extends TestCase
         $group->insertShape($shape);
         $group->insertShape($shape2);
 
-        $this->assertEquals(true, $group->getLineStyle() === null);
+        $this->assertEquals(true, $group->getLineStyle()->getColor() === null);
     }
 
     public function testGroupRightLineColor(): void
@@ -167,7 +167,7 @@ class Tests extends TestCase
         $rightLineStyle->enable(true);
         $rightLineStyle->setColor(new RGBAColor(156, 78, 78, 1));
 
-        $this->assertEquals(true, $group->getLineStyle() == $rightLineStyle);
+        $this->assertEquals(true, $group->getLineStyle()->getColor() == $rightLineStyle->getColor());
     }
 
     public function testChangeGroupFillColor(): void
@@ -191,7 +191,7 @@ class Tests extends TestCase
         $newFillStyle->setColor(new RGBAColor(255, 0, 0, 1));
         $group->setFillStyle($newFillStyle);
 
-        $this->assertEquals(true, $group->getFillStyle() == $newFillStyle);
+        $this->assertEquals(true, $group->getFillStyle()->getColor() == $newFillStyle->getColor());
     }
 
     public function testChangeGroupLineColor(): void
@@ -215,6 +215,6 @@ class Tests extends TestCase
         $newLineStyle->setColor(new RGBAColor(255, 0, 0, 1));
         $group->setLineStyle($newLineStyle);
 
-        $this->assertEquals(true, $group->getLineStyle() == $newLineStyle);
+        $this->assertEquals(true, $group->getLineStyle()->getColor() == $newLineStyle->getColor());
     }
 }

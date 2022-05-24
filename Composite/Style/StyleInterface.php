@@ -23,7 +23,7 @@ interface StyleInterface
     public function setColor(RGBAColor $color): void;
 
     /**
-     * @return RGBAColor
+     * @return RGBAColor|null
      */
-    public function getColor(): RGBAColor;
+    public function getColor(): ?RGBAColor;
 }

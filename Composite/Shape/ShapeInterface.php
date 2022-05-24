@@ -8,6 +8,7 @@ use Composite\Group\GroupInterface;
 use Composite\Shape\Domain\Rect;
 use Composite\Style\FillStyle;
 use Composite\Style\LineStyle;
+use Composite\Style\StyleInterface;
 
 interface ShapeInterface
 {
@@ -32,9 +33,9 @@ interface ShapeInterface
     public function setLineStyle(LineStyle $style): void;
 
     /**
-     * @return LineStyle|null
+     * @return StyleInterface|null
      */
-    public function getLineStyle(): ?LineStyle;
+    public function getLineStyle(): ?StyleInterface;
 
     /**
      * @param FillStyle $style
@@ -42,9 +43,9 @@ interface ShapeInterface
     public function setFillStyle(FillStyle $style): void;
 
     /**
-     * @return FillStyle|null
+     * @return StyleInterface|null
      */
-    public function getFillStyle(): ?FillStyle;
+    public function getFillStyle(): ?StyleInterface;
 
     /**
      * @return GroupInterface|null
