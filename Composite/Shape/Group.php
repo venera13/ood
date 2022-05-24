@@ -10,7 +10,6 @@ use Composite\Domain\Point\Point;
 use Composite\Exceptions\InvalidArgumentsException;
 use Composite\Shape\Domain\Rect;
 use Composite\Shape\ShapeInterface;
-use Composite\Shape\Style\LineStyleEnumerator;
 use Composite\Style\FillStyle;
 use Composite\Style\LineStyle;
 use Composite\Style\StyleInterface;
