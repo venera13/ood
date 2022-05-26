@@ -17,7 +17,7 @@ class HasQuarterState implements StateInterface
 
     public function insertQuarter(): void
     {
-        if ($this->gumballMachine->getQuarterCount() >= 5)
+        if ($this->gumballMachine->getQuarterCount() === 5)
         {
             print_r("You can't insert another quarter<br />");
         }

@@ -20,7 +20,7 @@ use State\States\NoQuarterState;
 use State\States\SoldOutState;
 use State\States\SoldState;
 
-class Tests extends TestCase
+class GumballMachineTest extends TestCase
 {
     public function testGumballMachine()
     {
@@ -281,7 +281,11 @@ class Tests extends TestCase
         $machine->insertQuarter();
         $machine->ejectQuarter();
 
+        $value = $this->getProtectedProperty($machine, 'state');
+        $rightValue = new NoQuarterState($machine);
+
         $this->assertEquals(true, $machine->getQuarterCount() === 0);
+        $this->assertEquals(true, $value == $rightValue);
     }
 
     public function testEjectQuarterFromSoldMachine()
@@ -305,7 +309,11 @@ class Tests extends TestCase
         $machine->turnCrank();
         $machine->ejectQuarter();
 
+        $value = $this->getProtectedProperty($machine, 'state');
+        $rightValue = new SoldOutState($machine);
+
         $this->assertEquals(true, $machine->getQuarterCount() === 0);
+        $this->assertEquals(true, $value == $rightValue);
     }
 
     private function getProtectedProperty($object, $property)

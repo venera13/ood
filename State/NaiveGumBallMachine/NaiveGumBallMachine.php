@@ -6,15 +6,17 @@ namespace State\NaiveGumBallMachine;
 class NaiveGumBallMachine
 {
     /** @var int */
-    private $count;
+    private $ballCount;
+    /** @var int */
+    private $quarterCount = 0;
     /** @var StateTypes */
     private $state;
 
-    public function __construct(?int $count = 0)
+    public function __construct(?int $ballCount = 0)
     {
-        $this->count = $count;
+        $this->ballCount = $ballCount;
 
-        if ($count > 0)
+        if ($ballCount > 0)
         {
             $this->state = StateTypes::NO_QUARTER;
         }
@@ -33,13 +35,23 @@ class NaiveGumBallMachine
                 break;
             case StateTypes::NO_QUARTER:
                 print_r("You inserted a quarter<br/>");
+                if ($this->quarterCount < 5)
+                {
+                    $this->quarterCount++;
+                }
                 $this->state = StateTypes::HAS_QUARTER;
                 break;
             case StateTypes::HAS_QUARTER:
-                print_r("You can't insert another quarter<br/>");
-                break;
             case StateTypes::SOLD:
-                print_r("Please wait, we're already giving you a gumball<br/>");
+                if ($this->quarterCount === 5)
+                {
+                    print_r("You can't insert another quarter<br/>");
+                }
+                else
+                {
+                    $this->quarterCount++;
+                    print_r("Insert quarter<br />");
+                }
                 break;
         }
     }
@@ -50,10 +62,12 @@ class NaiveGumBallMachine
         {
             case StateTypes::HAS_QUARTER:
                 print_r("Quarter returned<br/>");
+                $this->quarterCount = 0;
                 $this->state = StateTypes::NO_QUARTER;
                 break;
             case StateTypes::SOLD_OUT:
-                print_r("You can't eject, you haven't inserted a quarter yet<br/>");
+                print_r("Quarters returned<br />");
+                $this->quarterCount = 0;
                 break;
             case StateTypes::NO_QUARTER:
                 print_r("You haven't inserted a quarter<br/>");
@@ -73,6 +87,7 @@ class NaiveGumBallMachine
                 break;
             case StateTypes::HAS_QUARTER:
                 print_r("You turned...<br/>");
+                $this->quarterCount--;
                 $this->state = StateTypes::SOLD;
                 $this->dispense();
                 break;
@@ -87,7 +102,7 @@ class NaiveGumBallMachine
 
     public function refill(int $numBalls): void
     {
-        $this->count = $numBalls;
+        $this->ballCount = $numBalls;
         $this->state = $numBalls > 0 ? StateTypes::NO_QUARTER : StateTypes::SOLD_OUT;
     }
 
@@ -109,8 +124,8 @@ class NaiveGumBallMachine
                 break;
         }
 
-        $gumballEnding = $this->count !== 1 ? "s" : "";
-        print_r("Inventory: " . $this->count . " gumball" . $gumballEnding . "<br />");
+        $gumballEnding = $this->ballCount !== 1 ? "s" : "";
+        print_r("Inventory: " . $this->ballCount . " gumball" . $gumballEnding . "<br />");
         print_r("Machine is " . $state . "<br />");
         print_r("----------<br />");
     }
@@ -121,8 +136,8 @@ class NaiveGumBallMachine
         {
             case StateTypes::SOLD:
                 print_r("A gumball comes rolling out the slot...<br/>");
-                --$this->count;
-                if ($this->count === 0)
+                --$this->ballCount;
+                if ($this->ballCount === 0)
                 {
                     print_r("Oops, out of gumballs<br/>");
                     $this->state = StateTypes::SOLD_OUT;
