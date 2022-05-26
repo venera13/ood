@@ -79,6 +79,42 @@ class NaiveGumBallMachineTest extends TestCase
         $this->assertEquals(true, $state == StateTypes::SOLD_OUT);
     }
 
+    public function testRefill()
+    {
+        $machine = new NaiveGumBallMachine(1);
+        $machine->insertQuarter();
+        $machine->refill(0);
+
+        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
+        $state = $this->getProtectedProperty($machine, 'state');
+
+        $this->assertEquals(true, $quarterCount === 1);
+        $this->assertEquals(true, $state == StateTypes::HAS_QUARTER);
+    }
+
+    public function testRefill2()
+    {
+        $machine = new NaiveGumBallMachine(1);
+        $machine->insertQuarter();
+        $machine->refill(2);
+
+        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
+        $state = $this->getProtectedProperty($machine, 'state');
+
+        $this->assertEquals(true, $quarterCount === 1);
+        $this->assertEquals(true, $state == StateTypes::HAS_QUARTER);
+    }
+
+    public function testRefill3()
+    {
+        $machine = new NaiveGumBallMachine(0);
+        $machine->refill(0);
+
+        $state = $this->getProtectedProperty($machine, 'state');
+
+        $this->assertEquals(true, $state == StateTypes::SOLD_OUT);
+    }
+
     private function getProtectedProperty($object, $property)
     {
         $reflection = new \ReflectionClass($object);

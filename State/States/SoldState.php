@@ -61,4 +61,9 @@ class SoldState implements StateInterface
     {
         print_r("You can't eject<br />");
     }
+
+    public function refill(int $numBalls): void
+    {
+        print_r("Turning twice doesn't get you another gumball<br/>");
+    }
 }

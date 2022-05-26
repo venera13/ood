@@ -316,6 +316,58 @@ class GumballMachineTest extends TestCase
         $this->assertEquals(true, $value == $rightValue);
     }
 
+    public function testRefill()
+    {
+        $machine = new GumballMachine(1);
+        $machine->insertQuarter();
+        $machine->refill(0);
+
+        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
+        $state = $this->getProtectedProperty($machine, 'state');
+        $rightState = new HasQuarterState($machine);
+
+        $this->assertEquals(true, $quarterCount === 1);
+        $this->assertEquals(true, $state == $rightState);
+    }
+
+    public function testRefill2()
+    {
+        $machine = new GumballMachine(1);
+        $machine->insertQuarter();
+        $machine->refill(2);
+
+        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
+        $state = $this->getProtectedProperty($machine, 'state');
+        $rightState = new HasQuarterState($machine);
+
+        $this->assertEquals(true, $quarterCount === 1);
+        $this->assertEquals(true, $state == $rightState);
+    }
+
+    public function testRefill3()
+    {
+        $machine = new GumballMachine(0);
+        $machine->refill(0);
+
+        $state = $this->getProtectedProperty($machine, 'state');
+        $rightState = new SoldOutState($machine);
+
+        $this->assertEquals(true, $state == $rightState);
+    }
+
+    public function testRefill4()
+    {
+        $machine = new GumballMachine(0);
+        $state = new SoldState($machine);
+        $state->refill(3);
+
+        $value = $this->getProtectedProperty($machine, 'state');
+        $rightValue = new SoldOutState($machine);
+
+        $this->assertEquals(true, $value == $rightValue);
+        $this->expectOutputString("Turning twice doesn't get you another gumball<br/>");
+    }
+
     private function getProtectedProperty($object, $property)
     {
         $reflection = new \ReflectionClass($object);

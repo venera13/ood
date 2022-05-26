@@ -54,6 +54,11 @@ class GumballMachine implements GumballMachineInterface
         $this->state->insertQuarter();
     }
 
+    public function refill(int $numBalls): void
+    {
+        $this->state->refill($numBalls);
+    }
+
     public function turnCrank(): void
     {
         $this->state->turnCrank();
@@ -71,6 +76,11 @@ class GumballMachine implements GumballMachineInterface
     public function addQuarter(): void
     {
         $this->quarterCount++;
+    }
+
+    public function addBalls(int $numBalls): void
+    {
+        $this->ballCount += $numBalls;
     }
 
     public function decreaseQuarter(): void

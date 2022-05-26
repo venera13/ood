@@ -65,4 +65,14 @@ class HasQuarterState implements StateInterface
     {
         return "waiting for turn of crank";
     }
+
+    public function refill(int $numBalls): void
+    {
+        print_r("Refill<br />");
+        $this->gumballMachine->addBalls($numBalls);
+        if ($this->gumballMachine->getBallCount() === 0)
+        {
+            $this->gumballMachine->setSoldOutState();
+        }
+    }
 }

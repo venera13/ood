@@ -19,6 +19,11 @@ interface GumballMachineInterface
 
     public function addQuarter(): void;
 
+    /**
+     * @param int $numBalls
+     */
+    public function addBalls(int $numBalls): void;
+
     public function setSoldOutState(): void;
 
     public function setNoQuarterState(): void;

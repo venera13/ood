@@ -19,4 +19,9 @@ interface StateInterface
      * @return string
      */
     public function toString(): string;
+
+    /**
+     * @param int $numBalls
+     */
+    public function refill(int $numBalls): void;
 }
