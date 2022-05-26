@@ -12,7 +12,9 @@ use State\States\StateInterface;
 class GumballMachine implements GumballMachineInterface
 {
     /** @var int */
-    private $count;
+    private $ballCount;
+    /** @var int */
+    private $quarterCount = 0;
     /** @var SoldState */
     private $soldState;
     /** @var SoldOutState */
@@ -24,15 +26,15 @@ class GumballMachine implements GumballMachineInterface
     /** @var StateInterface */
     private $state;
 
-    public function __construct(?int $count = 0)
+    public function __construct(?int $ballCount = 0)
     {
-        $this->count = $count;
+        $this->ballCount = $ballCount;
         $this->soldState = new SoldState($this);
         $this->soldOutState = new SoldOutState($this);
         $this->noQuarterState = new NoQuarterState($this);
         $this->hasQuarterState = new HasQuarterState($this);
 
-        if ($count > 0)
+        if ($ballCount > 0)
         {
             $this->state = $this->noQuarterState;
         }
@@ -44,7 +46,7 @@ class GumballMachine implements GumballMachineInterface
 
     public function ejectQuarter(): void
     {
-        $this->state->ejectQuarter();
+        $this->state->ejectAllQuarter();
     }
 
     public function insertQuarter(): void
@@ -60,24 +62,43 @@ class GumballMachine implements GumballMachineInterface
 
     public function toString(): void
     {
-        $gumballEnding = $this->count !== 1 ? "s" : "";
-        print_r("Inventory: " . $this->count . " gumball" . $gumballEnding . "<br />");
+        $gumballEnding = $this->ballCount !== 1 ? "s" : "";
+        print_r("Inventory: " . $this->ballCount . " gumball" . $gumballEnding . "<br />");
         print_r("Machine is " . $this->state->toString() . "<br />");
         print_r("----------<br />");
     }
 
+    public function addQuarter(): void
+    {
+        $this->quarterCount++;
+    }
+
+    public function decreaseQuarter(): void
+    {
+        if ($this->quarterCount !== 0)
+        {
+            print_r("The quarter is back<br/>");
+            --$this->quarterCount;
+        }
+    }
+
     public function releaseBall(): void
     {
-        if ($this->count !== 0)
+        if ($this->ballCount !== 0)
         {
             print_r("A gumball comes rolling out the slot...<br/>");
-            --$this->count;
+            --$this->ballCount;
         }
     }
 
     public function getBallCount(): int
     {
-        return $this->count;
+        return $this->ballCount;
+    }
+
+    public function getQuarterCount(): int
+    {
+        return $this->quarterCount;
     }
 
     public function setSoldOutState(): void

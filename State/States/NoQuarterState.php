@@ -18,10 +18,16 @@ class NoQuarterState implements StateInterface
     public function insertQuarter(): void
     {
         print_r("You inserted a quarter<br />");
+        $this->gumballMachine->addQuarter();
         $this->gumballMachine->setHasQuarterState();
     }
 
     public function ejectQuarter(): void
+    {
+        print_r("You haven't inserted a quarter<br />");
+    }
+
+    public function ejectAllQuarter(): void
     {
         print_r("You haven't inserted a quarter<br />");
     }

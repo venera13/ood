@@ -39,4 +39,14 @@ class SoldOutState implements StateInterface
     {
         return "sold out";
     }
+
+    public function ejectAllQuarter(): void
+    {
+        print_r("Quarters returned<br />");
+        $quarterCount = $this->gumballMachine->getQuarterCount();
+        for ($i = 0; $i < $quarterCount; $i++)
+        {
+            $this->gumballMachine->decreaseQuarter();
+        }
+    }
 }

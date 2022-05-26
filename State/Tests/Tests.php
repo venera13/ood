@@ -105,7 +105,10 @@ class Tests extends TestCase
         $state = new HasQuarterState($machine);
         $state->insertQuarter();
 
-        $this->expectOutputString("You can't insert another quarter<br />");
+        $value = $this->getProtectedProperty($machine, 'quarterCount');
+
+        $this->expectOutputString("Insert quarter<br />");
+        $this->assertEquals(true, $value == 1);
     }
 
     public function testHasQuarterStateEjectQuarter()
@@ -195,7 +198,10 @@ class Tests extends TestCase
         $state = new SoldState($machine);
         $state->insertQuarter();
 
-        $this->expectOutputString("Please wait, we're already giving you a gumball<br />");
+        $value = $this->getProtectedProperty($machine, 'quarterCount');
+
+        $this->expectOutputString("Insert quarter<br />");
+        $this->assertEquals(true, $value == 1);
     }
 
     public function testSoldStateEjectQuarter()
@@ -237,7 +243,7 @@ class Tests extends TestCase
         $value = $this->getProtectedProperty($machine, 'state');
         $rightValue = new NoQuarterState($machine);
 
-        $countValue = $this->getProtectedProperty($machine, 'count');
+        $countValue = $this->getProtectedProperty($machine, 'ballCount');
         $countRightValue = 1;
 
         $this->assertEquals(true, $value == $rightValue);
@@ -249,6 +255,57 @@ class Tests extends TestCase
         $machine = new GumballMachine();
         $state = new SoldState($machine);
         $this->assertEquals(true, $state->toString() === "delivering a gumball");
+    }
+
+    public function testAddQuarter()
+    {
+        $machine = new GumballMachine(1);
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+
+        $this->assertEquals(true, $machine->getQuarterCount() === 5);
+    }
+
+    public function testDecreaseQuarter()
+    {
+        $machine = new GumballMachine(1);
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->ejectQuarter();
+
+        $this->assertEquals(true, $machine->getQuarterCount() === 0);
+    }
+
+    public function testEjectQuarterFromSoldMachine()
+    {
+        $machine = new GumballMachine(2);
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->turnCrank();
+        $machine->ejectQuarter();
+
+        $this->assertEquals(true, $machine->getQuarterCount() === 1);
+    }
+
+    public function testEjectQuarterFromSoldOutMachine()
+    {
+        $machine = new GumballMachine(1);
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->insertQuarter();
+        $machine->turnCrank();
+        $machine->ejectQuarter();
+
+        $this->assertEquals(true, $machine->getQuarterCount() === 0);
     }
 
     private function getProtectedProperty($object, $property)

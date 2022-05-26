@@ -7,6 +7,8 @@ interface StateInterface
 {
     public function insertQuarter(): void;
 
+    public function ejectAllQuarter(): void;
+
     public function ejectQuarter(): void;
 
     public function turnCrank(): void;

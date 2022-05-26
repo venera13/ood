@@ -12,6 +12,13 @@ interface GumballMachineInterface
      */
     public function getBallCount(): int;
 
+    /**
+     * @return int
+     */
+    public function getQuarterCount(): int;
+
+    public function addQuarter(): void;
+
     public function setSoldOutState(): void;
 
     public function setNoQuarterState(): void;
