@@ -14,7 +14,6 @@ include '../NaiveGumBallMachine/StateTypes.php';
 
 use PHPUnit\Framework\TestCase;
 use State\NaiveGumBallMachine\NaiveGumBallMachine;
-use State\NaiveGumBallMachine\StateTypes;
 
 class NaiveGumBallMachineTest extends TestCase
 {
@@ -28,8 +27,7 @@ class NaiveGumBallMachineTest extends TestCase
         $machine->insertQuarter();
         $machine->insertQuarter();
 
-        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
-        $this->assertEquals(true, $quarterCount === 5);
+        $this->expectOutputString("You inserted a quarter<br/>Insert quarter<br />Insert quarter<br />Insert quarter<br />Insert quarter<br />You can't insert another quarter<br/>");
     }
 
     public function testDecreaseQuarter()
@@ -43,11 +41,7 @@ class NaiveGumBallMachineTest extends TestCase
         $machine->insertQuarter();
         $machine->ejectQuarter();
 
-        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
-        $state = $this->getProtectedProperty($machine, 'state');
-
-        $this->assertEquals(true, $quarterCount === 0);
-        $this->assertEquals(true, $state == StateTypes::NO_QUARTER);
+        $this->expectOutputString("You inserted a quarter<br/>Insert quarter<br />Insert quarter<br />Insert quarter<br />Insert quarter<br />You can't insert another quarter<br/>Quarter returned<br/>");
     }
 
     public function testEjectQuarterFromSoldMachine()
@@ -58,8 +52,7 @@ class NaiveGumBallMachineTest extends TestCase
         $machine->turnCrank();
         $machine->ejectQuarter();
 
-        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
-        $this->assertEquals(true, $quarterCount === 1);
+        $this->expectOutputString("You inserted a quarter<br/>Insert quarter<br />You turned...<br/>A gumball comes rolling out the slot...<br/>You haven't inserted a quarter<br/>");
     }
 
     public function testEjectQuarterFromSoldOutMachine()
@@ -72,11 +65,7 @@ class NaiveGumBallMachineTest extends TestCase
         $machine->turnCrank();
         $machine->ejectQuarter();
 
-        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
-        $state = $this->getProtectedProperty($machine, 'state');
-
-        $this->assertEquals(true, $quarterCount === 0);
-        $this->assertEquals(true, $state == StateTypes::SOLD_OUT);
+        $this->expectOutputString("You inserted a quarter<br/>Insert quarter<br />Insert quarter<br />Insert quarter<br />You turned...<br/>A gumball comes rolling out the slot...<br/>Oops, out of gumballs<br/>Quarters returned<br />");
     }
 
     public function testRefill()
@@ -85,11 +74,7 @@ class NaiveGumBallMachineTest extends TestCase
         $machine->insertQuarter();
         $machine->refill(0);
 
-        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
-        $state = $this->getProtectedProperty($machine, 'state');
-
-        $this->assertEquals(true, $quarterCount === 1);
-        $this->assertEquals(true, $state == StateTypes::HAS_QUARTER);
+        $this->expectOutputString("You inserted a quarter<br/>Refill<br/>");
     }
 
     public function testRefill2()
@@ -98,11 +83,7 @@ class NaiveGumBallMachineTest extends TestCase
         $machine->insertQuarter();
         $machine->refill(2);
 
-        $quarterCount = $this->getProtectedProperty($machine, 'quarterCount');
-        $state = $this->getProtectedProperty($machine, 'state');
-
-        $this->assertEquals(true, $quarterCount === 1);
-        $this->assertEquals(true, $state == StateTypes::HAS_QUARTER);
+        $this->expectOutputString("You inserted a quarter<br/>Refill<br/>");
     }
 
     public function testRefill3()
@@ -110,16 +91,6 @@ class NaiveGumBallMachineTest extends TestCase
         $machine = new NaiveGumBallMachine(0);
         $machine->refill(0);
 
-        $state = $this->getProtectedProperty($machine, 'state');
-
-        $this->assertEquals(true, $state == StateTypes::SOLD_OUT);
-    }
-
-    private function getProtectedProperty($object, $property)
-    {
-        $reflection = new \ReflectionClass($object);
-        $reflectionProperty = $reflection->getProperty($property);
-        $reflectionProperty->setAccessible(true);
-        return $reflectionProperty->getValue($object);
+        $this->expectOutputString("Refill<br/>");
     }
 }

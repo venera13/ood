@@ -104,15 +104,16 @@ class NaiveGumBallMachine
     {
         switch ($this->state)
         {
-
             case StateTypes::HAS_QUARTER:
                 $this->ballCount += $numBalls;
                 $this->state = $this->ballCount > 0 ? StateTypes::HAS_QUARTER : StateTypes::SOLD_OUT;
+                print_r("Refill<br/>");
                 break;
             case StateTypes::SOLD_OUT:
             case StateTypes::NO_QUARTER:
                 $this->ballCount += $numBalls;
                 $this->state = $this->ballCount > 0 ? StateTypes::NO_QUARTER : StateTypes::SOLD_OUT;
+            print_r("Refill<br/>");
                 break;
             case StateTypes::SOLD:
                 print_r("Turning twice doesn't get you another gumball<br/>");

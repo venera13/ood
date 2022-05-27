@@ -5,30 +5,13 @@ namespace State\GumballMachine;
 
 interface GumballMachineInterface
 {
-    public function releaseBall(): void;
+    public function ejectQuarter(): void;
 
-    /**
-     * @return int
-     */
-    public function getBallCount(): int;
+    public function insertQuarter(): void;
 
-    /**
-     * @return int
-     */
-    public function getQuarterCount(): int;
+    public function refill(int $numBalls): void;
 
-    public function addQuarter(): void;
+    public function turnCrank(): void;
 
-    /**
-     * @param int $numBalls
-     */
-    public function addBalls(int $numBalls): void;
-
-    public function setSoldOutState(): void;
-
-    public function setNoQuarterState(): void;
-
-    public function setSoldState(): void;
-
-    public function setHasQuarterState(): void;
+    public function toString(): void;
 }

@@ -94,6 +94,7 @@ class Group implements GroupInterface
 
     public function getFrame(): Rect
     {
+        //что если группа пустая
         $minX = null;
         $minY = null;
         $maxX = null;

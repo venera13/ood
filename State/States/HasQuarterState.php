@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace State\States;
 
-use State\GumballMachine\GumballMachineInterface;
+use State\GumballMachine\GumballMachineContextInterface;
 
 class HasQuarterState implements StateInterface
 {
-    /** @var GumballMachineInterface */
+    /** @var GumballMachineContextInterface */
     private $gumballMachine;
 
-    public function __construct(GumballMachineInterface $gumballMachine)
+    public function __construct(GumballMachineContextInterface $gumballMachine)
     {
         $this->gumballMachine = $gumballMachine;
     }

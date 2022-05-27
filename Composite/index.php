@@ -59,15 +59,15 @@ $frame = $group->getFrame();
 $newRect = new Rect(new Point(400, 500), 800, 700);
 $group->setFrame($newRect);
 
-$groupLineStyle = new LineStyle();
-$groupLineStyle->enable(true);
-$groupLineStyle->setColor(new RGBAColor(255, 0, 0, 1));
-$group->setLineStyle($groupLineStyle);
-
-$groupFillStyle = new FillStyle();
-$groupFillStyle->enable(true);
-$groupFillStyle->setColor(new RGBAColor(0, 0, 255, 1));
-$group->setFillStyle($groupFillStyle);
+//$groupLineStyle = new LineStyle();
+//$groupLineStyle->enable(true);
+//$groupLineStyle->setColor(new RGBAColor(255, 0, 0, 1));
+//$group->setLineStyle($groupLineStyle);
+//
+//$groupFillStyle = new FillStyle();
+//$groupFillStyle->enable(true);
+//$groupFillStyle->setColor(new RGBAColor(0, 0, 255, 1));
+//$group->setFillStyle($groupFillStyle);
 
 $wall->draw($canvas);
 $roof->draw($canvas);

@@ -5,6 +5,8 @@ namespace State;
 
 include 'GumballMachine/GumballMachineInterface.php';
 include 'GumballMachine/GumballMachine.php';
+include 'GumballMachine/GumballMachineContextInterface.php';
+include 'GumballMachine/GumballMachineContext.php';
 include 'States/StateInterface.php';
 include 'States/HasQuarterState.php';
 include 'States/NoQuarterState.php';
@@ -14,7 +16,6 @@ include 'NaiveGumBallMachine/NaiveGumBallMachine.php';
 include 'NaiveGumBallMachine/StateTypes.php';
 
 use State\GumballMachine\GumballMachine;
-use State\NaiveGumBallMachine\NaiveGumBallMachine;
 
 function testGumballMachine($machine)
 {
@@ -50,8 +51,8 @@ function testGumballMachine($machine)
     $machine->toString();
 }
 
-//$machine = new GumballMachine(5);
-//testGumballMachine($machine);
+$machine = new GumballMachine(5);
+testGumballMachine($machine);
 
-$naiveGumBallMachine = new NaiveGumBallMachine(5);
-testGumballMachine($naiveGumBallMachine);
+//$naiveGumBallMachine = new NaiveGumBallMachine(5);
+//testGumballMachine($naiveGumBallMachine);
