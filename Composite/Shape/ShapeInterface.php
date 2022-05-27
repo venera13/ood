@@ -18,9 +18,9 @@ interface ShapeInterface
     public function draw(CanvasInterface $canvas): void;
 
     /**
-     * @return Rect
+     * @return Rect|null
      */
-    public function getFrame(): Rect;
+    public function getFrame(): ?Rect;
 
     /**
      * @param Rect $rect

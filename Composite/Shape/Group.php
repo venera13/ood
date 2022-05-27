@@ -92,9 +92,13 @@ class Group implements GroupInterface
         }
     }
 
-    public function getFrame(): Rect
+    public function getFrame(): ?Rect
     {
-        //что если группа пустая
+        if (count($this->shapes) === 0)
+        {
+            return null;
+        }
+
         $minX = null;
         $minY = null;
         $maxX = null;
