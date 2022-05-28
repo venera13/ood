@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace MVC;
+namespace MVC\Model;
 
 use GdImage;
 
-class Model
+class Canvas
 {
     /** @var int */
     private $maxX;
@@ -25,37 +25,14 @@ class Model
     private $scaleX;
     /** @var int */
     private $scaleY;
-    
-    public function getChart()
+
+    public function __construct()
     {
-//        $dataSet = new pData();
-//        $dataSet->addPoints([0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]);
-//        $dataSet->setAxisName(0,"Temperatures");
-//        $dataSet->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
-//        $dataSet->setSerieDescription("Labels","Months");
-//        $dataSet->setAbscissa("Labels");
+        $this->image = imagecreatetruecolor(200, 200);
+    }
 
-//$MyData = new pData();
-//$MyData->addPoints(array(-4,VOID,VOID,12,8,3),"Probe 1");
-//$MyData->addPoints(array(3,12,15,8,5,-5),"Probe 2");
-//$MyData->addPoints(array(2,7,5,18,19,22),"Probe 3");
-//$MyData->setSerieTicks("Probe 2",4);
-//$MyData->setAxisName(0,"Temperatures");
-//$MyData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
-//$MyData->setSerieDescription("Labels","Months");
-//$MyData->setAbscissa("Labels");
-
-//        var_dump($dataSet);
-//        $myImage = new pImage(1000, 1000, $MyData);
-//        $myImage->setGraphArea(60, 40, 670, 190);
-//        $myImage->setFontProperties([
-//            "FontName" => "/libs/pChart/fonts/GeosansLight.ttf",
-//            "FontSize" => 15
-//        ]);
-
-        //$myImage->drawScale();
-        //$myImage->drawSplineChart();
-
+    public function drawChart(): void
+    {
         $this->im = imagecreatetruecolor(580, 400);
         $white = ImageColorAllocate ($this->im, 255, 255, 255);
 
@@ -65,7 +42,7 @@ class Model
         $red = ImageColorAllocate ($this->im, 255, 0, 0);
         $blue = ImageColorAllocate ($this->im, 0, 0, 255);
         $this->l_grey = ImageColorAllocate ($this->im, 221, 221, 221);
-        $this->drawAxises(500,400);
+        $this->drawAxises(580,400);
         $x1[0]=1; $y1[0]=1;
         $x1[1]=2; $y1[1]=4;
         $x1[2]=3; $y1[2]=8;
@@ -74,23 +51,23 @@ class Model
         $x2[1]=2.5; $y2[1]=4;
         $x2[2]=3.5; $y2[2]=8;
         $x2[3]=4.5; $y2[3]=16;
-        $x=array_merge($x1,$x2);
-        $y=array_merge($y1,$y2);
-        $this->maxXVal=max($x);
-        $this->maxYVal=max($y);
+        $x = array_merge($x1,$x2);
+        $y = array_merge($y1,$y2);
+        $this->maxXVal = max($x);
+        $this->maxYVal = max($y);
         $this->scaleX=($this->maxX - $this->x0) / $this->maxXVal;
         $this->scaleY=($this->maxY - $this->y0) / $this->maxYVal;
-        $xStep=30;
-        $yStep=30;
-        $this->drawGrid($xStep,$yStep, round($xStep/$this->scaleX,1), round($yStep/$this->scaleY,1), true);
-        $this->drawData($x1,$y1,4,$red);
-        $this->drawData($x2,$y2,4,$blue);
+        $xStep = 30;
+        $yStep = 30;
+        $this->drawGrid($xStep, $yStep, round($xStep/$this->scaleX,1), round($yStep/$this->scaleY,1), true);
+        $this->drawData($x1, $y1, 4, $red);
+        $this->drawData($x2, $y2, 4, $blue);
         Header("Content-Type: image/png");
         ImagePNG($this->im);
         imagedestroy($this->im);
     }
 
-    private function drawAxises($imWidth,$imHeignt)
+    private function drawAxises($imWidth,$imHeignt): void
     {
         $this->x0 = 25;
         $this->y0 = 20;
@@ -108,7 +85,7 @@ class Model
         imagefilledpolygon($this->im, $yArrow, 3, $this->black);
     }
 
-    private function drawGrid($xStep, $yStep, $xCoef, $yCoef)
+    private function drawGrid($xStep, $yStep, $xCoef, $yCoef): void
     {
         $xSteps=($this->maxX-$this->x0) / $xStep-1;
         $ySteps=($this->maxY-$this->y0) / $yStep-1;
@@ -124,7 +101,7 @@ class Model
         }
     }
 
-    private function drawData($data_x, $data_y, $pointsCount, $color)
+    private function drawData($data_x, $data_y, $pointsCount, $color): void
     {
         for($i = 1; $i < $pointsCount; $i++)
         {
@@ -132,5 +109,4 @@ class Model
                 intval($this->x0 + $data_x[$i] * $this->scaleX), intval($this->maxY - $data_y[$i] * $this->scaleY), $color);
         }
     }
-
 }

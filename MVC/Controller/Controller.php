@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace MVC;
+namespace MVC\Controller;
+
+use MVC\Model\Model;
+use MVC\View\View;
 
 class Controller
 {

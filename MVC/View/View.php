@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MVC;
+namespace MVC\View;
 
 class View
 {

@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace MVC;
 
-include 'Model.php';
-include 'View.php';
-include 'Controller.php';
+include 'Model/Model.php';
+include 'Model/Canvas.php';
+include 'View/View.php';
+include 'Controller/Controller.php';
+
+use MVC\Model\Model;
+use MVC\View\View;
+use MVC\Controller\Controller;
 
 $model = new Model();
 $view = new View();
