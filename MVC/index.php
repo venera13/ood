@@ -6,6 +6,8 @@ namespace MVC;
 include 'Model/Model.php';
 include 'Model/Canvas.php';
 include 'Model/pChart.php';
+include 'Model/Harmonic.php';
+include 'Model/HarmonicType.php';
 include 'View/View.php';
 include 'Controller/Controller.php';
 
@@ -21,4 +23,7 @@ if (isset($_GET['action']) && !empty($_GET['action']))
 {
     $controller->{$_GET['action']}();
 }
-$controller->response();
+else
+{
+    $controller->getResponse();
+}
