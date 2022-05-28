@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+//declare(strict_types=1);
 
 namespace MVC\Controller;
 
@@ -22,8 +22,10 @@ class Controller
     public function response(): void
     {
         $functions = $this->getFunctions();
+//        $chart = $this->model->getChart();
         $params = [
-            'functions' => $functions
+            'functions' => $functions,
+//            'chart' => $chart
         ];
 
         $this->view->render($params);

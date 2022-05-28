@@ -5,6 +5,7 @@ namespace MVC;
 
 include 'Model/Model.php';
 include 'Model/Canvas.php';
+include 'Model/pChart.php';
 include 'View/View.php';
 include 'Controller/Controller.php';
 

@@ -13,13 +13,9 @@
       <div class="drawer__harmonics">
         <h2 class="drawer__harmonics-title">Harmonics</h2>
         <div class="harmonics">
-            <?php
-            foreach ($params['functions'] as $function)
-            {
-                ?>
+            <?php foreach ($params['functions'] as $function) { ?>
               <div class="harmonics__item"><?= $function?></div>
-                <?php
-            } ?>
+            <?php } ?>
         </div>
         <a class="button" href="/ood/MVC?action=addNew">Add new</a>
         <a class="button" href="/ood/MVC?action=deleteSelected">Delete selected</a>
@@ -45,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div class="drawer__wrapper-second-item">
+    <div class="drawer__wrapper-second-item" id="container">
       <img class="image" src="/ood/MVC?action=getChart">
     </div>
   </div>
