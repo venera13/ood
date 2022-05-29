@@ -21,10 +21,13 @@ class ChartDrawerView
             return [];
         }
         $active = $parameters['active'] ?? 0;
+        $activeShow = $parameters['active_show'] ?? 'chart';
         $params = [
             'harmonics' => $this->parseHarmonics($parameters['harmonics']),
             'harmonic_value' => $this->parseHarmonicInfo($parameters['harmonics'][$active]),
-            'active' => $active
+            'active' => $active,
+            'active_show' => $activeShow,
+            'table_params' => $parameters['table_params'] ?? []
         ];
         return $params;
     }

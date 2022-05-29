@@ -78,6 +78,17 @@
     color: black;
     text-decoration: none;
     padding: 7px 20px;
+    box-sizing: border-box;
+}
+
+.button.active
+{
+    background-color: #fff;
+    border-top: 1px solid #000;
+    border-right: 1px solid #000;
+    border-left: 1px solid #000;
+    border-radius: 4px 4px 0 0;
+    cursor: not-allowed;
 }
 
 .drawer__values
@@ -94,4 +105,41 @@
 label
 {
     font-size: 16px;
+}
+
+.drawer__wrapper-second-item-buttons
+{
+    display: block;
+    margin-bottom: 10px;
+}
+
+.table
+{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000;
+}
+
+.table__row
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.table__row_main
+{
+    border-bottom: 1px solid #000;
+}
+
+.table__item
+{
+    font-size: 16px;
+    width: 50%;
+    padding: 5px;
+    border-bottom: 1px solid #d0d0d0;
+}
+
+.table__item:first-child
+{
+    border-right: 1px solid #000;
 }

@@ -54,7 +54,27 @@
       </div>
     </div>
     <div class="drawer__wrapper-second-item" id="container">
-      <img class="image" src="/ood/MVC?action=getChart">
+      <div class="drawer__wrapper-second-item-buttons">
+        <a class="button <?php if ($params['active_show'] === 'chart'): ?>active<?php endif; ?>" href="/ood/MVC?action=showChart">Chart</a>
+        <a class="button <?php if ($params['active_show'] === 'table'): ?>active<?php endif; ?>" href="/ood/MVC?action=showTable">Table</a>
+      </div>
+      <?php if ($params['active_show'] === 'chart'): ?>
+        <img class="image" src="/ood/MVC?action=getChart">
+      <?php endif; ?>
+      <?php if ($params['active_show'] === 'table'): ?>
+        <div class="table">
+          <div class="table__row table__row_main">
+            <span class="table__item">x</span>
+            <span class="table__item">y</span>
+          </div>
+          <?php for ($i = 0; $i < count($params['table_params']['x']); $i++) { ?>
+            <div class="table__row">
+              <span class="table__item"><?= $params['table_params']['x'][$i] ?></span>
+              <span class="table__item"><?= $params['table_params']['y'][$i] ?></span>
+            </div>
+          <?php } ?>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </div>

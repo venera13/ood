@@ -92,6 +92,15 @@ class Model
         );
     }
 
+    public function getTableParams(): array
+    {
+        $vars = $this->calculateHarmonics();
+        return [
+            'x' => $vars['x'],
+            'y' => $vars['y']
+        ];
+    }
+
     private function calculateHarmonics(): array
     {
         $x = [];

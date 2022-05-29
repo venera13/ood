@@ -94,4 +94,16 @@ class Controller
         $this->model->deleteHarmonic(intval($_GET['index']));
         $this->getResponse();
     }
+
+    public function showChart(): void
+    {
+        $this->getResponse();
+    }
+
+    public function showTable(): void
+    {
+        $params['table_params'] = $this->model->getTableParams();
+        $params['active_show'] = 'table';
+        $this->getResponse($params);
+    }
 }
