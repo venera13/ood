@@ -9,25 +9,25 @@ class Model
     private $harmonics = [];
 
     /**
-     * @return array
-     */
-    public function getHarmonics(): array
-    {
-        if (count($this->harmonics) === 0)
-        {
-            $this->harmonics = unserialize(file_get_contents('data.txt'));
-        }
-
-        return $this->harmonics;
-    }
-
-    /**
      * @param array $harmonics
      */
     public function setHarmonics(array $harmonics): void
     {
         $this->harmonics = $harmonics;
         $this->saveHarmonics($this->harmonics);
+    }
+
+    /**
+     * @return array
+     */
+    public function getHarmonics(): array
+    {
+        if (count($this->harmonics) === 0)
+        {
+            $this->harmonics = file_exists('data.txt') ? unserialize(file_get_contents('data.txt')) : [];
+        }
+
+        return $this->harmonics;
     }
 
     public function changeHarmonic(int $index, string $key, string $value)
@@ -96,7 +96,7 @@ class Model
     {
         $x = [];
         $y = [];
-        for ($i = 0.5; $i <= 4; $i += 0.5)
+        for ($i = 0; $i < 4.5; $i += 0.5)
         {
             $x[] = $i;
 
