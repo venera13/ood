@@ -62,11 +62,34 @@ class Model
         $canvas->drawChart($data);
     }
 
+    public function addNewHarmonic(string $amplitude, string $harmonicType, string $frequency, string $phase): void
+    {
+        $harmonic = new Harmonic(
+            $amplitude ? floatval($amplitude) : 1,
+            $harmonicType ?? HarmonicType::SIN,
+            $frequency ? floatval($frequency) : 1,
+            $phase ? floatval($phase) : 0
+        );
+        $this->harmonics = $this->getHarmonics();
+        $this->harmonics[] = $harmonic;
+        $this->saveHarmonics($this->harmonics);
+    }
+
     public function deleteHarmonic(int $index): void
     {
         $this->harmonics = $this->getHarmonics();
         array_splice($this->harmonics, $index, 1);
         $this->saveHarmonics($this->harmonics);
+    }
+
+    public function getNewHarmonic(?string $amplitude, ?string $harmonicType, ?string $frequency, ?string $phase): Harmonic
+    {
+        return new Harmonic(
+            $amplitude ? floatval($amplitude) : 1,
+            $harmonicType ?? HarmonicType::SIN,
+            $frequency ? floatval($frequency) : 1,
+            $phase ? floatval($phase) : 0
+        );
     }
 
     private function calculateHarmonics(): array

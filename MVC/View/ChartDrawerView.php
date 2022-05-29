@@ -6,7 +6,7 @@ namespace MVC\View;
 use MVC\Model\Harmonic;
 use MVC\Model\HarmonicType;
 
-class View
+class ChartDrawerView
 {
     public function render(array $parameters): void
     {
