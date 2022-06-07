@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace State;
 
-include 'GumballMachine/GumballMachineInterface.php';
 include 'GumballMachine/GumballMachine.php';
 include 'GumballMachine/GumballMachineContextInterface.php';
 include 'GumballMachine/GumballMachineContext.php';

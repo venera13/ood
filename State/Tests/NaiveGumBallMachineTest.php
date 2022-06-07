@@ -2,7 +2,6 @@
 
 namespace State\Tests;
 
-include '../GumballMachine/GumballMachineInterface.php';
 include '../GumballMachine/GumballMachine.php';
 include '../States/StateInterface.php';
 include '../States/HasQuarterState.php';

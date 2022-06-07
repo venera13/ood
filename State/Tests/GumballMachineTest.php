@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace State\Tests;
 
-include '../GumballMachine/GumballMachineInterface.php';
 include '../GumballMachine/GumballMachine.php';
 include '../GumballMachine/GumballMachineContextInterface.php';
 include '../GumballMachine/GumballMachineContext.php';
@@ -168,7 +167,7 @@ class GumballMachineTest extends TestCase
         $machine = new GumballMachineContext();
         $state = new SoldState($machine);
         $state->insertQuarter();
-        $this->expectOutputString("Insert quarter<br />");
+        $this->expectOutputString("You can't insert another quarter<br />");
     }
 
     public function testSoldStateEjectQuarter()
@@ -246,7 +245,7 @@ class GumballMachineTest extends TestCase
         $machine->turnCrank();
         $machine->ejectQuarter();
 
-        $this->assertEquals(true, $machine->getQuarterCount() === 1);
+        $this->assertEquals(true, $machine->getQuarterCount() === 0);
     }
 
     public function testEjectQuarterFromSoldOutMachine()

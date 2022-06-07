@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace State\GumballMachine;
 
-class GumballMachine implements GumballMachineInterface
+class GumballMachine
 {
     /** @var GumballMachineContextInterface */
     private $gumballMachineContext;

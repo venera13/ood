@@ -17,15 +17,7 @@ class SoldState implements StateInterface
 
     public function insertQuarter(): void
     {
-        if ($this->gumballMachine->getQuarterCount() >= 5)
-        {
-            print_r("You can't insert another quarter<br />");
-        }
-        else
-        {
-            $this->gumballMachine->addQuarter();
-            print_r("Insert quarter<br />");
-        }
+        print_r("You can't insert another quarter<br />");
     }
 
     public function ejectQuarter(): void
@@ -48,8 +40,14 @@ class SoldState implements StateInterface
         }
         else
         {
-            $this->gumballMachine->setNoQuarterState();
+            if ($this->gumballMachine->getQuarterCount() === 0)
+            {
+                $this->gumballMachine->setNoQuarterState();
+            }
+
+            $this->gumballMachine->setHasQuarterState();
         }
+
     }
 
     public function toString(): string
@@ -64,6 +62,6 @@ class SoldState implements StateInterface
 
     public function refill(int $numBalls): void
     {
-        print_r("Turning twice doesn't get you another gumball<br/>");
+        print_r("Refill<br/>");
     }
 }
