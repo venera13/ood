@@ -2,3 +2,4 @@
 phpunit.phar
 .phpunit*
 */libs
+/MVC_geometric/node_modules/

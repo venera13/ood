@@ -47,7 +47,6 @@ class SoldState implements StateInterface
 
             $this->gumballMachine->setHasQuarterState();
         }
-
     }
 
     public function toString(): string
