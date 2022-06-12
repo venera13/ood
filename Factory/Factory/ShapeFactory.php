@@ -34,7 +34,7 @@ class ShapeFactory implements ShapeFactoryInterface
             ShapeType::RECTANGLE => self::createRectangle($params),
             ShapeType::REGULAR_POLYGON => self::createRegularPolygon($params),
             ShapeType::TRIANGLE => self::createTriangle($params),
-            default => throw new ShapeNotFound('Shape not found'),
+            default => throw new ShapeNotFound('ShapeInterface not found'),
         };
     }
 

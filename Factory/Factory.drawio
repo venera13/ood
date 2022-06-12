@@ -83,7 +83,7 @@
             <mxPoint x="40" y="610" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="34K8-OLlR78BjBaU6Wkd-24" value="Shape" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;fontFamily=Helvetica;fontSize=12;fillColor=#dae8fc;html=0;strokeColor=#6c8ebf;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="34K8-OLlR78BjBaU6Wkd-24" value="ShapeInterface" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;fontFamily=Helvetica;fontSize=12;fillColor=#dae8fc;html=0;strokeColor=#6c8ebf;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-155" y="600" width="190" height="90" as="geometry" />
         </mxCell>
         <mxCell id="34K8-OLlR78BjBaU6Wkd-25" value="+Draw(canvas: CanvasInterface)" style="text;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;rounded=0;shadow=0;fontFamily=Helvetica;fontSize=12;html=0;" parent="34K8-OLlR78BjBaU6Wkd-24" vertex="1">
