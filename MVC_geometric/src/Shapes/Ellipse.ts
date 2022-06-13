@@ -12,5 +12,9 @@ export default class Ellipse implements ShapeInterface
     setFrame(rect: Rect): void 
     {
     }
+
+    get selected(): boolean {
+        return false;
+    }
     
 }

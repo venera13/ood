@@ -2,4 +2,5 @@ import Model from './Model.js';
 import View from './View.js';
 
 const model = new Model();
-new View(model);
+const view = new View(model);
+model.registerObserver(view);

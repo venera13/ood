@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Factory\Shape;
 
-use Factory\Canvas\CanvasInterface;
-
 abstract class Shape implements ShapeInterface
 {
     /** @var string */

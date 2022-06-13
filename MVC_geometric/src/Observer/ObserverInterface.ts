@@ -1,4 +1,4 @@
-import ObservableInterface from './ObservableInterface';
+import ObservableInterface from '../Observable/ObservableInterface';
 
 export default interface ObserverInterface
 {
