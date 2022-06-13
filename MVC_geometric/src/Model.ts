@@ -4,7 +4,6 @@ import Rectangle from './Shapes/Rectangle.js';
 import Point from './Point.js';
 import ShapeInterface from './Shapes/ShapeInterface';
 import Rect from './Rect.js';
-// import ShapeElement from './ShapeElement.js';
 
 enum ShapeTypes {
     RECTANGLE = 'rectangle',
@@ -21,12 +20,11 @@ enum Angle {
 export default class Model extends Observable
 {
     private readonly window: Window;
-    // private shapes: Array<ShapeInterface> = [];
-    // private shapes: Array<{[key: string]: ShapeInterface}> = [];
     private shapes: Array<{key: string; value: ShapeInterface}> = [];
     private mouseIsDown: boolean = false;
     private selectedShape!: ShapeInterface | null;
     private selectedAngle!: Angle | null;
+    private currentPoint!: Point | null;
 
     constructor()
     {
@@ -67,7 +65,8 @@ export default class Model extends Observable
             {
                 const index = this.shapes.indexOf(shapeElement, 0);
                 this.shapes[index].value.selected = !this.shapes[index].value.selected;
-
+                this.selectedShape = shape;
+                this.mouseIsDown = true;
                 this.notifyObservers();
 
                 return;
@@ -75,6 +74,8 @@ export default class Model extends Observable
             else
             {
                 const index = this.shapes.indexOf(shapeElement, 0);
+                this.selectedShape = null;
+                this.mouseIsDown = false;
                 this.shapes[index].value.selected = false;
             }
         })
@@ -86,6 +87,8 @@ export default class Model extends Observable
     {
         const clickX = event.offsetX;
         const clickY = event.offsetY;
+
+        this.currentPoint = new Point(clickX, clickY);
 
         this.shapes.forEach((shapeElement: any) =>
         {
@@ -135,6 +138,10 @@ export default class Model extends Observable
         {
             this.resizeShape(clickX, clickY);
         }
+        else if (this.selectedShape && this.mouseIsDown)
+        {
+            this.moveShape(clickX, clickY);
+        }
     }
 
     handleMouseUp(event: MouseEvent): void
@@ -142,6 +149,7 @@ export default class Model extends Observable
         this.selectedShape = null;
         this.mouseIsDown = false;
         this.selectedAngle = null;
+        this.currentPoint = null;
 
         this.notifyObservers();
     }
@@ -164,19 +172,8 @@ export default class Model extends Observable
         let newFrame: Rect;
         const shapeFrame = shape?.getFrame();
 
-        // const leftTopX = Math.min(shapeFrame.leftTop.x, clickX);
-        // const leftTopY = Math.min(shapeFrame.leftTop.y, clickY);
-        // const rightBottomX = Math.max(shapeFrame.leftTop.x + shapeFrame.width, clickX);
-        // const leftBottomY = Math.max(shapeFrame.leftTop.y + shapeFrame.height, clickY);
-        // newFrame = new Rect(new Point(leftTopX, leftTopY), rightBottomX - leftTopX, leftBottomY - leftTopY);
-
         if (this.selectedAngle == Angle.LEFT_TOP)
         {
-            // const leftTopX = (clickX < shapeFrame.leftTop.x) ? Math.min(shapeFrame.leftTop.x, clickX) : clickX;
-            // const leftTopY = (clickY < shapeFrame.leftTop.y) ? Math.min(shapeFrame.leftTop.y, clickY) : clickY;
-            // const rightBottomX = Math.max(shapeFrame.leftTop.x + shapeFrame.width, clickX);
-            // const rightBottomY = Math.max(shapeFrame.leftTop.y + shapeFrame.height, clickY);
-            // newFrame = new Rect(new Point(leftTopX, leftTopY), rightBottomX - leftTopX, rightBottomY - leftTopY);
             newFrame = new Rect(new Point(clickX, clickY), Math.abs(shapeFrame.leftTop.x + shapeFrame.width - clickX), Math.abs(shapeFrame.leftTop.y + shapeFrame.height - clickY));
         }
         else if(this.selectedAngle == Angle.LEFT_BOTTOM)
@@ -184,44 +181,64 @@ export default class Model extends Observable
             const leftTopX = (clickX > shapeFrame.leftTop.x) ? clickX : Math.min(shapeFrame.leftTop.x, clickX);
             const leftTopY = shapeFrame.leftTop.y;
             const rightBottomX = Math.max(shapeFrame.leftTop.x + shapeFrame.width, clickX);
-            // const rightBottomY = Math.max(shapeFrame.leftTop.y + shapeFrame.height, clickY - shapeFrame.leftTop.y);
             newFrame = new Rect(new Point(leftTopX, leftTopY), rightBottomX - leftTopX, Math.abs(clickY - shapeFrame.leftTop.y));
-
-            // newFrame = new Rect(new Point(clickX, shapeFrame.leftTop.y), Math.abs(shapeFrame.leftTop.x + shapeFrame.width - clickX), Math.abs(clickY - shapeFrame.leftTop.y));
         }
         else if(this.selectedAngle == Angle.RIGHT_TOP)
         {
             const leftTopX = (clickX < shapeFrame.leftTop.x) ? clickX : Math.min(shapeFrame.leftTop.x, clickX);
-            const leftTopY = clickY;
-            const rightBottomX = Math.max(shapeFrame.leftTop.x + shapeFrame.width, clickX);
-            // const rightBottomY = Math.max(shapeFrame.leftTop.y + shapeFrame.height, clickY - shapeFrame.leftTop.y);
-            // newFrame = new Rect(new Point(shapeFrame.leftTop.x, clickY), Math.abs(clickX - shapeFrame.leftTop.x), Math.abs(shapeFrame.leftTop.y + shapeFrame.height - clickY));
-            newFrame = new Rect(new Point(leftTopX, leftTopY), Math.abs(clickX - shapeFrame.leftTop.x), Math.abs(shapeFrame.leftTop.y + shapeFrame.height - clickY));
+            newFrame = new Rect(new Point(leftTopX, clickY), Math.abs(clickX - shapeFrame.leftTop.x), Math.abs(shapeFrame.leftTop.y + shapeFrame.height - clickY));
         }
         else if(this.selectedAngle == Angle.RIGHT_BOTTOM)
         {
             const leftTopX = (clickX < shapeFrame.leftTop.x) ? clickX : Math.min(shapeFrame.leftTop.x, clickX);
             const leftTopY = shapeFrame.leftTop.y;
-            const rightBottomX = Math.max(shapeFrame.leftTop.x + shapeFrame.width, clickX);
-            // const rightBottomY = Math.max(shapeFrame.leftTop.y + shapeFrame.height, clickY - shapeFrame.leftTop.y);
 
             newFrame = new Rect(new Point(leftTopX, leftTopY), Math.abs(clickX - shapeFrame.leftTop.x), Math.abs(clickY - shapeFrame.leftTop.y));
-            // newFrame = new Rect(new Point(shapeFrame.leftTop.x, shapeFrame.leftTop.y), Math.abs(clickX - shapeFrame.leftTop.x), Math.abs(clickY - shapeFrame.leftTop.y));
         }
 
         this.shapes.forEach((shapeElement: any) =>
         {
-            console.log(shapeElement.value);
-            console.log(shape);
             if (shapeElement.value == shape)
             {
                 const index = this.shapes.indexOf(shapeElement, 0);
                 this.shapes[index].value.setFrame(newFrame);
+                return;
             }
         })
 
-        console.log('notify');
-        console.log(this.shapes);
+        this.notifyObservers();
+    }
+
+    private moveShape(clickX: number, clickY: number): void
+    {
+        if (!this.selectedShape || !this.currentPoint)
+        {
+            return;
+        }
+
+        const transformX = clickX - this.currentPoint.x;
+        const transformY = clickY - this.currentPoint.y;
+
+        this.currentPoint = new Point(clickX, clickY);
+
+        const shape = this.selectedShape;
+        let newFrame: Rect;
+        const shapeFrame = shape?.getFrame();
+
+        const leftTopX = (shapeFrame.leftTop.x + transformX + shapeFrame.width <= this.window.width + 20 && shapeFrame.leftTop.x + transformX >= 0) ? shapeFrame.leftTop.x + transformX : shapeFrame.leftTop.x;
+        const leftTopY = (shapeFrame.leftTop.y + transformY + shapeFrame.height <= this.window.height && shapeFrame.leftTop.y + transformY >= 0) ? shapeFrame.leftTop.y + transformY : shapeFrame.leftTop.y;
+        newFrame = new Rect(new Point(leftTopX, leftTopY), shapeFrame.width, shapeFrame.height);
+
+        this.shapes.forEach((shapeElement: any) =>
+        {
+            if (shapeElement.value == shape)
+            {
+                const index = this.shapes.indexOf(shapeElement, 0);
+                this.shapes[index].value.setFrame(newFrame);
+                return;
+            }
+        })
+
         this.notifyObservers();
     }
 }

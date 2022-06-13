@@ -65,11 +65,9 @@ export default class View implements ObserverInterface
         canvasElement.height = 390;
         this.window?.appendChild(canvasElement);
 
-        let canvas = document.getElementById('canvas');
-        // @ts-ignore
+        let canvas: any = document.getElementById('canvas');
         if (canvas.getContext)
         {
-            // @ts-ignore
             this.canvas = canvas.getContext('2d');
         }
     }
@@ -86,7 +84,6 @@ export default class View implements ObserverInterface
             {
                 if (shapeElement.key == 'rectangle')
                 {
-                    console.log('rectangle');
                     const shape = shapeElement.value;
                     this.canvas.fillStyle = "#8c9eeb";
                     this.canvas.fillRect(shape.leftTop.x, shape.leftTop.y, shape.width ,shape.height);

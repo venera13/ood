@@ -41,18 +41,7 @@ export default class Controller
         el?.addEventListener('mousedown', (event: any) => this.model.handleMouseDown(event), false);
         el?.addEventListener('mousemove', (event: any) => this.model.handleMouseMove(event), false);
         el?.addEventListener('mouseup', (event: any) => this.model.handleMouseUp(event), false);
-        // el.addEventListener('touchend', handleEnd, false);
-        // el.addEventListener('touchcancel', handleCancel, false);
-        // el.addEventListener('touchmove', handleMove, false);
     }
-
-    // private handleStart(evt: any): void
-    // {
-    //     evt.preventDefault();
-    //     console.log('touchstart.');
-    //     console.log(evt);
-    //
-    // }
 
     public moveShape(): void
     {
