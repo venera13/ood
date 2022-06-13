@@ -129,7 +129,7 @@ export default class Model extends Observable
         })
     }
 
-    handleMouseMove(event: MouseEvent): void
+    public handleMouseMove(event: MouseEvent): void
     {
         const clickX = event.offsetX;
         const clickY = event.offsetY;
@@ -144,7 +144,7 @@ export default class Model extends Observable
         }
     }
 
-    handleMouseUp(event: MouseEvent): void
+    public handleMouseUp(event: MouseEvent): void
     {
         this.selectedShape = null;
         this.mouseIsDown = false;
@@ -154,7 +154,30 @@ export default class Model extends Observable
         this.notifyObservers();
     }
 
-    getChangedData(): any 
+    public handleKeyUp(event: KeyboardEvent): void
+    {
+        if (event.which == 46 && this.selectedShape)
+        {
+            let index = -1;
+            this.shapes.forEach((shapeElement: any) =>
+            {
+                if (shapeElement.value == this.selectedShape)
+                {
+                    index = this.shapes.indexOf(shapeElement, 0);
+                    return;
+                }
+            })
+
+            if (index > -1)
+            {
+                this.shapes.splice(index, 1);
+            }
+
+            this.notifyObservers();
+        }
+    }
+
+    public getChangedData(): any
     {
         return {
             'shapes': this.shapes
