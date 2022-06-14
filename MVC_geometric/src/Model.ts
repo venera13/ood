@@ -64,7 +64,7 @@ export default class Model extends Observable
                 && clickY >= shape.getFrame().leftTop.y && clickY <= shape.getFrame().leftTop.y + shape.getFrame().height)
             {
                 const index = this.shapes.indexOf(shapeElement, 0);
-                this.shapes[index].value.selected = !this.shapes[index].value.selected;
+                this.shapes[index].value.selected = true;
                 this.selectedShape = shape;
                 this.mouseIsDown = true;
                 this.notifyObservers();
@@ -85,48 +85,10 @@ export default class Model extends Observable
 
     public handleMouseDown(event: MouseEvent): void
     {
-        const clickX = event.offsetX;
-        const clickY = event.offsetY;
-
-        this.currentPoint = new Point(clickX, clickY);
-
-        this.shapes.forEach((shapeElement: any) =>
+        if (!this.checkClickAngle(event))
         {
-            const shape = shapeElement.value;
-
-            if (clickX >= shape.getFrame().leftTop.x - 3 && clickX <= shape.getFrame().leftTop.x + 3
-                && clickY >= shape.getFrame().leftTop.y - 3 && clickY <= shape.getFrame().leftTop.y + 3)
-            {
-                this.mouseIsDown = true;
-                this.selectedShape = shape;
-                this.selectedAngle = Angle.LEFT_TOP;
-                return;
-            }
-            if (clickX >= shape.getFrame().leftTop.x + shape.getFrame().width - 3 && clickX <= shape.getFrame().leftTop.x + shape.getFrame().width + 3
-                && clickY >= shape.getFrame().leftTop.y - 3 && clickY <= shape.getFrame().leftTop.y + 3)
-            {
-                this.mouseIsDown = true;
-                this.selectedShape = shape;
-                this.selectedAngle = Angle.RIGHT_TOP;
-                return;
-            }
-            if (clickX >= shape.getFrame().leftTop.x + shape.getFrame().width - 3 && clickX <= shape.getFrame().leftTop.x + shape.getFrame().width + 3
-                && clickY >= shape.getFrame().leftTop.y + shape.getFrame().height - 3 && clickY <= shape.getFrame().leftTop.y + shape.getFrame().height + 3)
-            {
-                this.mouseIsDown = true;
-                this.selectedShape = shape;
-                this.selectedAngle = Angle.RIGHT_BOTTOM;
-                return;
-            }
-            if (clickX >= shape.getFrame().leftTop.x - 3 && clickX <= shape.getFrame().leftTop.x + 3
-                && clickY >= shape.getFrame().leftTop.y + shape.getFrame().height - 3 && clickY <= shape.getFrame().leftTop.y + shape.getFrame().height + 3)
-            {
-                this.mouseIsDown = true;
-                this.selectedShape = shape;
-                this.selectedAngle = Angle.LEFT_BOTTOM;
-                return;
-            }
-        })
+            this.checkClickShape(event);
+        }
     }
 
     public handleMouseMove(event: MouseEvent): void
@@ -146,7 +108,6 @@ export default class Model extends Observable
 
     public handleMouseUp(event: MouseEvent): void
     {
-        this.selectedShape = null;
         this.mouseIsDown = false;
         this.selectedAngle = null;
         this.currentPoint = null;
@@ -182,6 +143,96 @@ export default class Model extends Observable
         return {
             'shapes': this.shapes
         };
+    }
+
+    private checkClickShape(event: PointerEvent | MouseEvent): boolean
+    {
+        const clickX = event.offsetX;
+        const clickY = event.offsetY;
+
+        this.currentPoint = new Point(clickX, clickY);
+
+        let hasSelectedShape = false;
+
+        this.shapes.forEach((shapeElement: any) =>
+        {
+            const shape = shapeElement.value;
+
+            if (clickX >= shape.getFrame().leftTop.x && clickX <= shape.getFrame().leftTop.x + shape.getFrame().width
+                && clickY >= shape.getFrame().leftTop.y && clickY <= shape.getFrame().leftTop.y + shape.getFrame().height)
+            {
+                const index = this.shapes.indexOf(shapeElement, 0);
+                this.shapes[index].value.selected = true;
+                this.selectedShape = shape;
+                this.mouseIsDown = true;
+                hasSelectedShape = true;
+            }
+            else
+            {
+                const index = this.shapes.indexOf(shapeElement, 0);
+                this.shapes[index].value.selected = false;
+            }
+        });
+
+        if (!hasSelectedShape)
+        {
+            this.selectedShape = null;
+            this.mouseIsDown = false;
+        }
+
+        return hasSelectedShape;
+    }
+
+    private checkClickAngle(event: PointerEvent | MouseEvent): boolean
+    {
+        const clickX = event.offsetX;
+        const clickY = event.offsetY;
+
+        let hasSelectedAngle = false;
+
+        this.shapes.forEach((shapeElement: any) =>
+        {
+            const shape = shapeElement.value;
+
+            if (clickX >= shape.getFrame().leftTop.x - 3 && clickX <= shape.getFrame().leftTop.x + 3
+                && clickY >= shape.getFrame().leftTop.y - 3 && clickY <= shape.getFrame().leftTop.y + 3)
+            {
+                this.mouseIsDown = true;
+                this.selectedShape = shape;
+                this.selectedAngle = Angle.LEFT_TOP;
+                hasSelectedAngle = true;
+                return;
+            }
+            else if (clickX >= shape.getFrame().leftTop.x + shape.getFrame().width - 3 && clickX <= shape.getFrame().leftTop.x + shape.getFrame().width + 3
+                && clickY >= shape.getFrame().leftTop.y - 3 && clickY <= shape.getFrame().leftTop.y + 3)
+            {
+                this.mouseIsDown = true;
+                this.selectedShape = shape;
+                this.selectedAngle = Angle.RIGHT_TOP;
+                hasSelectedAngle = true;
+                return;
+            }
+            else if (clickX >= shape.getFrame().leftTop.x + shape.getFrame().width - 3 && clickX <= shape.getFrame().leftTop.x + shape.getFrame().width + 3
+                && clickY >= shape.getFrame().leftTop.y + shape.getFrame().height - 3 && clickY <= shape.getFrame().leftTop.y + shape.getFrame().height + 3)
+            {
+                this.mouseIsDown = true;
+                this.selectedShape = shape;
+                this.selectedAngle = Angle.RIGHT_BOTTOM;
+                hasSelectedAngle = true;
+                return;
+            }
+            else if (clickX >= shape.getFrame().leftTop.x - 3 && clickX <= shape.getFrame().leftTop.x + 3
+                && clickY >= shape.getFrame().leftTop.y + shape.getFrame().height - 3 && clickY <= shape.getFrame().leftTop.y + shape.getFrame().height + 3)
+            {
+                this.mouseIsDown = true;
+                this.selectedShape = shape;
+                this.selectedAngle = Angle.LEFT_BOTTOM;
+                hasSelectedAngle = true;
+                return;
+            }
+        });
+
+        return hasSelectedAngle;
     }
 
     private resizeShape(clickX: number, clickY: number)

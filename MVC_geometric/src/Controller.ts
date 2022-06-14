@@ -37,10 +37,10 @@ export default class Controller
     public handleClick(): void
     {
         const el = document.getElementById('canvas');
+        el?.addEventListener('mouseup', (event: any) => this.model.handleMouseUp(event), false);
         el?.addEventListener('click', (event: any) => this.model.handleClickElement(event), false);
         el?.addEventListener('mousedown', (event: any) => this.model.handleMouseDown(event), false);
         el?.addEventListener('mousemove', (event: any) => this.model.handleMouseMove(event), false);
-        el?.addEventListener('mouseup', (event: any) => this.model.handleMouseUp(event), false);
         document.addEventListener('keyup', (event: any) => this.model.handleKeyUp(event), false)
     }
 
