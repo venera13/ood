@@ -82,31 +82,48 @@ export default class View implements ObserverInterface
         {
             shapes.forEach((shapeElement: any) =>
             {
+                const shape = shapeElement.value;
+
                 if (shapeElement.key == 'rectangle')
                 {
-                    const shape = shapeElement.value;
                     this.canvas.fillStyle = "#8c9eeb";
                     this.canvas.fillRect(shape.leftTop.x, shape.leftTop.y, shape.width ,shape.height);
+                }
+                else if (shapeElement.key == 'ellipse')
+                {
+                    this.canvas.beginPath();
+                    this.canvas.fillStyle = "#8c9eeb";
+                    this.canvas.ellipse(shape.center.x, shape.center.y, shape.horizontalRadius, shape.verticalRadius, 0, 2 * Math.PI, false);
+                    this.canvas.fill();
+                }
+                else if (shapeElement.key == 'triangle')
+                {
+                    this.canvas.beginPath();
+                    this.canvas.fillStyle = "#8c9eeb";
+                    this.canvas.moveTo(shape.vertex1.x, shape.vertex1.y);
+                    this.canvas.lineTo(shape.vertex2.x, shape.vertex2.y);
+                    this.canvas.lineTo(shape.vertex3.x, shape.vertex3.y);
+                    this.canvas.fill();
+                }
 
-                    if (shapeElement.value.selected)
-                    {
-                        this.canvas.strokeStyle = "#2f3c76";
-                        this.canvas.strokeRect(shape.getFrame().leftTop.x, shape.getFrame().leftTop.y, shape.getFrame().width, shape.getFrame().height);
-                        this.canvas.beginPath();
-                        this.canvas.fillStyle = '#181f40';
-                        this.canvas.beginPath();
-                        this.canvas.ellipse(shape.getFrame().leftTop.x, shape.getFrame().leftTop.y, 3, 3, 0, 2 * Math.PI, false);
-                        this.canvas.fill();
-                        this.canvas.beginPath();
-                        this.canvas.ellipse(shape.getFrame().leftTop.x + shape.getFrame().width, shape.getFrame().leftTop.y, 3, 3, 0, 2 * Math.PI, false);
-                        this.canvas.fill();
-                        this.canvas.beginPath();
-                        this.canvas.ellipse(shape.getFrame().leftTop.x + shape.getFrame().width, shape.getFrame().leftTop.y + shape.getFrame().height, 3, 3, 0, 2 * Math.PI, false);
-                        this.canvas.fill();
-                        this.canvas.beginPath();
-                        this.canvas.ellipse(shape.getFrame().leftTop.x, shape.getFrame().leftTop.y + shape.getFrame().height, 3, 3, 0, 2 * Math.PI, false);
-                        this.canvas.fill();
-                    }
+                if (shapeElement.value.selected)
+                {
+                    this.canvas.strokeStyle = "#2f3c76";
+                    this.canvas.strokeRect(shape.getFrame().leftTop.x, shape.getFrame().leftTop.y, shape.getFrame().width, shape.getFrame().height);
+                    this.canvas.beginPath();
+                    this.canvas.fillStyle = '#181f40';
+                    this.canvas.beginPath();
+                    this.canvas.ellipse(shape.getFrame().leftTop.x, shape.getFrame().leftTop.y, 3, 3, 0, 2 * Math.PI, false);
+                    this.canvas.fill();
+                    this.canvas.beginPath();
+                    this.canvas.ellipse(shape.getFrame().leftTop.x + shape.getFrame().width, shape.getFrame().leftTop.y, 3, 3, 0, 2 * Math.PI, false);
+                    this.canvas.fill();
+                    this.canvas.beginPath();
+                    this.canvas.ellipse(shape.getFrame().leftTop.x + shape.getFrame().width, shape.getFrame().leftTop.y + shape.getFrame().height, 3, 3, 0, 2 * Math.PI, false);
+                    this.canvas.fill();
+                    this.canvas.beginPath();
+                    this.canvas.ellipse(shape.getFrame().leftTop.x, shape.getFrame().leftTop.y + shape.getFrame().height, 3, 3, 0, 2 * Math.PI, false);
+                    this.canvas.fill();
                 }
             })
         }

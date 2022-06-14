@@ -4,6 +4,8 @@ import Rectangle from './Shapes/Rectangle.js';
 import Point from './Point.js';
 import ShapeInterface from './Shapes/ShapeInterface';
 import Rect from './Rect.js';
+import Ellipse from './Shapes/Ellipse.js';
+import Triangle from './Shapes/Triangle.js';
 
 enum ShapeTypes {
     RECTANGLE = 'rectangle',
@@ -38,8 +40,19 @@ export default class Model extends Observable
         switch (type)
         {
             case ShapeTypes.RECTANGLE:
-                const shape = new Rectangle(new Point(this.window.width/2 - 50, this.window.height/2 - 50), 100, 100);
-                this.shapes.push({key: 'rectangle', value: shape});
+                const rectangle = new Rectangle(new Point(this.window.width/2 - 50, this.window.height/2 - 50), 100, 100);
+                this.shapes.push({key: 'rectangle', value: rectangle});
+                break;
+            case ShapeTypes.ELLIPSE:
+                const ellipse = new Ellipse(new Point(this.window.width/2, this.window.height/2), 50, 50);
+                this.shapes.push({key: 'ellipse', value: ellipse});
+                break;
+            case ShapeTypes.TRIANGLE:
+                const vertex1 = new Point(this.window.width/2 - 30, this.window.height/2 + 30);
+                const vertex2 = new Point(this.window.width/2, this.window.height/2 - 30);
+                const vertex3 = new Point(this.window.width/2 + 30, this.window.height/2 + 30);
+                const triangle = new Triangle(vertex1, vertex2, vertex3);
+                this.shapes.push({key: 'triangle', value: triangle});
                 break;
         }
         this.notifyObservers();

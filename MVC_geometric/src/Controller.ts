@@ -25,6 +25,10 @@ export default class Controller
     {
         const rectangle = document.getElementById('rectangle');
         rectangle?.addEventListener('click', () => this.model.addShape(ShapeTypes.RECTANGLE));
+        const ellipse = document.getElementById('ellipse');
+        ellipse?.addEventListener('click', () => this.model.addShape(ShapeTypes.ELLIPSE));
+        const triangle = document.getElementById('triangle');
+        triangle?.addEventListener('click', () => this.model.addShape(ShapeTypes.TRIANGLE));
     }
 
     public handleClick(): void
