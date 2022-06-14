@@ -17,15 +17,8 @@ export default class Controller
         this.model = model;
         this.view = view;
 
-        this.handleResizeWindow();
         this.addShape();
         this.handleClick();
-    }
-
-    public handleResizeWindow(): void
-    {
-        const window = document.getElementById('window');
-        window?.addEventListener('resize', () => this.model.handleResizeWindow(window.offsetWidth, window.offsetHeight));
     }
 
     public addShape(): void
@@ -42,20 +35,5 @@ export default class Controller
         el?.addEventListener('mousedown', (event: any) => this.model.handleMouseDown(event), false);
         el?.addEventListener('mousemove', (event: any) => this.model.handleMouseMove(event), false);
         document.addEventListener('keyup', (event: any) => this.model.handleKeyUp(event), false)
-    }
-
-    public moveShape(): void
-    {
-
-    }
-
-    public resizeShape(): void
-    {
-
-    }
-
-    public removeShape(): void
-    {
-
     }
 }

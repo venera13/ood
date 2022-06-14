@@ -33,12 +33,6 @@ export default class Model extends Observable
         this.window = new Window(620, 390);
     }
     
-    public handleResizeWindow(width: number, height: number): void
-    {
-        this.window.width = width;
-        this.window.height = height;
-    }
-    
     public addShape(type: ShapeTypes): void
     {
         switch (type)
