@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-06-16T15:56:21.078Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" etag="rNqypkdZCXEIiwFlB1F0" version="20.0.1" type="github">
+<mxfile host="app.diagrams.net" modified="2022-06-16T16:01:16.747Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" etag="jsq4DlUmo5nd4DWjpz81" version="20.0.1" type="github">
   <diagram id="ZxXwK-TmG2tBLpuaiVWN" name="Page-1">
     <mxGraphModel dx="3158" dy="681" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -52,7 +52,7 @@
         <mxCell id="CFgS4qSr50Q-mmnhQyEN-16" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="CFgS4qSr50Q-mmnhQyEN-14" vertex="1">
           <mxGeometry y="50" width="170" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="CFgS4qSr50Q-mmnhQyEN-17" value="+ handleClickShape(shapeID)&#xa;+ moveShape(shapeID)&#xa;+ resizeShape(shapeId, frame)&#xa;+ addShape(shapeType)&#xa;+ removeShape(shapeId)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="CFgS4qSr50Q-mmnhQyEN-14" vertex="1">
+        <mxCell id="CFgS4qSr50Q-mmnhQyEN-17" value="+ handleMouseEvent()&#xa;+ addShape(shapeType)&#xa;+ handleKeyEvent()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="CFgS4qSr50Q-mmnhQyEN-14" vertex="1">
           <mxGeometry y="58" width="170" height="82" as="geometry" />
         </mxCell>
         <mxCell id="CFgS4qSr50Q-mmnhQyEN-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamondThin;endFill=0;" parent="1" target="CFgS4qSr50Q-mmnhQyEN-9" edge="1">
