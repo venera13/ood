@@ -18,7 +18,8 @@ export default class Controller
         this.view = view;
 
         this.addShape();
-        this.handleClick();
+        this.handleMouseEvent();
+        this.handleKeyEvent();
     }
 
     public addShape(): void
@@ -31,13 +32,17 @@ export default class Controller
         triangle?.addEventListener('click', () => this.model.addShape(ShapeTypes.TRIANGLE));
     }
 
-    public handleClick(): void
+    public handleMouseEvent(): void
     {
         const el = document.getElementById('canvas');
         el?.addEventListener('mouseup', (event: any) => this.model.handleMouseUp(event), false);
         el?.addEventListener('click', (event: any) => this.model.handleClickElement(event), false);
         el?.addEventListener('mousedown', (event: any) => this.model.handleMouseDown(event), false);
         el?.addEventListener('mousemove', (event: any) => this.model.handleMouseMove(event), false);
-        document.addEventListener('keyup', (event: any) => this.model.handleKeyUp(event), false)
+    }
+
+    public handleKeyEvent(): void
+    {
+        document.addEventListener('keyup', (event: any) => this.model.handleKeyUp(event), false);
     }
 }

@@ -46,7 +46,6 @@ export default class Rectangle implements ShapeInterface
         this._leftTop = rect.leftTop;
         this._width = rect.width;
         this._height = rect.height;
-
     }
 
     set selected(value: boolean)
