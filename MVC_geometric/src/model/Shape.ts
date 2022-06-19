@@ -1,4 +1,3 @@
-import ShapeObserverInterface from './ShapeObserverInterface.js';
 import Rect from '../domain/Rect.js';
 import Point from '../domain/Point.js';
 
@@ -14,17 +13,12 @@ export default class Shape
     private _type: string;
     private _selected: boolean = false;
     private _frame: Rect;
-    private observers!: Array<ShapeObserverInterface>;
     
     constructor(type: string) 
     {
         this._type = type;
+        this._selected = true;
         this._frame = new Rect(new Point(260, 145), 100, 100);
-    }
-
-    public addObserver(observer: ShapeObserverInterface)
-    {
-        this.observers.push(observer);
     }
     
     public resizeFrame(selectedAngle: string, clickX: number, clickY: number): void

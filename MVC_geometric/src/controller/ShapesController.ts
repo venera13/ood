@@ -17,9 +17,9 @@ export default class ShapesController
         this.shapes.selectedShape(index);
     }
 
-    public unselectedShape(): void
+    public unselectedShape(index: number): void
     {
-        this.shapes.unselectedShape();
+        this.shapes.unselectedShape(index);
     }
 
     public resizeFrame(index: number, selectedAngle: string, clickX: number, clickY: number): void
@@ -30,5 +30,10 @@ export default class ShapesController
     public moveShape(index: number, transformX: number, transformY: number): void
     {
         this.shapes.moveShape(index, transformX, transformY);
+    }
+
+    public removeShape(index: number): void
+    {
+        this.shapes.removeShape(index);
     }
 }

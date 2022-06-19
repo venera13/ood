@@ -6,7 +6,6 @@ import EllipseView from './EllipseView.js';
 import TriangleView from './TriangleView.js';
 import Point from '../domain/Point.js';
 import ShapesController from '../controller/ShapesController.js';
-import Rect from "../domain/Rect";
 
 enum Angle {
     LEFT_TOP = 'left_top',
@@ -97,23 +96,37 @@ export default class ShapesView implements ShapesObserverInterface
             this.canvas = canvas.getContext('2d');
 
             this.mouseEvent();
+            this.keyEvent();
         }
     }
     
     private mouseEvent(): void
     {
         const el = document.getElementById('canvas');
-        el?.addEventListener('mouseup', (event: any) => this.handleMouseUp(event), false);
+        el?.addEventListener('mouseup', () => this.handleMouseUp(), false);
         el?.addEventListener('click', (event: any) => this.handleClickElement(event), false);
         el?.addEventListener('mousedown', (event: any) => this.handleMouseDown(event), false);
         el?.addEventListener('mousemove', (event: any) => this.handleMouseMove(event), false);
     }
 
-    private handleMouseUp(event: MouseEvent): void
+    private keyEvent(): void
+    {
+        document.addEventListener('keyup', (event: KeyboardEvent) => this.handleKeyUp(event), false);
+    }
+
+    private handleMouseUp(): void
     {
         this.mouseIsDown = false;
         this.selectedAngle = null;
         this.currentPoint = null;
+    }
+
+    private handleKeyUp(event: KeyboardEvent): void
+    {
+        if (event.which == 46 && this.selectedShape !== null)
+        {
+            this.controller.removeShape(this.selectedShape);
+        }
     }
 
     private handleClickElement(event: PointerEvent): void
@@ -134,7 +147,7 @@ export default class ShapesView implements ShapesObserverInterface
             else
             {
                 this.mouseIsDown = false;
-                this.controller.unselectedShape();
+                this.controller.unselectedShape(index);
             }
         })
     }
@@ -165,18 +178,7 @@ export default class ShapesView implements ShapesObserverInterface
                 this.mouseIsDown = true;
                 hasSelectedShape = true;
             }
-            // else
-            // {
-            //     const index = this.shapes.indexOf(shapeElement, 0);
-            //     this.shapes[index].value.selected = false;
-            // }
         });
-
-        // if (!hasSelectedShape)
-        // {
-        //     this.selectedShape = null;
-        //     this.mouseIsDown = false;
-        // }
 
         return hasSelectedShape;
     }

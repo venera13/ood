@@ -13,6 +13,11 @@ export default class Shapes
 
     public addShape(type: string)
     {
+        this.shapes.map((shape: Shape) =>
+        {
+            shape.selected = false;
+        });
+
         let shape: Shape = new Shape(type);
         this.shapes.push(shape);
 
@@ -31,12 +36,9 @@ export default class Shapes
         this.notifyObservers();
     }
 
-    public unselectedShape(): void
+    public unselectedShape(index: number): void
     {
-        this.shapes.map((shape: Shape) =>
-        {
-            shape.selected = false;
-        });
+        this.shapes[index].selected = false;
 
         this.notifyObservers();
     }
@@ -50,7 +52,19 @@ export default class Shapes
 
     public moveShape(index: number, transformX: number, transformY: number): void
     {
+        this.shapes.map((shape: Shape) =>
+        {
+            shape.selected = false;
+        });
+
         this.shapes[index].moveFrame(transformX, transformY);
+
+        this.notifyObservers();
+    }
+
+    public removeShape(index: number): void
+    {
+        this.shapes.splice(index, 1);
 
         this.notifyObservers();
     }
