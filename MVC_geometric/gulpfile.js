@@ -3,7 +3,7 @@ var ts = require("gulp-typescript");
 var tsProject = ts.createProject("tsconfig.json");
 
 var paths = {
-  script:['src/*']
+  script:['src/**/*']
 };
 
 gulp.task("default", function () {

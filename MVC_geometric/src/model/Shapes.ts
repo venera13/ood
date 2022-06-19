@@ -16,7 +16,7 @@ export default class Shapes
         let shape: Shape = new Shape(type);
         this.shapes.push(shape);
 
-        this.notifyObservers(shape);
+        this.notifyObservers();
     }
 
     public getShapes(): Array<Shape>
@@ -24,11 +24,42 @@ export default class Shapes
         return this.shapes;
     }
 
-    private notifyObservers(shape: Shape): void
+    public selectedShape(index: number): void
+    {
+        this.shapes[index].selected = true;
+
+        this.notifyObservers();
+    }
+
+    public unselectedShape(): void
+    {
+        this.shapes.map((shape: Shape) =>
+        {
+            shape.selected = false;
+        });
+
+        this.notifyObservers();
+    }
+
+    public resizeFrame(index: number, selectedAngle: string, clickX: number, clickY: number): void
+    {
+        this.shapes[index].resizeFrame(selectedAngle, clickX, clickY);
+
+        this.notifyObservers();
+    }
+
+    public moveShape(index: number, transformX: number, transformY: number): void
+    {
+        this.shapes[index].moveFrame(transformX, transformY);
+
+        this.notifyObservers();
+    }
+
+    private notifyObservers(): void
     {
         this.observers.map((observer: ShapesObserverInterface) =>
         {
-            observer.onShapeAdded(shape);
+            observer.renderShapes();
         })
     }
 }

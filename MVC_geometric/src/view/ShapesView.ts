@@ -4,18 +4,35 @@ import Shapes from '../model/Shapes.js';
 import RectangleView from './RectangleView.js';
 import EllipseView from './EllipseView.js';
 import TriangleView from './TriangleView.js';
+import Point from '../domain/Point.js';
+import ShapesController from '../controller/ShapesController.js';
+import Rect from "../domain/Rect";
+
+enum Angle {
+    LEFT_TOP = 'left_top',
+    LEFT_BOTTOM = 'left_bottom',
+    RIGHT_TOP = 'right_top',
+    RIGHT_BOTTOM = 'right_bottom',
+}
 
 export default class ShapesView implements ShapesObserverInterface
 {
     private readonly shapes: Shapes;
+    private readonly controller: ShapesController;
     private canvas: any = null;
+
+    private mouseIsDown: boolean = false;
+    private selectedAngle!: string | null;
+    private currentPoint!: Point | null;
+    private selectedShape!: number | null;
 
     constructor(shapes: Shapes)
     {
         this.shapes = shapes;
+        this.controller = new ShapesController(this, this.shapes);
     }
 
-    public onShapeAdded(shape: Shape): void
+    public renderShapes(): void
     {
         this.initContext();
         this.canvas.clearRect(0, 0, 640, 390);
@@ -78,6 +95,159 @@ export default class ShapesView implements ShapesObserverInterface
         if (canvas.getContext)
         {
             this.canvas = canvas.getContext('2d');
+
+            this.mouseEvent();
+        }
+    }
+    
+    private mouseEvent(): void
+    {
+        const el = document.getElementById('canvas');
+        el?.addEventListener('mouseup', (event: any) => this.handleMouseUp(event), false);
+        el?.addEventListener('click', (event: any) => this.handleClickElement(event), false);
+        el?.addEventListener('mousedown', (event: any) => this.handleMouseDown(event), false);
+        el?.addEventListener('mousemove', (event: any) => this.handleMouseMove(event), false);
+    }
+
+    private handleMouseUp(event: MouseEvent): void
+    {
+        this.mouseIsDown = false;
+        this.selectedAngle = null;
+        this.currentPoint = null;
+    }
+
+    private handleClickElement(event: PointerEvent): void
+    {
+        const clickX = event.offsetX;
+        const clickY = event.offsetY;
+
+        this.shapes.getShapes().forEach((shape: Shape, index: number) =>
+        {
+            if (clickX >= shape.frame.leftTop.x && clickX <= shape.frame.leftTop.x + shape.frame.width
+                && clickY >= shape.frame.leftTop.y && clickY <= shape.frame.leftTop.y + shape.frame.height)
+            {
+                this.mouseIsDown = true;
+                this.controller.selectedShape(index);
+
+                return;
+            }
+            else
+            {
+                this.mouseIsDown = false;
+                this.controller.unselectedShape();
+            }
+        })
+    }
+
+    private handleMouseDown(event: MouseEvent): void
+    {
+        if (!this.checkClickAngle(event))
+        {
+            this.checkClickShape(event);
+        }
+    }
+
+    private checkClickShape(event: PointerEvent | MouseEvent): boolean
+    {
+        const clickX = event.offsetX;
+        const clickY = event.offsetY;
+
+        this.currentPoint = new Point(clickX, clickY);
+
+        let hasSelectedShape = false;
+
+        this.shapes.getShapes().forEach((shape: Shape, index: number) =>
+        {
+            if (clickX >= shape.frame.leftTop.x && clickX <= shape.frame.leftTop.x + shape.frame.width
+                && clickY >= shape.frame.leftTop.y && clickY <= shape.frame.leftTop.y + shape.frame.height)
+            {
+                this.selectedShape = index;
+                this.mouseIsDown = true;
+                hasSelectedShape = true;
+            }
+            // else
+            // {
+            //     const index = this.shapes.indexOf(shapeElement, 0);
+            //     this.shapes[index].value.selected = false;
+            // }
+        });
+
+        // if (!hasSelectedShape)
+        // {
+        //     this.selectedShape = null;
+        //     this.mouseIsDown = false;
+        // }
+
+        return hasSelectedShape;
+    }
+
+    private checkClickAngle(event: PointerEvent | MouseEvent): boolean
+    {
+        const clickX = event.offsetX;
+        const clickY = event.offsetY;
+
+        let hasSelectedAngle = false;
+
+        this.shapes.getShapes().forEach((shape: Shape, index: number) =>
+        {
+            if (clickX >= shape.frame.leftTop.x - 3 && clickX <= shape.frame.leftTop.x + 3
+                && clickY >= shape.frame.leftTop.y - 3 && clickY <= shape.frame.leftTop.y + 3)
+            {
+                this.mouseIsDown = true;
+                this.selectedShape = index;
+                this.selectedAngle = Angle.LEFT_TOP;
+                hasSelectedAngle = true;
+                return;
+            }
+            else if (clickX >= shape.frame.leftTop.x + shape.frame.width - 3 && clickX <= shape.frame.leftTop.x + shape.frame.width + 3
+                && clickY >= shape.frame.leftTop.y - 3 && clickY <= shape.frame.leftTop.y + 3)
+            {
+                this.mouseIsDown = true;
+                this.selectedShape = index;
+                this.selectedAngle = Angle.RIGHT_TOP;
+                hasSelectedAngle = true;
+                return;
+            }
+            else if (clickX >= shape.frame.leftTop.x + shape.frame.width - 3 && clickX <= shape.frame.leftTop.x + shape.frame.width + 3
+                && clickY >= shape.frame.leftTop.y + shape.frame.height - 3 && clickY <= shape.frame.leftTop.y + shape.frame.height + 3)
+            {
+                this.mouseIsDown = true;
+                this.selectedShape = index;
+                this.selectedAngle = Angle.RIGHT_BOTTOM;
+                hasSelectedAngle = true;
+                return;
+            }
+            else if (clickX >= shape.frame.leftTop.x - 3 && clickX <= shape.frame.leftTop.x + 3
+                && clickY >= shape.frame.leftTop.y + shape.frame.height - 3 && clickY <= shape.frame.leftTop.y + shape.frame.height + 3)
+            {
+                this.mouseIsDown = true;
+                this.selectedShape = index;
+                this.selectedAngle = Angle.LEFT_BOTTOM;
+                hasSelectedAngle = true;
+                return;
+            }
+        });
+
+        return hasSelectedAngle;
+    }
+
+    private handleMouseMove(event: MouseEvent): void
+    {
+        const clickX = event.offsetX;
+        const clickY = event.offsetY;
+
+        if (this.selectedShape !== null && this.mouseIsDown && this.selectedAngle)
+        {
+            this.controller.resizeFrame(this.selectedShape, this.selectedAngle, clickX, clickY);
+        }
+        else if (this.selectedShape !== null && this.mouseIsDown && this.currentPoint)
+        {
+            const transformX = clickX - this.currentPoint.x;
+            const transformY = clickY - this.currentPoint.y;
+
+            this.currentPoint = new Point(clickX, clickY);
+
+            this.controller.moveShape(this.selectedShape, transformX, transformY);
         }
     }
 }

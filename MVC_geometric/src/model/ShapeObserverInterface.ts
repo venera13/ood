@@ -1,4 +1,4 @@
 export default interface ShapeObserverInterface
 {
-    onFrameChanged(): void;
+    onShapeChanged(): void;
 }
