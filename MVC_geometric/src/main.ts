@@ -1,6 +1,17 @@
-import Model from './Model.js';
-import View from './View.js';
+import Shapes from './model/Shapes.js';
+import ToolbarView from './view/ToolbarView.js';
+import ShapeView from './view/ShapeView.js';
+import ShapesView from './view/ShapesView.js';
+import Shape from './model/Shape.js';
+import WindowView from './view/WindowView.js';
 
-const model = new Model();
-const view = new View(model);
-model.registerObserver(view);
+const shapes = new Shapes();
+const shapesView = new ShapesView(shapes);
+shapes.addObserver(shapesView);
+
+// const shape = new Shape();
+// const shapeView = new ShapeView();
+// shape.addObserver(shapeView);
+
+new WindowView();
+const toolbarView = new ToolbarView(shapes);
